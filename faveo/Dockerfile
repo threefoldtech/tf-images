@@ -1,4 +1,56 @@
-FROM  ladybirdweb/faveo-docker
+FROM nginx
+
+MAINTAINER Ladybird Web Solutions <support@ladybirdweb.com>
+
+# Install necessary packages 
+RUN apt-get update -y && apt-get install -y apt-transport-https ca-certificates wget
+
+
+RUN apt-get update -y && apt-get install -y curl git sl mlocate dos2unix \
+    bash-completion openssl php7.3-xml php7.3-mbstring php7.3-zip php7.3-mysql \
+    php7.3-opcache php7.3-json php7.3-curl php7.3-ldap php7.3-cgi php7.3-imap \
+    php7.3-cli php7.3-fpm php7.3-common php7.3-bcmath libapache2-mod-php7.3 \
+    cron && rm -rf /var/lib/apt/lists/*
+
+RUN curl -sS https://getcomposer.org/installer | php && \
+		mv composer.phar /usr/local/bin/composer
+
+RUN sed -i 's/user  nginx/user  www-data/g' /etc/nginx/nginx.conf
+
+# Force PHP to log to nginx
+RUN echo "catch_workers_output = yes" >> /etc/php/7.1/fpm/php-fpm.conf
+
+RUN ln -sf /dev/stdout /var/log/nginx/access.log \
+        && ln -sf /dev/stderr /var/log/nginx/error.log
+
+# Enable php by default
+ADD default.conf /etc/nginx/conf.d/default.conf
+
+WORKDIR /usr/share/nginx/
+
+RUN rm -rf *
+
+# Clone the project from git
+RUN git clone https://github.com/ladybirdweb/faveo-helpdesk.git .
+
+RUN composer install
+RUN chgrp -R www-data . storage bootstrap/cache
+RUN chmod -R ug+rwx . storage bootstrap/cache
+
+# Add to crontab file
+
+RUN touch /etc/cron.d/faveo-cron
+
+RUN echo '* * * * * php /usr/share/nginx/artisan schedule:run > /dev/null 2>&1' >>/etc/cron.d/faveo-cron
+
+RUN chmod 0644 /etc/cron.d/faveo-cron
+
+RUN crontab /etc/cron.d/faveo-cron
+
+RUN sed -i "s/max_execution_time = .*/max_execution_time = 120/" /etc/php/7.1/fpm/php.ini
+
+RUN php -m
+
 
 # add our user and group first to make sure their IDs get assigned consistently, regardless of whatever dependencies get added
 RUN groupadd -r mysql && useradd -r -g mysql mysql
