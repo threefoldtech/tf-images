@@ -16,5 +16,5 @@ done
 echo "mariaserver running"
 echo "running wordpress entry"
 
-
+CMD cron && service php7.1-fpm start && nginx -g "daemon off;"
 exec "$@"
