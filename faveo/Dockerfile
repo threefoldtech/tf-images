@@ -24,7 +24,7 @@ RUN ln -sf /dev/stdout /var/log/nginx/access.log \
         && ln -sf /dev/stderr /var/log/nginx/error.log
 
 # Enable php by default
-ADD default.conf /etc/nginx/conf.d/default.conf
+ADD root/opt/default.conf /etc/nginx/conf.d/default.conf
 
 WORKDIR /usr/share/nginx/
 
