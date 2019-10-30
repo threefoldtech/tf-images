@@ -18,7 +18,7 @@ RUN curl -sS https://getcomposer.org/installer | php && \
 RUN sed -i 's/user  nginx/user  www-data/g' /etc/nginx/nginx.conf
 
 # Force PHP to log to nginx
-RUN echo "catch_workers_output = yes" >> /etc/php/7.1/fpm/php-fpm.conf
+RUN echo "catch_workers_output = yes" >> /etc/php/7.3/fpm/php-fpm.conf
 
 RUN ln -sf /dev/stdout /var/log/nginx/access.log \
         && ln -sf /dev/stderr /var/log/nginx/error.log
@@ -47,7 +47,7 @@ RUN chmod 0644 /etc/cron.d/faveo-cron
 
 RUN crontab /etc/cron.d/faveo-cron
 
-RUN sed -i "s/max_execution_time = .*/max_execution_time = 120/" /etc/php/7.1/fpm/php.ini
+RUN sed -i "s/max_execution_time = .*/max_execution_time = 120/" /etc/php/7.3/fpm/php.ini
 
 RUN php -m
 
