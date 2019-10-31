@@ -28,7 +28,7 @@ COPY apache2_file /etc/apache2/sites-available/freeflowpages.com.conf
 
 WORKDIR /etc/apache2/sites-available
 RUN rm 000-default.conf
-RUN a2ensite freeflowpages.com.conf
+    RUN a2ensite freeflowpages.com.conf
 RUN a2enmod rewrite
 
 WORKDIR /var/www/html/humhub

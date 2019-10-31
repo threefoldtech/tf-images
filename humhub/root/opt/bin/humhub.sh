@@ -200,9 +200,26 @@ if [ "$1" = 'mysqld' -a -z "$wantHelp" ]; then
 	fi
 fi
 
-/etc/init.d/mysql start
+if [ ! "$(ls -A /var/lib/mysql/)" ]; then
+echo "data dir /var/lib/mysql/  is empty, intializaing data dir  .................."
+/usr/sbin/mysqld --initialize-insecure --user=mysql --datadir=/var/lib/mysql/ 
+fi
+
 /etc/init.d/apache2 start
+/etc/init.d/mysql start
+echo "restting root password"
+if `mysql -e "update mysql.user set authentication_string=PASSWORD('$MYSQL_ROOT_PASSWORD') where User='root';flush privileges;" > /tmp/restfile 2>&1`;then
+       	echo mysql root password has been reset successfully
+elif grep 'Access denied for user' /tmp/restfile ;then
+	echo ignore resetting root password as it was setted before 
+else
+	cat /tmp/restfile
+	echo "another error then exist is nonzero"
+	exit 1
+fi
+
 if [ ! -d /var/lib/mysql/humhub/ ] ; then
+echo "humhub database does not exist, creating it "
 mysql -uroot -p$MYSQL_ROOT_PASSWORD  -e 'CREATE DATABASE IF NOT EXISTS humhub CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci'
 mysql -uroot -p$MYSQL_ROOT_PASSWORD -e "GRANT ALL ON $HUMHUB_DATABASE.* TO '$HUMHUB_DB_USER'@'localhost' IDENTIFIED BY '$HUMHUB_DB_USER_PASSWORD'"
 mysql -uroot -p$MYSQL_ROOT_PASSWORD -e 'FLUSH PRIVILEGES'
