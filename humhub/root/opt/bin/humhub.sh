@@ -223,6 +223,22 @@ echo "humhub database does not exist, creating it "
 mysql -uroot -p$MYSQL_ROOT_PASSWORD  -e 'CREATE DATABASE IF NOT EXISTS humhub CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci'
 mysql -uroot -p$MYSQL_ROOT_PASSWORD -e "GRANT ALL ON $HUMHUB_DATABASE.* TO '$HUMHUB_DB_USER'@'localhost' IDENTIFIED BY '$HUMHUB_DB_USER_PASSWORD'"
 mysql -uroot -p$MYSQL_ROOT_PASSWORD -e 'FLUSH PRIVILEGES'
+
+# check if the humhub dir is empty due to the mouting then re-install humhub in /var/www/html/humhub
+if [ ! "$(ls -A /var/www/html/humhub/ )" ]; then
+	cd /var/www/html
+	echo humhub directory is empty, downloading humhub
+	if [ -z "$HUMHUB_VERSION" ]; then
+	echo HUMHUB_VERSION does not set, setting humhub version to 1.3.15
+	HUMHUB_VERSION=1.3.15
+	fi
+	wget https://www.humhub.org/en/download/package/humhub-${HUMHUB_VERSION}.tar.gz -q -O humhub.tar.gz && \
+	tar xzf humhub.tar.gz --strip-components=1 --directory /var/www/html/humhub  > /dev/null && rm humhub.tar.gz
+	chown -R www-data:www-data /var/www/html
+else
+	echo "humhub directory not mounted OR mounted and has a data inside it"
+fi
+
 fi
 exec "$@"
 
