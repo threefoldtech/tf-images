@@ -4,7 +4,16 @@ is MySQL, apache2 and php server to build your social network
 
 # Building 
 
-in the humhub directory
+1 - clone repo 
+
+```
+git clone https://github.com/xmonader/tf-images.git
+
+```
+
+2 - in the humhub directory
+
+` cd tf-images/humhub`
 
 `docker build -t bishoy/humhub .`
 
