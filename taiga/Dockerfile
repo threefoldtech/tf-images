@@ -11,6 +11,8 @@ postgresql \
 python3 python3-pip python3-dev virtualenv virtualenvwrapper \
 libxml2-dev libxslt-dev libssl-dev libffi-dev
 
+RUN pip3 install libtmux
+
 # Create taiga user
 RUN adduser taiga
 RUN adduser taiga sudo
