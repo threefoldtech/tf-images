@@ -10,7 +10,7 @@ sudo -u postgres createdb taiga -O taiga --encoding='utf-8' --locale=en_US.utf8 
 # Install dependencies and populate database
 cd /taiga/taiga-back
 sudo chmod +x /opt/bin/prepare_taiga.sh
-su taiga -c '/opt/bin/prepare_taiga.sh'
+su taiga -c 'bash /opt/bin/prepare_taiga.sh'
 
 # Start rabbitmq-server and create user+vhost
 service rabbitmq-server start
@@ -31,3 +31,4 @@ sudo nginx -t && sudo service nginx restart
 
 #Start taiga
 su taiga -c 'python3 /opt/bin/start_events.py'
+exec "$@"
