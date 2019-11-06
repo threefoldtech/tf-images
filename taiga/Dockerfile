@@ -64,7 +64,7 @@ COPY root/cfg/taiga.conf /etc/nginx/conf.d/taiga.conf
 
 COPY root/opt/bin /opt/bin
 COPY root/opt/bin/taiga-*.conf /etc/supervisor/conf.d/
-
+COPY supervisor.conf /etc/supervisor/supervisord.conf 
 EXPOSE 4321
 
 ENTRYPOINT ["/bin/sh", "opt/bin/taiga_entry.sh"]
