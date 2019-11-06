@@ -200,29 +200,34 @@ if [ "$1" = 'mysqld' -a -z "$wantHelp" ]; then
 	fi
 fi
 
+chown -R mysql /var/lib/mysql
+chown -R mysql /var/log/mysql
+
 if [ ! "$(ls -A /var/lib/mysql/)" ]; then
-echo "data dir /var/lib/mysql/  is empty, intializaing data dir  .................."
-/usr/sbin/mysqld --initialize-insecure --user=mysql --datadir=/var/lib/mysql/ 
+	echo "data dir /var/lib/mysql/  is empty, intializaing data dir  .................."
+	/usr/sbin/mysqld --initialize-insecure --user=mysql --datadir=/var/lib/mysql/ 
 fi
 
-/etc/init.d/apache2 start
+
 /etc/init.d/mysql start
 echo "restting root password"
+
 if `mysql -e "update mysql.user set authentication_string=PASSWORD('$MYSQL_ROOT_PASSWORD') where User='root';flush privileges;" > /tmp/restfile 2>&1`;then
        	echo mysql root password has been reset successfully
 elif grep 'Access denied for user' /tmp/restfile ;then
 	echo ignore resetting root password as it was setted before 
 else
 	cat /tmp/restfile
-	echo "another error then exist is nonzero"
+	echo "another error while set humhub database configuration then exist is nonzero"
 	exit 1
 fi
 
 if [ ! -d /var/lib/mysql/humhub/ ] ; then
-echo "humhub database does not exist, creating it "
-mysql -uroot -p$MYSQL_ROOT_PASSWORD  -e 'CREATE DATABASE IF NOT EXISTS humhub CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci'
-mysql -uroot -p$MYSQL_ROOT_PASSWORD -e "GRANT ALL ON $HUMHUB_DATABASE.* TO '$HUMHUB_DB_USER'@'localhost' IDENTIFIED BY '$HUMHUB_DB_USER_PASSWORD'"
-mysql -uroot -p$MYSQL_ROOT_PASSWORD -e 'FLUSH PRIVILEGES'
+	echo "humhub database does not exist, creating it "
+	mysql -uroot -p$MYSQL_ROOT_PASSWORD  -e 'CREATE DATABASE IF NOT EXISTS humhub CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci'
+	mysql -uroot -p$MYSQL_ROOT_PASSWORD -e "GRANT ALL ON $HUMHUB_DATABASE.* TO '$HUMHUB_DB_USER'@'localhost' IDENTIFIED BY '$HUMHUB_DB_USER_PASSWORD'"
+	mysql -uroot -p$MYSQL_ROOT_PASSWORD -e 'FLUSH PRIVILEGES'
+fi
 
 # check if the humhub dir is empty due to the mouting then re-install humhub in /var/www/html/humhub
 if [ ! "$(ls -A /var/www/html/humhub/ )" ]; then
@@ -234,11 +239,11 @@ if [ ! "$(ls -A /var/www/html/humhub/ )" ]; then
 	fi
 	wget https://www.humhub.org/en/download/package/humhub-${HUMHUB_VERSION}.tar.gz -q -O humhub.tar.gz && \
 	tar xzf humhub.tar.gz --strip-components=1 --directory /var/www/html/humhub  > /dev/null && rm humhub.tar.gz
-	chown -R www-data:www-data /var/www/html
 else
 	echo "humhub directory not mounted OR mounted and has a data inside it"
 fi
 
-fi
+chown -R www-data:www-data /var/www/html
+/etc/init.d/apache2 start
 exec "$@"
 
