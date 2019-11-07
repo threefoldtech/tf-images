@@ -44,7 +44,7 @@ mkdir /taiga/logs/
 sudo nginx -t && sudo service nginx restart
 
 #start ssh
-chmod -R 644 /etc/ssh
+chmod -R 700 /etc/ssh
 /etc/init.d/ssh start
 
 #Start taiga
