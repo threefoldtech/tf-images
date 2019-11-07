@@ -30,8 +30,7 @@ mkdir /taiga/logs/
 sudo nginx -t && sudo service nginx restart
 
 #Start taiga
-#su taiga -c 'python3 /opt/bin/start_events.py'
-mkdir /taiga/supervisor/logs
+mkdir -p /taiga/supervisor/logs
 chown -R taiga:taiga /taiga/supervisor/
 
 supervisord -c /etc/supervisor/supervisord.conf
