@@ -9,7 +9,7 @@ RUN apt-get update \
     nginx rabbitmq-server redis-server \
     postgresql \
     python3 python3-pip python3-dev virtualenv virtualenvwrapper \
-    libxml2-dev libxslt-dev libssl-dev libffi-dev sudo
+    libxml2-dev libxslt-dev libssl-dev libffi-dev openssh-server sudo
 
 RUN pip3 install libtmux
 RUN pip3 install supervisor
