@@ -43,6 +43,10 @@ sed -i "s/mysecret/$SECRET_KEY/g" /taiga/taiga-events/config.json
 mkdir /taiga/logs/
 sudo nginx -t && sudo service nginx restart
 
+#start ssh
+chmod -R 644 /etc/ssh
+/etc/init.d/ssh start
+
 #Start taiga
 mkdir -p /taiga/supervisor/logs
 chown -R taiga:taiga /taiga/supervisor/
