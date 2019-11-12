@@ -62,6 +62,15 @@ RUN set -x; \
     && apt-get -y install -f --no-install-recommends \
     && rm -rf /var/lib/apt/lists/* odoo.deb
 
+# start supervisor
+RUN apt-get install  python3-pip -y
+RUN pip3 install supervisor
+
+# Copy supervisor config to supervisor configuration
+COPY supervisor.conf /etc/supervisor/supervisord.conf
+RUN mkdir -p /supervisor/logs/postgres
+RUN mkdir -p /supervisor/logs/odoo
+
 # Copy entrypoint script and Odoo configuration file
 COPY ./entrypoint.sh /
 COPY ./odoo.conf /etc/odoo/
@@ -78,5 +87,9 @@ EXPOSE 8069 8071
 ENV ODOO_RC /etc/odoo/odoo.conf
 
 RUN apt-get update && apt-get install -y postgresql
+
+RUN mkdir -p /supervisor/logs/postgresql
+
+
 
 ENTRYPOINT ["/entrypoint.sh"]
