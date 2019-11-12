@@ -15,14 +15,14 @@ git clone https://github.com/xmonader/tf-images.git
 
 ` cd tf-images/humhub`
 
-`docker build -t bishoy/humhub .`
+`docker build -t bishoyabdo/humhub:13.15 .`
 
 change bishoy to whatever image name.
 
 # Running
 
 ```
-docker run --rm -ti -p 80:80 -e MYSQL_ROOT_PASSWORD=rootpass -e MYSQL_DATABASE=humhub -e MYSQL_USER=humhub -e MYSQL_PASSWORD=humpass  bishoy/humhub /bin/bash
+docker run --rm -ti -p 80:80 -e MYSQL_ROOT_PASSWORD=rootpass -e MYSQL_DATABASE=humhub -e MYSQL_USER=humhub -e MYSQL_PASSWORD=humpass  bishoyabdo/humhub:13.15 /bin/bash
 ```
 Then login to your humhub and setup your configuration by http://localhost
 
@@ -31,7 +31,7 @@ Then login to your humhub and setup your configuration by http://localhost
 if you want to modify humhub version while starting docker container and to bind mount a volume of the database and app dir to docker host
 
 ```
-docker run --rm -ti -p 80:80 -e MYSQL_ROOT_PASSWORD=rootpass -e MYSQL_DATABASE=humhub -e MYSQL_USER=humhub -e MYSQL_PASSWORD=humpass  -e HUMHUB_VERSION=1.3.15 -v /opt/humhub:/var/www/html/humhu -v /opt/mysql:/var/lib/mysql bishoy/humhub /bin/bash
+docker run --rm -ti -p 80:80 -e MYSQL_ROOT_PASSWORD=rootpass -e MYSQL_DATABASE=humhub -e MYSQL_USER=humhub -e MYSQL_PASSWORD=humpass  -e HUMHUB_VERSION=1.3.15 -v /opt/humhub:/var/www/html/humhu -v /opt/mysql:/var/lib/mysql bishoyabdo/humhub:13.15 /bin/bash
 
 ```
 ## service run by supervisord
