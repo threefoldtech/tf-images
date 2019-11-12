@@ -34,6 +34,12 @@ if you want to modify humhub version while starting docker container and to bind
 docker run --rm -ti -p 80:80 -e MYSQL_ROOT_PASSWORD=rootpass -e MYSQL_DATABASE=humhub -e MYSQL_USER=humhub -e MYSQL_PASSWORD=humpass  -e HUMHUB_VERSION=1.3.15 -v /opt/humhub:/var/www/html/humhu -v /opt/mysql:/var/lib/mysql bishoy/humhub /bin/bash
 
 ```
-## missing
+## service run by supervisord
+- apache2
+- mysql
+- ssh
 
-- ssh 
+## flist 
+
+https://hub.grid.tf/mikhaieb/bishoyabdo-humhub-1.3.15.flist
+ 

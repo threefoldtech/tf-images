@@ -200,35 +200,7 @@ if [ "$1" = 'mysqld' -a -z "$wantHelp" ]; then
 	fi
 fi
 
-chown -R mysql /var/lib/mysql
-chown -R mysql /var/log/mysql
-
-if [ ! "$(ls -A /var/lib/mysql/)" ]; then
-	echo "data dir /var/lib/mysql/  is empty, intializaing data dir  .................."
-	/usr/sbin/mysqld --initialize-insecure --user=mysql --datadir=/var/lib/mysql/ 
-fi
-
-
-/etc/init.d/mysql start
-echo "restting root password"
-
-if `mysql -e "update mysql.user set authentication_string=PASSWORD('$MYSQL_ROOT_PASSWORD') where User='root';flush privileges;" > /tmp/restfile 2>&1`;then
-       	echo mysql root password has been reset successfully
-elif grep 'Access denied for user' /tmp/restfile ;then
-	echo ignore resetting root password as it was setted before 
-else
-	cat /tmp/restfile
-	echo "another error while set humhub database configuration then exist is nonzero"
-	exit 1
-fi
-
-if [ ! -d /var/lib/mysql/humhub/ ] ; then
-	echo "humhub database does not exist, creating it "
-	mysql -uroot -p$MYSQL_ROOT_PASSWORD  -e 'CREATE DATABASE IF NOT EXISTS humhub CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci'
-	mysql -uroot -p$MYSQL_ROOT_PASSWORD -e "GRANT ALL ON $HUMHUB_DATABASE.* TO '$HUMHUB_DB_USER'@'localhost' IDENTIFIED BY '$HUMHUB_DB_USER_PASSWORD'"
-	mysql -uroot -p$MYSQL_ROOT_PASSWORD -e 'FLUSH PRIVILEGES'
-fi
-
+# prepare for humhub installing
 # check if the humhub dir is empty due to the mouting then re-install humhub in /var/www/html/humhub
 if [ ! "$(ls -A /var/www/html/humhub/ )" ]; then
 	cd /var/www/html
@@ -243,7 +215,54 @@ else
 	echo "humhub directory not mounted OR mounted and has a data inside it"
 fi
 
+# disappear now as it takes time
+echo "wait for change permission in /var/www/html .. "
 chown -R www-data:www-data /var/www/html
-/etc/init.d/apache2 start
-exec "$@"
+echo "permission has been changed successfully"
 
+# prepare for mysql service
+chown -R mysql /var/lib/mysql
+chown -R mysql /var/log/mysql
+chown -R mysql /var/run/mysqld
+
+if [ ! "$(ls -A /var/lib/mysql/)" ]; then
+	echo "data dir /var/lib/mysql/  is empty, intializaing data dir  .................."
+	/usr/sbin/mysqld --initialize-insecure --user=mysql --datadir=/var/lib/mysql/ 
+fi
+
+#TODO to start mysql using supervisor
+#/etc/init.d/mysql start
+
+
+# prepare for ssh service
+chmod 400 -R /etc/ssh/
+mkdir -p /run/sshd
+[ -d /root/.ssh/ ] || mkdir /root/.ssh
+
+# prepare for supervisor service
+chown -R www-data:www-data /supervisor/logs/apache2
+
+# use supervisord to start ssh, mysql and apache2
+supervisord -c /etc/supervisor/supervisord.conf
+
+echo "just waiting 5 second for start mysql server by supervisord"
+sleep 5
+echo "now rest mysql root password "
+
+if `mysql -e "update mysql.user set authentication_string=PASSWORD('$MYSQL_ROOT_PASSWORD') where User='root';flush privileges;" > /tmp/restfile 2>&1`;then
+       	echo mysql root password has been reset successfully
+elif grep 'Access denied for user' /tmp/restfile ;then
+	echo ignore resetting root password as it was setted before
+else
+	cat /tmp/restfile
+	echo "another error while reset root password"
+fi
+
+if [ ! -d /var/lib/mysql/humhub/ ] ; then
+	echo "humhub database does not exist, creating it "
+	mysql -uroot -p$MYSQL_ROOT_PASSWORD  -e 'CREATE DATABASE IF NOT EXISTS humhub CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci'
+	mysql -uroot -p$MYSQL_ROOT_PASSWORD -e "GRANT ALL ON $HUMHUB_DATABASE.* TO '$HUMHUB_DB_USER'@'localhost' IDENTIFIED BY '$HUMHUB_DB_USER_PASSWORD'"
+	mysql -uroot -p$MYSQL_ROOT_PASSWORD -e 'FLUSH PRIVILEGES'
+fi
+
+exec "$@"

@@ -23,7 +23,14 @@ RUN apt-get install php-ldap php-apcu php-sqlite3 php-imagick imagemagick -y
 RUN apt-get install cron ssh telnet -y
 RUN apt-get install net-tools iputils-ping vim curl tmux rsync git -y
 RUN apt-get install restic  redis-server -y
+RUN apt-get install  python3-pip -y
+RUN pip3 install supervisor
 
+# add supervisor config
+
+COPY supervisor.conf /etc/supervisor/supervisord.conf
+RUN mkdir -p /supervisor/logs/apache2
+RUN mkdir -p /var/run/mysqld
 COPY apache2_file /etc/apache2/sites-available/freeflowpages.com.conf
 
 WORKDIR /etc/apache2/sites-available
