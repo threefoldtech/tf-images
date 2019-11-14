@@ -2,6 +2,8 @@
 set -eo pipefail
 shopt -s nullglob
 
+echo MYSQL_ROOT_PASSWORD value is
+echo $MYSQL_ROOT_PASSWORD
 # if command starts with an option, prepend mysqld
 if [ "${1:0:1}" = '-' ]; then
 	set -- mysqld "$@"

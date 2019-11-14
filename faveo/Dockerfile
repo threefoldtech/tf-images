@@ -15,7 +15,7 @@ RUN ln -sf /dev/stdout /var/log/nginx/access.log \
         && ln -sf /dev/stderr /var/log/nginx/error.log
 
 # Enable php by default
-ADD root/opt/default.conf /etc/nginx/conf.d/default.conf
+COPY root/opt/default.conf /etc/nginx/conf.d/default.conf
 
 WORKDIR /usr/share/nginx/
 
@@ -119,7 +119,7 @@ RUN set -ex; \
 
 # bashbrew-architectures: amd64 arm64v8 ppc64le
 ENV MARIADB_MAJOR 10.4
-ENV MARIADB_VERSION 1:10.4.8+maria~bionic
+#ENV MARIADB_VERSION 1:10.4.8+maria~bionic
 # release-status:Stable
 # (https://downloads.mariadb.org/mariadb/+releases/)
 
@@ -142,7 +142,7 @@ RUN set -ex; \
         } | debconf-set-selections; \
         apt-get update; \
         apt-get install -y \
-        "mariadb-server=$MARIADB_VERSION" \
+        mariadb-server \
         # mariadb-backup is installed at the same time so that `mysql-common` is only installed once from just mariadb repos
         mariadb-backup \
         socat \
@@ -156,6 +156,8 @@ RUN set -ex; \
         chown -R mysql:mysql /var/lib/mysql /var/run/mysqld; \
         # ensure that /var/run/mysqld (used for socket and lock files) is writable regardless of the UID our mysqld instance ends up having at runtime
         chmod 777 /var/run/mysqld; \
+        # prepare data dir
+        mysql_install_db --user=mysql --basedir=/usr --datadir=/var/lib/mysql ;\
         # comment out a few problematic configuration values
         find /etc/mysql/ -name '*.cnf' -print0 \
         | xargs -0 grep -lZE '^(bind-address|log)' \
@@ -167,6 +169,15 @@ VOLUME /var/lib/mysql
 
 EXPOSE 3306
 
+# install supervisor
+RUN apt-get install  python3-pip -y
+RUN pip3 install supervisor
+
+COPY supervisor.conf /etc/supervisor/supervisord.conf
+RUN mkdir -p /var/log/supervisor/php-fpm
+RUN mkdir -p /var/log/supervisor/nginx
+
+RUN mkdir -p /var/run/mysqld
 
 COPY root/opt/bin /opt/bin
 
