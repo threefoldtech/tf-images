@@ -1,7 +1,7 @@
 FROM wyveo/nginx-php-fpm:php71
 
 
-# Install necessary packages 
+# Install necessary packages
 
 RUN apt-get update -y && apt-get install -y php7.1-imap cron ca-certificates && rm -rf /var/lib/apt/lists/*
 
@@ -170,13 +170,17 @@ VOLUME /var/lib/mysql
 EXPOSE 3306
 
 # install supervisor
-RUN apt-get install  python3-pip -y
+RUN apt-get update -y
+RUN apt-get install python3-pip openssh-server vim -y
+
 RUN pip3 install supervisor
 
 COPY supervisor.conf /etc/supervisor/supervisord.conf
 RUN mkdir -p /var/log/supervisor/php-fpm
 RUN mkdir -p /var/log/supervisor/nginx
-
+RUN mkdir -p /var/log/supervisor/cron/
+RUN sed -i "s/listen.owner = nginx/listen.owner = www-data/g;s/listen.group = nginx/listen.group = www-data/g" /etc/php/7.1/fpm/pool.d/www.conf
+RUN sed -i "s|;listen.mode = 0660|listen.mode = 0660|g" /etc/php/7.1/fpm/pool.d/www.conf
 RUN mkdir -p /var/run/mysqld
 
 COPY root/opt/bin /opt/bin

@@ -28,11 +28,14 @@ mkdir -p /run/sshd
 [ -d /var/log/php-fpm ] || mkdir -p /var/log/php-fpm
 
 chown -R www-data:www-data /var/log/supervisor
+chmod -R 0777 /usr/share/nginx/storage
+echo '* * * * * php /usr/share/nginx/artisan schedule:run > /dev/null 2>&1' > /etc/cron.d/faveo-cron
+chmod 0644 /etc/cron.d/faveo-cron
+crontab /etc/cron.d/faveo-cron
 
 # use supervisord to start ssh, mysql and nginx and php-fpm
 
 supervisord -c /etc/supervisor/supervisord.conf
 
-#TODO start cron from supervisor
-#cron && service php7.1-fpm start && nginx -g "daemon off;"
+
 exec "$@"
