@@ -13,7 +13,6 @@ while ! ss -ntlp | grep -q '3306'; do
  sleep 10;
 done
 
-
 echo "mariaserver running"
 echo "running faveo server"
 chown -R www-data:www-data /var/run/php
@@ -36,6 +35,5 @@ crontab /etc/cron.d/faveo-cron
 # use supervisord to start ssh, mysql and nginx and php-fpm
 
 supervisord -c /etc/supervisor/supervisord.conf
-
 
 exec "$@"
