@@ -3,7 +3,9 @@
 chmod +x /opt/bin/*
 echo "runing mariadb"
 /bin/bash /opt/bin/mariadb_entry.sh
-
+# prepare mysql server
+chown -R mysql:mysql /var/lib/mysql /var/run/mysqld /var/log/mysql
+chmod 777 /var/run/mysqld
 echo "mariaserver running"
 echo "running faveo server"
 chown -R www-data:www-data /var/run/php

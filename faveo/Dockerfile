@@ -176,4 +176,4 @@ RUN chmod +x /opt/bin/*
 
 # To do: initialize the database so it can run properly
 
-ENTRYPOINT ["/opt/bin/mariadb_entry.sh;/opt/bin/run_all.sh" ]
+ENTRYPOINT ["/opt/bin/run_all.sh" ]
