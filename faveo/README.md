@@ -34,5 +34,4 @@ Then login to your humhub and setup your configuration by http://localhost
 
 ## flist 
 
-https://hub.grid.tf/mikhaieb/bishoyabdo-faveo.flist
- 
+ https://hub.grid.tf/mikhaieb/bishoyabdo-faveo-latest.flist 
