@@ -5,14 +5,8 @@ FROM wyveo/nginx-php-fpm:php71
 
 RUN apt-get update -y && apt-get install -y php7.1-imap cron ca-certificates && rm -rf /var/lib/apt/lists/*
 
-
-RUN sed -i 's/user  nginx/user  www-data/g' /etc/nginx/nginx.conf
-
 # Force PHP to log to nginx
 RUN echo "catch_workers_output = yes" >> /etc/php/7.1/fpm/php-fpm.conf
-
-RUN ln -sf /dev/stdout /var/log/nginx/access.log \
-        && ln -sf /dev/stderr /var/log/nginx/error.log
 
 # Enable php by default
 COPY root/opt/default.conf /etc/nginx/conf.d/default.conf
@@ -30,18 +24,13 @@ RUN chmod -R ug+rwx . storage bootstrap/cache
 
 # Add to crontab file
 
-RUN touch /etc/cron.d/faveo-cron
-
 RUN echo '* * * * * php /usr/share/nginx/artisan schedule:run > /dev/null 2>&1' >>/etc/cron.d/faveo-cron
-
 RUN chmod 0644 /etc/cron.d/faveo-cron
-
 RUN crontab /etc/cron.d/faveo-cron
-
 RUN sed -i "s/max_execution_time = .*/max_execution_time = 120/" /etc/php/7.1/fpm/php.ini
-
 RUN php -m
-
+RUN sed -i "s/listen.owner = nginx/listen.owner = www-data/g;s/listen.group = nginx/listen.group = www-data/g" /etc/php/7.1/fpm/pool.d/www.conf
+RUN sed -i "s|;listen.mode = 0660|listen.mode = 0660|g" /etc/php/7.1/fpm/pool.d/www.conf
 
 # add our user and group first to make sure their IDs get assigned consistently, regardless of whatever dependencies get added
 RUN groupadd -r mysql && useradd -r -g mysql mysql
@@ -179,12 +168,9 @@ COPY supervisor.conf /etc/supervisor/supervisord.conf
 RUN mkdir -p /var/log/supervisor/php-fpm
 RUN mkdir -p /var/log/supervisor/nginx
 RUN mkdir -p /var/log/supervisor/cron/
-RUN sed -i "s/listen.owner = nginx/listen.owner = www-data/g;s/listen.group = nginx/listen.group = www-data/g" /etc/php/7.1/fpm/pool.d/www.conf
-RUN sed -i "s|;listen.mode = 0660|listen.mode = 0660|g" /etc/php/7.1/fpm/pool.d/www.conf
 RUN mkdir -p /var/run/mysqld
 
 COPY root/opt/bin /opt/bin
-
 
 RUN chmod +x /opt/bin/*
 
