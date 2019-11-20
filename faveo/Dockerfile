@@ -19,14 +19,14 @@ RUN rm -rf *
 RUN git clone https://github.com/ladybirdweb/faveo-helpdesk.git .
 
 RUN composer install
-RUN chgrp -R www-data . storage bootstrap/cache
-RUN chmod -R ug+rwx . storage bootstrap/cache
+
 
 # Add to crontab file
 
 RUN echo '* * * * * php /usr/share/nginx/artisan schedule:run > /dev/null 2>&1' >>/etc/cron.d/faveo-cron
 RUN chmod 0644 /etc/cron.d/faveo-cron
 RUN crontab /etc/cron.d/faveo-cron
+RUN sed -i 's/user  nginx/user  www-data/g' /etc/nginx/nginx.conf
 RUN sed -i "s/max_execution_time = .*/max_execution_time = 120/" /etc/php/7.1/fpm/php.ini
 RUN php -m
 RUN sed -i "s/listen.owner = nginx/listen.owner = www-data/g;s/listen.group = nginx/listen.group = www-data/g" /etc/php/7.1/fpm/pool.d/www.conf

@@ -20,7 +20,11 @@ mkdir -p /run/sshd
 [ -d /var/log/php-fpm ] || mkdir -p /var/log/php-fpm
 
 chown -R www-data:www-data /var/log/supervisor
+
+chgrp -R www-data /usr/share/nginx/storage /usr/share/nginx/bootstrap/cache
+chmod -R ug+rwx . /usr/share/nginx/storage /usr/share/nginx/bootstrap/cache
 chmod -R 0777 /usr/share/nginx/storage
+
 chmod 0644 /etc/cron.d/faveo-cron
 
 # use supervisord to start ssh, mysql and nginx and php-fpm
