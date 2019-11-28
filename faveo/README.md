@@ -24,7 +24,7 @@ change bishoy to whatever image name.
 ```
 docker run --rm -ti -p 80:80 bishoyabdo/faveo /bin/bash
 ```
-Then login to your humhub and setup your configuration by http://localhost
+Then login to your faveo and setup your configuration by http://localhost
 
 ## service run by supervisord
 - nginx
