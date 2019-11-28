@@ -2,7 +2,7 @@
 
 ## Faveo
 - Dockerfile info: [faveo](./faveo/README.md)
-- flist?
+- flist https://hub.grid.tf/mikhaieb/bishoyabdo-faveo-latest.flist
 
 ## Humhub
 - Dockerfile info: [humhub](./humhub/README.md)
