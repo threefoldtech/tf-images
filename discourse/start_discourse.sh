@@ -7,7 +7,6 @@ bash /.prepare_database.sh
 
 nohup redis-server &
 
-apt install -y net-tools
 chown -R discourse /home/discourse
 cat << EOF > /etc/cron.d/anacron
 
@@ -30,23 +29,22 @@ export LANGUAGE=en_US.UTF-8
 export LANG=en_US.UTF-8
 export DISCOURSE_DB_SOCKET=/var/run/postgresql
 
-export version=tests-passed
+version=$DISCOURSE_VERSION
 export home=/var/www/discourse
 export upload_size=10m
 
 
-export RAILS_ENV=production
-export HOSTNAME=discurse-staging-mydiscourse
+echo $RAILS_ENV
+echo $HOSTNAME
 export UNICORN_WORKERS=4
-export DISCOURSE_HOSTNAME=forum6.threefold.io
+echo $DISCOURSE_HOSTNAME
 export DISCOURSE_SMTP_USER_NAME=apikey
-export DISCOURSE_SMTP_ADDRESS=smtp.sendgrid.net
-export DISCOURSE_DEVELOPER_EMAILS=bishoy@incubaid.com
-export DISCOURSE_SMTP_PORT=587
-export DISCOURSE_SMTP_PASSWORD=${DISCOURSE_SMTP_PASSWORD}
-echo ${DISCOURSE_SMTP_PASSWORD}
+echo $DISCOURSE_SMTP_ADDRESS
+echo $DISCOURSE_DEVELOPER_EMAILS
+echo $DISCOURSE_SMTP_PORT
+echo $DISCOURSE_SMTP_PASSWORD
 export LETSENCRYPT_DIR=/shared/letsencrypt
-export LETSENCRYPT_ACCOUNT_EMAIL=bishoy@incubaid.com
+echo $LETSENCRYPT_ACCOUNT_EMAIL
 
 echo '######################## all env ################### '
 env
@@ -55,23 +53,35 @@ env
 sed -i "s/forum1.threefold.io/$DISCOURSE_HOSTNAME/g"  /etc/nginx/conf.d/discourse.conf
 
 #env > ~/boot_env
-cd $home
-git reset --hard
-git clean -f
-git remote set-branches --add origin master
-git pull
-git fetch origin $version
-git checkout $version
-mkdir -p tmp/pids
-mkdir -p tmp/sockets
-touch tmp/.gitkeep
-mkdir -p                    /shared/log/rails
-bash -c "touch -a           /shared/log/rails/{production,production_errors,unicorn.stdout,unicorn.stderr,sidekiq}.log"
-bash -c "ln    -s           /shared/log/rails/{production,production_errors,unicorn.stdout,unicorn.stderr,sidekiq}.log $home/log"
-bash -c "mkdir -p           /shared/{uploads,backups}"
-bash -c "ln    -s           /shared/{uploads,backups} $home/public"
-bash -c "mkdir -p           /shared/tmp/{backups,restores}"
-bash -c "ln    -s           /shared/tmp/{backups,restores} $home/tmp"
+#git reset --hard
+#git clean -f
+#git remote set-branches --add origin master
+#git pull
+#git fetch origin $version
+#git checkout $version
+[[ -d $home ]] || mkdir $home
+if [ "$(find $home -maxdepth 0 -empty)" ]; then
+	fresh_install="yes"
+	echo $home is empty, then clone repo
+	git clone https://github.com/threefoldtech/threefold-forums -b $version $home
+	cd $home
+	mkdir -p tmp/pids
+	mkdir -p tmp/sockets
+	touch tmp/.gitkeep
+	mkdir -p                    /shared/log/rails
+	bash -c "touch -a           /shared/log/rails/{production,production_errors,unicorn.stdout,unicorn.stderr,sidekiq}.log"
+	bash -c "ln    -s           /shared/log/rails/{production,production_errors,unicorn.stdout,unicorn.stderr,sidekiq}.log $home/log"
+	bash -c "mkdir -p           /shared/{uploads,backups}"
+	bash -c "ln    -s           /shared/{uploads,backups} $home/public"
+	bash -c "mkdir -p           /shared/tmp/{backups,restores}"
+	bash -c "ln    -s           /shared/tmp/{backups,restores} $home/tmp"
+else
+        echo $home not empty so only update it
+        cd $home
+        git status
+        git pull
+fi
+
 chown -R discourse:www-data /shared/log/rails /shared/uploads /shared/backups /shared/tmp
 
 rm /etc/nginx/sites-enabled/default
@@ -83,19 +93,20 @@ cd $home
 gem update bundler
 find $home ! -user discourse -exec chown discourse {} \+
 cd $home
-su discourse -c 'bundle install --deployment --retry 3 --jobs 4 --verbose --without test development'
-DEV_RAKE='/var/www/discourse/vendor/bundle/ruby/2.6.0/gems/railties-6.0.1/lib/rails/tasks/dev.rake'
 
-if [[ -f $DEV_RAKE ]] ;then
-	echo " $DEV_RAKE file is exist "
-else
-	echo " $DEV_RAKE file does not exist "
-	cp /.dev.rake $DEV_RAKE
-	chown discourse:discourse $DEV_RAKE
-
+if [[ "$fresh_install" == "yes" ]];then
+	su discourse -c 'bundle install --deployment --retry 3 --jobs 4 --verbose --without test development'
+	DEV_RAKE='/var/www/discourse/vendor/bundle/ruby/2.6.0/gems/railties-6.0.1/lib/rails/tasks/dev.rake'
+	if [[ -f $DEV_RAKE ]] ;then
+	        echo " $DEV_RAKE file is exist "
+	else
+        	echo " $DEV_RAKE file does not exist "
+        	cp /.dev.rake $DEV_RAKE
+        	chown discourse:discourse $DEV_RAKE
+	fi
+	su discourse -c 'bundle exec rake db:migrate'
+	su discourse -c 'bundle exec rake assets:precompile'
 fi
-su discourse -c 'bundle exec rake db:migrate'
-su discourse -c 'bundle exec rake assets:precompile'
 
 chmod +x /etc/runit/1.d/copy-env
 chmod +x /etc/service/unicorn/run
@@ -170,6 +181,13 @@ else
 	pkill -9 nginx
 fi
 # to test add export args then run  /etc/runit/1.d/letsencrypt then run /sbin/boot
+[[ -d /var/log/cron/ ]] || mkdir /var/log/cron
+
+cat << EOF > /.mycron
+0 */2 * * * /.backup.sh >> /var/log/cron/backup.log
+EOF
+
+crontab /.mycron
 
 echo checking postgres and redis are running and export
 ps aux
@@ -178,4 +196,4 @@ cd $home
 /etc/service/unicorn/run &
 nginx -t
 /etc/init.d/nginx start
-
+/etc/service/cron/run &
