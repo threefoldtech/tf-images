@@ -6,3 +6,8 @@ in the taiga directory
 
 ## Running
 
+
+## References
+
+https://github.com/discourse/discourse_docker/tree/master/image/base
+

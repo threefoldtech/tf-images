@@ -37,7 +37,7 @@ export upload_size=10m
 export RAILS_ENV=production
 export HOSTNAME=discurse-staging-mydiscourse
 export UNICORN_WORKERS=4
-export DISCOURSE_HOSTNAME=forum4.threefold.io
+export DISCOURSE_HOSTNAME=forum6.threefold.io
 export DISCOURSE_SMTP_USER_NAME=apikey
 export DISCOURSE_SMTP_ADDRESS=smtp.sendgrid.net
 export DISCOURSE_DEVELOPER_EMAILS=bishoy@incubaid.com
@@ -54,7 +54,6 @@ env
 sed -i "s/forum1.threefold.io/$DISCOURSE_HOSTNAME/g"  /etc/nginx/conf.d/discourse.conf
 
 #env > ~/boot_env
-
 cd $home
 git reset --hard
 git clean -f
@@ -73,6 +72,7 @@ bash -c "ln    -s           /shared/{uploads,backups} $home/public"
 bash -c "mkdir -p           /shared/tmp/{backups,restores}"
 bash -c "ln    -s           /shared/tmp/{backups,restores} $home/tmp"
 chown -R discourse:www-data /shared/log/rails /shared/uploads /shared/backups /shared/tmp
+
 rm /etc/nginx/sites-enabled/default
 mkdir -p /var/nginx/cache
 sed -i "s#pid /run/nginx.pid#daemon off#g" /etc/nginx/nginx.conf
@@ -111,7 +111,6 @@ chmod +x /etc/runit/1.d/00-ensure-links
 
 ## ssl enabling
 mkdir -p /shared/ssl/
-export  LETSENCRYPT_DIR="/shared/letsencrypt"
 
 if [ -z "$LETSENCRYPT_ACCOUNT_EMAIL" ]; then echo "LETSENCRYPT_ACCOUNT_EMAIL ENV variable is required and has not been set."; exit 1; fi
 /bin/bash -c "if [[ ! \"$LETSENCRYPT_ACCOUNT_EMAIL\" =~ ([^@]+)@([^\.]+) ]]; then echo \"LETSENCRYPT_ACCOUNT_EMAIL is not a valid email address\"; exit 1; fi"
@@ -155,10 +154,18 @@ http {
 EOF
 
 # need to add it im image /etc/runit/1.d/letsencrypt
+[[ -d /var/log/nginx ]] || mkdir /var/log/nginx
 
 chmod +x /etc/runit/1.d/letsencrypt
-
-/etc/runit/1.d/letsencrypt
-
-
+if [[ -f /shared/ssl/${DISCOURSE_HOSTNAME}_ecc.key ]]; then 
+	echo certificate already exist no need to generate it
+else
+	echo start nginx with this config so we can generate keys form letsencrypt
+	/usr/sbin/nginx -c /etc/nginx/letsencrypt.conf
+	echo fix script before use it 
+	sed -i "s|\$DISCOURSE_HOSTNAME_ecc|\${DISCOURSE_HOSTNAME}_ecc|g" /etc/runit/1.d/letsencrypt
+	/etc/runit/1.d/letsencrypt
+	echo stop nginx that started by letsencrypt configuration
+	pkill -9 nginx
+fi
 # to test add export args then run  /etc/runit/1.d/letsencrypt then run /sbin/boot

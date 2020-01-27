@@ -7,6 +7,7 @@ mkdir -p /run/sshd
 [ -d /root/.ssh/ ] || mkdir /root/.ssh
 /etc/init.d/ssh start
 chown -R postgres.postgres /var/lib/postgresql/
+[[ -d /var/log/postgresql ]] || mkdir /var/log/postgresql
 chown -R postgres.postgres /var/log/postgresql
 gpasswd -a postgres ssl-cert
 chown root:ssl-cert  /etc/ssl/private/ssl-cert-snakeoil.key
