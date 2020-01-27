@@ -21,11 +21,3 @@ cat /etc/resolv.conf
 sed -i '/^nameserver 10./d' /etc/resolv.conf
 locale-gen en_US.UTF-8
 /etc/init.d/postgresql start
-bash /.prepare_database.sh
-bash /.start_discourse.sh
-echo checking postgres and redis are running and export
-ps aux
-env
-/etc/service/unicorn/run &
-nginx -t
-/etc/init.d/nginx start

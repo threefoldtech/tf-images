@@ -2,7 +2,8 @@
 set -ex
 
 # to start unicorn make sure you started postgres and redis and export  all envs
-
+bash /.start_postgres.sh
+bash /.prepare_database.sh
 
 nohup redis-server &
 
@@ -169,3 +170,12 @@ else
 	pkill -9 nginx
 fi
 # to test add export args then run  /etc/runit/1.d/letsencrypt then run /sbin/boot
+
+echo checking postgres and redis are running and export
+ps aux
+env
+cd $home
+/etc/service/unicorn/run &
+nginx -t
+/etc/init.d/nginx start
+
