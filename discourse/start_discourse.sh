@@ -101,7 +101,9 @@ db_host = ''
 db_port = ''
 smtp_enable_start_tls = 'true'
 force_https = 'true'
-EOF 
+
+EOF
+
 #chown -R discourse:www-data /shared/log/rails /shared/uploads /shared/backups /shared/tmp
 rm /etc/nginx/sites-enabled/default
 mkdir -p /var/nginx/cache
@@ -212,7 +214,7 @@ RESTIC_PASSWORD=$RESTIC_PASSWORD
 unset HISTFILE
 if ! restic snapshots ;then echo restic repo does not initalized yet; restic init ; fi > /dev/null
 cd $app_directory
-for i in `find $app_directory -type f -mtime -1` ; do restic backup --cleanup-cache $i ; done
+for i in $(find $app_directory -type f -mtime -1) ; do restic backup --cleanup-cache $i ; done
 #Delete files older than 7 days
 find $app_directory/ -mtime +7 -exec rm {} \;
 
