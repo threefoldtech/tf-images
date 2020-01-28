@@ -45,14 +45,20 @@ echo $DISCOURSE_SMTP_PORT
 echo $DISCOURSE_SMTP_PASSWORD
 export LETSENCRYPT_DIR=/shared/letsencrypt
 echo $LETSENCRYPT_ACCOUNT_EMAIL
-
+export DISCOURSE_DB_HOST=
+export DISCOURSE_DB_PORT=
+export DISCOURSE_SMTP_ENABLE_START_TLS=true
+export HOME=/root
 echo '######################## all env ################### '
 env
 
 # verify contents of file /etc/nginx/conf.d/discourse.conf is exist and sed domain name by
 sed -i "s/forum1.threefold.io/$DISCOURSE_HOSTNAME/g"  /etc/nginx/conf.d/discourse.conf
 
-#env > ~/boot_env
+env > /root/boot_env
+
+echo "################# what is inside env ###################"
+cat ~/boot_env
 #git reset --hard
 #git clean -f
 #git remote set-branches --add origin master
@@ -82,6 +88,20 @@ else
         git pull
 fi
 
+cat << EOF > /var/www/discourse/config/discourse.conf
+
+hostname = '$HOSTNAME'
+smtp_user_name = '$DISCOURSE_HOSTNAME'
+smtp_address = '$DISCOURSE_SMTP_ADDRESS'
+db_socket = '$DISCOURSE_DB_SOCKET'
+developer_emails = '$DISCOURSE_DEVELOPER_EMAILS'
+smtp_port = '$DISCOURSE_SMTP_PORT'
+smtp_password = '$DISCOURSE_SMTP_PASSWORD'
+db_host = ''
+db_port = ''
+smtp_enable_start_tls = 'true'
+force_https = 'true'
+EOF 
 #chown -R discourse:www-data /shared/log/rails /shared/uploads /shared/backups /shared/tmp
 rm /etc/nginx/sites-enabled/default
 mkdir -p /var/nginx/cache
@@ -119,7 +139,6 @@ chmod +x /usr/local/bin/rbtrace
 chmod +x /usr/local/bin/stackprof
 chmod +x /etc/update-motd.d/10-web
 chmod +x /etc/runit/1.d/00-ensure-links
-
 ## ssl enabling
 mkdir -p /shared/ssl/
 
@@ -191,8 +210,12 @@ crontab /.mycron
 echo checking postgres and redis are running and export
 ps aux
 env
+mkdir -p /shared/log/rails
+chmod +x /etc/service/3bot_tmux/run
+chmod +x /etc/service/nginx/run
+/etc/service/3bot_tmux/run
+/etc/service/cron/run &
+nginx -t
+/etc/service/nginx/run
 cd $home
 /etc/service/unicorn/run &
-nginx -t
-/etc/init.d/nginx start
-/etc/service/cron/run &
