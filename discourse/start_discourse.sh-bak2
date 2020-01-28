@@ -59,30 +59,22 @@ sed -i "s/forum1.threefold.io/$DISCOURSE_HOSTNAME/g"  /etc/nginx/conf.d/discours
 #git pull
 #git fetch origin $version
 #git checkout $version
-[[ -d $home ]] || mkdir $home
-if [ "$(find $home -maxdepth 0 -empty)" ]; then
-	fresh_install="yes"
-	echo $home is empty, then clone repo
-	git clone https://github.com/threefoldtech/threefold-forums -b $version $home
-	cd $home
-	mkdir -p tmp/pids
-	mkdir -p tmp/sockets
-	touch tmp/.gitkeep
-#	mkdir -p                    /shared/log/rails
-#	bash -c "touch -a           /shared/log/rails/{production,production_errors,unicorn.stdout,unicorn.stderr,sidekiq}.log"
-#	bash -c "ln    -s           /shared/log/rails/{production,production_errors,unicorn.stdout,unicorn.stderr,sidekiq}.log $home/log"
-#	bash -c "mkdir -p           /shared/{uploads,backups}"
-#	bash -c "ln    -s           /shared/{uploads,backups} $home/public"
-#	bash -c "mkdir -p           /shared/tmp/{backups,restores}"
-#	bash -c "ln    -s           /shared/tmp/{backups,restores} $home/tmp"
-else
-        echo $home not empty so only update it
-        cd $home
-        git status
-        git pull
+if [ -d /shared ] ; then
+	echo /shared dir exist so may it is has data, checking it
+	if [ "$(find /shared -maxdepth 0 -empty)" ]; then
+		echo upload dir is empty so it is a fresh instalation
+		fresh_install="yes"
+	else
+		echo this seems old instalaltion as has a directories under /shared
+	fi
 fi
+[[ -d $home ]] || mkdir $home
+git clone https://github.com/threefoldtech/threefold-forums -b $version $home
+cd $home
+mkdir -p tmp/pids
+mkdir -p tmp/sockets
+touch tmp/.gitkeep
 
-#chown -R discourse:www-data /shared/log/rails /shared/uploads /shared/backups /shared/tmp
 rm /etc/nginx/sites-enabled/default
 mkdir -p /var/nginx/cache
 sed -i "s#pid /run/nginx.pid#daemon off#g" /etc/nginx/nginx.conf
@@ -94,6 +86,14 @@ find $home ! -user discourse -exec chown discourse {} \+
 cd $home
 
 if [[ "$fresh_install" == "yes" ]];then
+	mkdir -p                    /shared/log/rails
+        bash -c "touch -a           /shared/log/rails/{production,production_errors,unicorn.stdout,unicorn.stderr,sidekiq}.log"
+        bash -c "ln    -s           /shared/log/rails/{production,production_errors,unicorn.stdout,unicorn.stderr,sidekiq}.log $home/log"
+        bash -c "mkdir -p           /shared/{uploads,backups}"
+        bash -c "ln    -s           /shared/{uploads,backups} $home/public"
+        bash -c "mkdir -p           /shared/tmp/{backups,restores}"
+        bash -c "ln    -s           /shared/tmp/{backups,restores} $home/tmp"
+	chown -R discourse:www-data /shared/log/rails /shared/uploads /shared/backups /shared/tmp
 	su discourse -c 'bundle install --deployment --retry 3 --jobs 4 --verbose --without test development'
 	DEV_RAKE='/var/www/discourse/vendor/bundle/ruby/2.6.0/gems/railties-6.0.1/lib/rails/tasks/dev.rake'
 	if [[ -f $DEV_RAKE ]] ;then
@@ -105,6 +105,11 @@ if [[ "$fresh_install" == "yes" ]];then
 	fi
 	su discourse -c 'bundle exec rake db:migrate'
 	su discourse -c 'bundle exec rake assets:precompile'
+else
+	bash -c "ln    -s           /shared/log/rails/{production,production_errors,unicorn.stdout,unicorn.stderr,sidekiq}.log $home/log"
+	bash -c "ln    -s           /shared/{uploads,backups} $home/public"
+	bash -c "ln    -s           /shared/tmp/{backups,restores} $home/tmp"
+	chown -R discourse:www-data /shared/log/rails /shared/uploads /shared/backups /shared/tmp
 fi
 
 chmod +x /etc/runit/1.d/copy-env
