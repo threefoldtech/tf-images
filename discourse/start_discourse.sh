@@ -201,9 +201,29 @@ fi
 # to test add export args then run  /etc/runit/1.d/letsencrypt then run /sbin/boot
 [[ -d /var/log/cron/ ]] || mkdir /var/log/cron
 
+cat << EOF > /.backup.sh
+set -x
+app_directory="$home/public/backups/default"
+
+AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
+AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
+RESTIC_REPOSITORY=$RESTIC_REPOSITORY
+RESTIC_PASSWORD=$RESTIC_PASSWORD
+unset HISTFILE
+if ! restic snapshots ;then echo restic repo does not initalized yet; restic init ; fi > /dev/null
+cd $app_directory
+for i in `find $app_directory -type f -mtime -1` ; do restic backup --cleanup-cache $i ; done
+#Delete files older than 7 days
+find $app_directory/ -mtime +7 -exec rm {} \;
+
+EOF
+
+chmod +x /.backup.sh
+
 cat << EOF > /.mycron
 0 */2 * * * /.backup.sh >> /var/log/cron/backup.log
 EOF
+
 
 crontab /.mycron
 
@@ -216,6 +236,6 @@ chmod +x /etc/service/nginx/run
 /etc/service/3bot_tmux/run
 /etc/service/cron/run &
 nginx -t
-/etc/service/nginx/run
+/etc/service/nginx/run & 
 cd $home
 /etc/service/unicorn/run &
