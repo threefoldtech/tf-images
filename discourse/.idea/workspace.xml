@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0d2c2d9f-f5ad-417c-958d-9994ac498a44" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/start_discourse.sh" beforeDir="false" afterPath="$PROJECT_DIR$/start_discourse.sh" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -31,23 +31,23 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/README.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
-              <first_editor relative-caret-position="90">
-                <caret line="6" column="39" lean-forward="true" selection-start-line="6" selection-start-column="4" selection-end-line="6" selection-end-column="39" />
+              <first_editor relative-caret-position="450">
+                <caret line="30" selection-start-line="30" selection-end-line="30" />
               </first_editor>
               <second_editor />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/start_discourse.sh">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="252">
-              <caret line="96" column="47" selection-start-line="96" selection-start-column="20" selection-end-line="96" selection-end-column="47" />
+            <state relative-caret-position="702">
+              <caret line="235" column="21" selection-start-line="235" selection-end-line="235" selection-end-column="21" />
             </state>
           </provider>
         </entry>
@@ -57,6 +57,7 @@
   <component name="FindInProjectRecents">
     <findStrings>
       <find>/etc/nginx/conf.d/discourse.conf</find>
+      <find>/etc/service/cron/run</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -70,8 +71,8 @@
         <option value="$PROJECT_DIR$/startup.sh" />
         <option value="$PROJECT_DIR$/prepare_database.sh" />
         <option value="$PROJECT_DIR$/Dockerfile" />
-        <option value="$PROJECT_DIR$/README.md" />
         <option value="$PROJECT_DIR$/start_discourse.sh" />
+        <option value="$PROJECT_DIR$/README.md" />
       </list>
     </option>
   </component>
@@ -197,20 +198,20 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/README.md">
-      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="SPLIT">
-          <first_editor relative-caret-position="90">
-            <caret line="6" column="39" lean-forward="true" selection-start-line="6" selection-start-column="4" selection-end-line="6" selection-end-column="39" />
-          </first_editor>
-          <second_editor />
+    <entry file="file://$PROJECT_DIR$/start_discourse.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="702">
+          <caret line="235" column="21" selection-start-line="235" selection-end-line="235" selection-end-column="21" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/start_discourse.sh">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="252">
-          <caret line="96" column="47" selection-start-line="96" selection-start-column="20" selection-end-line="96" selection-end-column="47" />
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="450">
+            <caret line="30" selection-start-line="30" selection-end-line="30" />
+          </first_editor>
+          <second_editor />
         </state>
       </provider>
     </entry>

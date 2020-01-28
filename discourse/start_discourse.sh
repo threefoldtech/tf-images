@@ -38,7 +38,7 @@ echo $RAILS_ENV
 echo $HOSTNAME
 export UNICORN_WORKERS=4
 echo $DISCOURSE_HOSTNAME
-export DISCOURSE_SMTP_USER_NAME=apikey
+export DISCOURSE_SMTP_USER_NAME=$DISCOURSE_SMTP_USER_NAME
 echo $DISCOURSE_SMTP_ADDRESS
 echo $DISCOURSE_DEVELOPER_EMAILS
 echo $DISCOURSE_SMTP_PORT
@@ -91,7 +91,7 @@ fi
 cat << EOF > /var/www/discourse/config/discourse.conf
 
 hostname = '$HOSTNAME'
-smtp_user_name = '$DISCOURSE_HOSTNAME'
+smtp_user_name = '$DISCOURSE_SMTP_USER_NAME'
 smtp_address = '$DISCOURSE_SMTP_ADDRESS'
 db_socket = '$DISCOURSE_DB_SOCKET'
 developer_emails = '$DISCOURSE_DEVELOPER_EMAILS'
@@ -141,6 +141,11 @@ chmod +x /usr/local/bin/rbtrace
 chmod +x /usr/local/bin/stackprof
 chmod +x /etc/update-motd.d/10-web
 chmod +x /etc/runit/1.d/00-ensure-links
+chmod +x /etc/service/3bot_tmux/run
+chmod +x /etc/service/cron/run
+chmod +x /etc/service/nginx/run
+chmod +x /etc/service/unicorn/run
+
 ## ssl enabling
 mkdir -p /shared/ssl/
 
@@ -211,14 +216,10 @@ AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
 AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
 RESTIC_REPOSITORY=$RESTIC_REPOSITORY
 RESTIC_PASSWORD=$RESTIC_PASSWORD
-unset HISTFILE
-if ! restic snapshots ;then echo restic repo does not initalized yet; restic init ; fi > /dev/null
-cd $app_directory
-for i in $(find $app_directory -type f -mtime -1) ; do restic backup --cleanup-cache $i ; done
-#Delete files older than 7 days
-find $app_directory/ -mtime +7 -exec rm {} \;
 
 EOF
+
+cat /.restic_backup.sh >>  /.backup.sh
 
 chmod +x /.backup.sh
 
@@ -230,11 +231,12 @@ EOF
 crontab /.mycron
 
 echo checking postgres and redis are running and export
-ps aux
-env
 mkdir -p /shared/log/rails
-chmod +x /etc/service/3bot_tmux/run
-chmod +x /etc/service/nginx/run
+[[ -d /var/log/exim4 ]] || mkdir -p /var/log/exim4
+[[ -f /var/log/exim4/mainlog ]] || touch /var/log/exim4/mainlog
+chmod -R u+rw /var/log/exim4
+chown -R Debian-exim /var/log/exim4 /var/spool/exim4/input
+
 /etc/service/3bot_tmux/run
 /etc/service/cron/run &
 nginx -t
