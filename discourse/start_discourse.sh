@@ -221,9 +221,10 @@ crontab /.mycron
 echo checking postgres and redis are running and export
 mkdir -p /shared/log/rails
 [[ -d /var/log/exim4 ]] || mkdir -p /var/log/exim4
+[[ -d /var/spool/exim4/input ]] || mkdir -p /var/spool/exim4/input
 [[ -f /var/log/exim4/mainlog ]] || touch /var/log/exim4/mainlog
-chmod -R u+rw /var/log/exim4
-chown -R Debian-exim /var/log/exim4 /var/spool/exim4/input
+chmod -R u+rw /var/log/exim4 /var/spool/exim4/input
+chown -R Debian-exim:mail /var/log/exim4 /var/spool/exim4/input
 
 /etc/service/3bot_tmux/run
 /etc/service/cron/run &

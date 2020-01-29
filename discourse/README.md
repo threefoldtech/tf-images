@@ -7,10 +7,10 @@ in the discourse directory
     docker push bishoyabdo/forum:latest
 ```
 - then convert it form our hub to an flist https://hub.grid.tf
-
-## Running
-
-
+- note we use a prepared image in Dockerfile called bishoyabdo/tf-discourse
+- tf-discourse image has some prepared configuration and scripts, this image created by below reference 
+- tf-discourse image prepared configuration and scripts are taken from following templates 
+   https://github.com/discourse/discourse_docker/tree/master/templates
 ## References
 
 https://github.com/discourse/discourse_docker/tree/master/image/base
