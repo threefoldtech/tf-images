@@ -29,35 +29,23 @@ export LANGUAGE=en_US.UTF-8
 export LANG=en_US.UTF-8
 export DISCOURSE_DB_SOCKET=/var/run/postgresql
 
-version=$DISCOURSE_VERSION
+export version=$DISCOURSE_VERSION
 export home=/var/www/discourse
 export upload_size=10m
 
-
-echo $RAILS_ENV
-echo $HOSTNAME
 export UNICORN_WORKERS=4
-echo $DISCOURSE_HOSTNAME
-export DISCOURSE_SMTP_USER_NAME=$DISCOURSE_SMTP_USER_NAME
-echo $DISCOURSE_SMTP_ADDRESS
-echo $DISCOURSE_DEVELOPER_EMAILS
-echo $DISCOURSE_SMTP_PORT
-echo $DISCOURSE_SMTP_PASSWORD
 export LETSENCRYPT_DIR=/shared/letsencrypt
-echo $LETSENCRYPT_ACCOUNT_EMAIL
 export DISCOURSE_DB_HOST=
 export DISCOURSE_DB_PORT=
 export DISCOURSE_SMTP_ENABLE_START_TLS=true
 export HOME=/root
-echo '######################## all env ################### '
-env
 
 # verify contents of file /etc/nginx/conf.d/discourse.conf is exist and sed domain name by
 sed -i "s/forum1.threefold.io/$DISCOURSE_HOSTNAME/g"  /etc/nginx/conf.d/discourse.conf
 
 env > /root/boot_env
 
-echo "################# what is inside env ###################"
+echo "################# all env should be exist from outside and from above ###################"
 cat ~/boot_env
 #git reset --hard
 #git clean -f
@@ -212,10 +200,10 @@ cat << EOF > /.backup.sh
 set -x
 app_directory="$home/public/backups/default"
 
-AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
-AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
-RESTIC_REPOSITORY=$RESTIC_REPOSITORY
-RESTIC_PASSWORD=$RESTIC_PASSWORD
+export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
+export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
+export RESTIC_REPOSITORY=$RESTIC_REPOSITORY
+export RESTIC_PASSWORD=$RESTIC_PASSWORD
 
 EOF
 
@@ -224,7 +212,7 @@ cat /.restic_backup.sh >>  /.backup.sh
 chmod +x /.backup.sh
 
 cat << EOF > /.mycron
-0 */2 * * * /.backup.sh >> /var/log/cron/backup.log
+*/2 * * * * /.backup.sh >> /var/log/cron/backup.log
 EOF
 
 

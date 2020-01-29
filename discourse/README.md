@@ -28,3 +28,7 @@ f https://hub.grid.tf/mikhaieb/bishoyabdo-forum-latest.flist  -p '2222:22' -p'44
 ```
 
 - make sure the HOSTNAME is same as DISCOURSE_HOSTNAME 
+- make sure pass the mounted directories correctly 
+- There is a backup script located /.backup.sh will backup to our s3 each 2 hours 
+- logs are located in /var/log 
+
