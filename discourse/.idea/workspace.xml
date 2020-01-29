@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0d2c2d9f-f5ad-417c-958d-9994ac498a44" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/start_discourse.sh" beforeDir="false" afterPath="$PROJECT_DIR$/start_discourse.sh" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -20,14 +22,14 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="md" value="492" />
-          <entry key="sh" value="154" />
+          <entry key="md" value="529" />
+          <entry key="sh" value="338" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="Bash" value="154" />
-          <entry key="Markdown" value="492" />
+          <entry key="Bash" value="338" />
+          <entry key="Markdown" value="529" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -73,8 +75,8 @@
         <entry file="file://$PROJECT_DIR$/README.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
-              <first_editor relative-caret-position="180">
-                <caret line="12" column="3" selection-start-line="12" selection-start-column="3" selection-end-line="12" selection-end-column="3" />
+              <first_editor relative-caret-position="480">
+                <caret line="32" column="74" selection-start-line="32" selection-start-column="74" selection-end-line="32" selection-end-column="74" />
               </first_editor>
               <second_editor />
             </state>
@@ -84,8 +86,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/start_discourse.sh">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="376">
-              <caret line="225" column="15" lean-forward="true" selection-start-line="225" selection-end-line="226" />
+            <state relative-caret-position="347">
+              <caret line="226" column="32" selection-start-line="226" selection-start-column="9" selection-end-line="226" selection-end-column="32" />
             </state>
           </provider>
         </entry>
@@ -106,6 +108,7 @@
     <findStrings>
       <find>/etc/nginx/conf.d/discourse.conf</find>
       <find>/etc/service/cron/run</find>
+      <find>/shared/log/rails</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -119,8 +122,8 @@
         <option value="$PROJECT_DIR$/startup.sh" />
         <option value="$PROJECT_DIR$/prepare_database.sh" />
         <option value="$PROJECT_DIR$/Dockerfile" />
-        <option value="$PROJECT_DIR$/start_discourse.sh" />
         <option value="$PROJECT_DIR$/README.md" />
+        <option value="$PROJECT_DIR$/start_discourse.sh" />
       </list>
     </option>
   </component>
@@ -255,8 +258,8 @@
     <entry file="file://$PROJECT_DIR$/README.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
-          <first_editor relative-caret-position="180">
-            <caret line="12" column="3" selection-start-line="12" selection-start-column="3" selection-end-line="12" selection-end-column="3" />
+          <first_editor relative-caret-position="480">
+            <caret line="32" column="74" selection-start-line="32" selection-start-column="74" selection-end-line="32" selection-end-column="74" />
           </first_editor>
           <second_editor />
         </state>
@@ -264,8 +267,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/start_discourse.sh">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="376">
-          <caret line="225" column="15" lean-forward="true" selection-start-line="225" selection-end-line="226" />
+        <state relative-caret-position="347">
+          <caret line="226" column="32" selection-start-line="226" selection-start-column="9" selection-end-line="226" selection-end-column="32" />
         </state>
       </provider>
     </entry>

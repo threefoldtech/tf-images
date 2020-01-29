@@ -4,8 +4,25 @@ set -ex
 # to start unicorn make sure you started postgres and redis and export  all envs
 bash /.start_postgres.sh
 bash /.prepare_database.sh
+# prepare redis server
+[[ -d /etc/service/redis/log/ ]] || mkdir /etc/service/redis/log/ -p
+cat << EOF > /etc/service/redis/log/run
+#!/bin/sh
+mkdir -p /var/log/redis
+exec svlogd /var/log/redis
+EOF
 
-nohup redis-server &
+chmod +x /etc/service/redis/log/run
+
+sed -i 's/^pidfile.*$//g' /etc/redis/redis.conf
+install -d -m 0755 -o redis -g redis /shared/redis_data
+sed -i 's/^bind .*$//g' /etc/redis/redis.conf
+sed -i 's|^dir .*$|dir /shared/redis_data|g' /etc/redis/redis.conf
+sed -i 's/^protected-mode yes/protected-mode no/g' /etc/redis/redis.conf
+
+exec chpst -u redis -U redis /usr/bin/redis-server /etc/redis/redis.conf &
+
+#nohup redis-server &
 
 chown -R discourse /home/discourse
 cat << EOF > /etc/cron.d/anacron
@@ -212,7 +229,7 @@ cat /.restic_backup.sh >>  /.backup.sh
 chmod +x /.backup.sh
 
 cat << EOF > /.mycron
-*/2 * * * * /.backup.sh >> /var/log/cron/backup.log
+0 */2 * * * /.backup.sh >> /var/log/cron/backup.log
 EOF
 
 
@@ -221,10 +238,11 @@ crontab /.mycron
 echo checking postgres and redis are running and export
 mkdir -p /shared/log/rails
 [[ -d /var/log/exim4 ]] || mkdir -p /var/log/exim4
-[[ -d /var/spool/exim4/input ]] || mkdir -p /var/spool/exim4/input
 [[ -f /var/log/exim4/mainlog ]] || touch /var/log/exim4/mainlog
-chmod -R u+rw /var/log/exim4 /var/spool/exim4/input
-chown -R Debian-exim:mail /var/log/exim4 /var/spool/exim4/input
+chmod -R u+rwx /var/log/exim4 /var/spool/exim4/
+chown -R Debian-exim:mail /var/log/exim4
+chown -R Debian-exim:Debian-exim /var/spool/exim4/
+chown root:Debian-exim  /etc/exim4/passwd.client
 
 /etc/service/3bot_tmux/run
 /etc/service/cron/run &
