@@ -26,7 +26,7 @@ f https://hub.grid.tf/mikhaieb/bishoyabdo-forum-latest.flist  -p '2222:22' -p'44
 -envs LETSENCRYPT_ACCOUNT_EMAIL=bishoy@incubaid.com -envs AWS_ACCESS_KEY_ID=urawskey -envs AWS_SECRET_ACCESS_KEY=urawssecret \ 
 -envs RESTIC_REPOSITORY="s3:https://s3.grid.tf/forums-test"  -envs RESTIC_PASSWORD="urresticpassword"
 ```
-
+- before create container, you put your DISCOURSE_HOSTNAME in dns as a A record so can generate certifcate easily
 - make sure the HOSTNAME is same as DISCOURSE_HOSTNAME 
 - make sure pass the mounted directories correctly 
 - logs are located in /var/log and app logs are in /var/www/discourse/log/
