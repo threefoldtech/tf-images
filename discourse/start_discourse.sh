@@ -1,5 +1,19 @@
 #!/usr/bin/env bash
 set -ex
+echo "checking env variables was set correctly "
+
+if [[ -z "$DISCOURSE_VERSION" ]] || [[ -z "$RAILS_ENV" ]] || [[ -z "$HOSTNAME" ]] || [[ -z "$DISCOURSE_HOSTNAME" ]] || [[ -z "$DISCOURSE_SMTP_USER_NAME" ]] || [[ -z "$DISCOURSE_SMTP_ADDRESS" ]] || [[ -z "$DISCOURSE_DEVELOPER_EMAILS" ]] || [[ -z "$DISCOURSE_SMTP_PORT" ]] || [[ -z "$LETSENCRYPT_ACCOUNT_EMAIL" ]] ; then
+    echo " one of below variables are not set yet, Please set it in creating your container"
+    echo "DISCOURSE_VERSION RAILS_ENV HOSTNAME DISCOURSE_HOSTNAME DISCOURSE_SMTP_USER_NAME DISCOURSE_SMTP_ADDRESS DISCOURSE_DEVELOPER_EMAILS DISCOURSE_SMTP_PORT LETSENCRYPT_ACCOUNT_EMAIL"
+    exit 1
+fi
+
+if [[ ! "$HOSTNAME" == "$DISCOURSE_HOSTNAME" ]] ; then
+	echo two varaibles HOSTNAME DISCOURSE_HOSTNAME are not the same 
+	echo please set them equal
+	exit 1
+fi
+
 
 # to start unicorn make sure you started postgres and redis and export  all envs
 bash /.start_postgres.sh
@@ -248,5 +262,8 @@ chown root:Debian-exim  /etc/exim4/passwd.client
 /etc/service/cron/run &
 nginx -t
 /etc/service/nginx/run & 
+
+# TBD checking redis and postgres, should be running before start rails 
+
 cd $home
 /etc/service/unicorn/run &
