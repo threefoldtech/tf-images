@@ -243,7 +243,7 @@ cat /.restic_backup.sh >>  /.backup.sh
 chmod +x /.backup.sh
 
 cat << EOF > /.mycron
-0 */2 * * * /.backup.sh >> /var/log/cron/backup.log
+00 05 * * * /.backup.sh >> /var/log/cron/backup.log
 EOF
 
 

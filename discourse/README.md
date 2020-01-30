@@ -33,4 +33,4 @@ f https://hub.grid.tf/mikhaieb/bishoyabdo-forum-latest.flist  -p '2222:22' -p'44
 - after setup the discourse using admin account, ask another account to login with 3bot and grant him as an admin
 - DATA is presistent for database the local data in /var/lib/postgresql , redis in /shared/redis_data ,application /var/www/discourse/public which has upload and backup
 - from admin discourse, you can set a periodic backup to be taken in path /var/www/discourse/public/backups/default
-- There is a backup script located /.backup.sh will backup to our s3 each 2 hours from above location of discourse backup
+- There is a backup script located /.backup.sh will backup to our s3  one backup every day at 5:00 AM from above location of discourse backup
