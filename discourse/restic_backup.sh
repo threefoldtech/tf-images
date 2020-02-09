@@ -1,3 +1,4 @@
+echo starting backup at `date`
 unset HISTFILE
 if ! restic snapshots ;then echo restic repo does not initalized yet; restic init ; fi > /dev/null
 cd $app_directory

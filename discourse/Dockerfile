@@ -9,6 +9,7 @@ RUN git clone https://github.com/restic/restic \
     && cp -p restic /usr/bin/restic \
     && rm -rf restic 
 RUN pip install uwsgi flask pynacl uwsgi requests flask_sessionstore
+COPY discourse.conf /etc/nginx/conf.d/discourse.conf
 COPY start_postgres /.start_postgres.sh
 COPY prepare_database.sh /.prepare_database.sh
 COPY start_discourse.sh /.start_discourse.sh

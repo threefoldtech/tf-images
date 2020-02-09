@@ -2,17 +2,14 @@
 set -ex
 echo "checking env variables was set correctly "
 
-if [[ -z "$DISCOURSE_VERSION" ]] || [[ -z "$RAILS_ENV" ]] || [[ -z "$HOSTNAME" ]] || [[ -z "$DISCOURSE_HOSTNAME" ]] || [[ -z "$DISCOURSE_SMTP_USER_NAME" ]] || [[ -z "$DISCOURSE_SMTP_ADDRESS" ]] || [[ -z "$DISCOURSE_DEVELOPER_EMAILS" ]] || [[ -z "$DISCOURSE_SMTP_PORT" ]] || [[ -z "$LETSENCRYPT_ACCOUNT_EMAIL" ]] ; then
-    echo " one of below variables are not set yet, Please set it in creating your container"
-    echo "DISCOURSE_VERSION RAILS_ENV HOSTNAME DISCOURSE_HOSTNAME DISCOURSE_SMTP_USER_NAME DISCOURSE_SMTP_ADDRESS DISCOURSE_DEVELOPER_EMAILS DISCOURSE_SMTP_PORT LETSENCRYPT_ACCOUNT_EMAIL"
-    exit 1
-fi
-
-if [[ ! "$HOSTNAME" == "$DISCOURSE_HOSTNAME" ]] ; then
-	echo two varaibles HOSTNAME DISCOURSE_HOSTNAME are not the same 
-	echo please set them equal
-	exit 1
-fi
+for var in DISCOURSE_VERSION RAILS_ENV DISCOURSE_HOSTNAME DISCOURSE_SMTP_USER_NAME DISCOURSE_SMTP_ADDRESS DISCOURSE_DEVELOPER_EMAILS DISCOURSE_SMTP_PORT
+    do
+        if [ -z "${!var}" ]
+        then
+                 echo "$var not set, Please set it in creating your container"
+                 exit 1
+        fi
+    done
 
 
 # to start unicorn make sure you started postgres and redis and export  all envs
@@ -65,14 +62,12 @@ export home=/var/www/discourse
 export upload_size=10m
 
 export UNICORN_WORKERS=4
-export LETSENCRYPT_DIR=/shared/letsencrypt
 export DISCOURSE_DB_HOST=
 export DISCOURSE_DB_PORT=
 export DISCOURSE_SMTP_ENABLE_START_TLS=true
 export HOME=/root
 
-# verify contents of file /etc/nginx/conf.d/discourse.conf is exist and sed domain name by
-sed -i "s/forum1.threefold.io/$DISCOURSE_HOSTNAME/g"  /etc/nginx/conf.d/discourse.conf
+mkdir -p /var/nginx/cache
 
 env > /root/boot_env
 
@@ -104,12 +99,13 @@ else
         echo $home not empty so only update it
         cd $home
         git status
+	git stash
         git pull
 fi
 
 cat << EOF > /var/www/discourse/config/discourse.conf
 
-hostname = '$HOSTNAME'
+hostname = '$DISCOURSE_HOSTNAME'
 smtp_user_name = '$DISCOURSE_SMTP_USER_NAME'
 smtp_address = '$DISCOURSE_SMTP_ADDRESS'
 db_socket = '$DISCOURSE_DB_SOCKET'
@@ -130,7 +126,7 @@ sed -i "s#pid /run/nginx.pid#daemon off#g" /etc/nginx/nginx.conf
 
 #  ensure we are on latest bundler
 cd $home
-gem update bundler
+#gem update bundler
 find $home ! -user discourse -exec chown discourse {} \+
 cd $home
 
@@ -165,66 +161,9 @@ chmod +x /etc/service/cron/run
 chmod +x /etc/service/nginx/run
 chmod +x /etc/service/unicorn/run
 
-## ssl enabling
-mkdir -p /shared/ssl/
 
-if [ -z "$LETSENCRYPT_ACCOUNT_EMAIL" ]; then echo "LETSENCRYPT_ACCOUNT_EMAIL ENV variable is required and has not been set."; exit 1; fi
-/bin/bash -c "if [[ ! \"$LETSENCRYPT_ACCOUNT_EMAIL\" =~ ([^@]+)@([^\.]+) ]]; then echo \"LETSENCRYPT_ACCOUNT_EMAIL is not a valid email address\"; exit 1; fi"
-cd /root && git clone --branch 2.8.2 --depth 1 https://github.com/Neilpang/acme.sh.git && cd /root/acme.sh
-touch /var/spool/cron/crontabs/root
-install -d -m 0755 -g root -o root $LETSENCRYPT_DIR
-cd /root/acme.sh && LE_WORKING_DIR="${LETSENCRYPT_DIR}" ./acme.sh --install --log "${LETSENCRYPT_DIR}/acme.sh.log"
-cd /root/acme.sh && LE_WORKING_DIR="${LETSENCRYPT_DIR}" ./acme.sh --upgrade --auto-upgrade
-
-cat << EOF > /etc/nginx/letsencrypt.conf
-user www-data;
-worker_processes auto;
-daemon on;
-
-events {
-  worker_connections 768;
-  # multi_accept on;
-}
-
-http {
-  sendfile on;
-  tcp_nopush on;
-  tcp_nodelay on;
-  keepalive_timeout 65;
-  types_hash_max_size 2048;
-
-  access_log /var/log/nginx/access.letsencrypt.log;
-  error_log /var/log/nginx/error.letsencrypt.log;
-
-  server {
-    listen 80;
-    listen [::]:80;
-
-    location ~ /.well-known {
-      root /var/www/discourse/public;
-      allow all;
-    }
-  }
-}
-
-EOF
-
-# need to add it im image /etc/runit/1.d/letsencrypt
 [[ -d /var/log/nginx ]] || mkdir /var/log/nginx
 
-chmod +x /etc/runit/1.d/letsencrypt
-if [[ -f /shared/ssl/${DISCOURSE_HOSTNAME}_ecc.key ]]; then 
-	echo certificate already exist no need to generate it
-else
-	echo start nginx with this config so we can generate keys form letsencrypt
-	/usr/sbin/nginx -c /etc/nginx/letsencrypt.conf
-	echo fix script before use it 
-	sed -i "s|\$DISCOURSE_HOSTNAME_ecc|\${DISCOURSE_HOSTNAME}_ecc|g" /etc/runit/1.d/letsencrypt
-	/etc/runit/1.d/letsencrypt
-	echo stop nginx that started by letsencrypt configuration
-	pkill -9 nginx
-fi
-# to test add export args then run  /etc/runit/1.d/letsencrypt then run /sbin/boot
 [[ -d /var/log/cron/ ]] || mkdir /var/log/cron
 
 cat << EOF > /.backup.sh
@@ -266,4 +205,11 @@ nginx -t
 # TBD checking redis and postgres, should be running before start rails 
 
 cd $home
+echo wait 2 seconds to make sure redis and postgres are started 
+sleep 2
+# remove pid file unicron before start 
+
+[[ -f $home/tmp/pids/unicorn.pid ]] && rm $home/tmp/pids/unicorn.pid
+
 /etc/service/unicorn/run &
+exec "$@"
