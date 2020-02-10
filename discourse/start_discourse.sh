@@ -2,7 +2,7 @@
 set -ex
 echo "checking env variables was set correctly "
 
-for var in DISCOURSE_VERSION RAILS_ENV DISCOURSE_HOSTNAME DISCOURSE_SMTP_USER_NAME DISCOURSE_SMTP_ADDRESS DISCOURSE_DEVELOPER_EMAILS DISCOURSE_SMTP_PORT
+for var in DISCOURSE_VERSION RAILS_ENV DISCOURSE_HOSTNAME DISCOURSE_SMTP_USER_NAME DISCOURSE_SMTP_PASSWORD DISCOURSE_SMTP_ADDRESS DISCOURSE_DEVELOPER_EMAILS DISCOURSE_SMTP_PORT
     do
         if [ -z "${!var}" ]
         then
@@ -65,28 +65,16 @@ env > /root/boot_env
 
 echo "################# all env should be exist from outside and from above ###################"
 cat ~/boot_env
-#git reset --hard
-#git clean -f
-#git remote set-branches --add origin master
-#git pull
-#git fetch origin $version
-#git checkout $version
 [[ -d $home ]] || mkdir $home
 if [ "$(find $home -maxdepth 0 -empty)" ]; then
-	fresh_install="yes"
+	export fresh_install="yes"
 	echo $home is empty, then clone repo
 	git clone https://github.com/threefoldtech/threefold-forums -b $version $home
 	cd $home
 	mkdir -p tmp/pids
 	mkdir -p tmp/sockets
 	touch tmp/.gitkeep
-#	mkdir -p                    /shared/log/rails
-#	bash -c "touch -a           /shared/log/rails/{production,production_errors,unicorn.stdout,unicorn.stderr,sidekiq}.log"
-#	bash -c "ln    -s           /shared/log/rails/{production,production_errors,unicorn.stdout,unicorn.stderr,sidekiq}.log $home/log"
-#	bash -c "mkdir -p           /shared/{uploads,backups}"
-#	bash -c "ln    -s           /shared/{uploads,backups} $home/public"
-#	bash -c "mkdir -p           /shared/tmp/{backups,restores}"
-#	bash -c "ln    -s           /shared/tmp/{backups,restores} $home/tmp"
+
 else
         echo $home not empty so only update it
         cd $home
@@ -120,8 +108,16 @@ sed -i "s#pid /run/nginx.pid#daemon off#g" /etc/nginx/nginx.conf
 cd $home
 #gem update bundler
 find $home ! -user discourse -exec chown discourse {} \+
-cd $home
 
+cat << EOF > /etc/service/unicorn/run
+#!/bin/bash
+cd $home
+source /root/boot_env
+chown -R discourse:www-data /shared/log/rails
+#PATH=$PATH:$home/bin
+LD_PRELOAD=$RUBY_ALLOCATOR HOME=/home/discourse USER=discourse exec thpoff chpst -u discourse:www-data -U discourse:www-data bundle exec config/unicorn_launcher -E production -c config/unicorn.conf.rb
+
+EOF
 
 
 chmod +x /etc/runit/1.d/copy-env
@@ -142,9 +138,6 @@ chmod +x /etc/service/nginx/run
 chmod +x /etc/service/unicorn/run
 
 
-[[ -d /var/log/nginx ]] || mkdir /var/log/nginx
-
-[[ -d /var/log/cron/ ]] || mkdir /var/log/cron
 
 cat << EOF > /.backup.sh
 set -x
@@ -186,23 +179,12 @@ cd $home
 
 [[ -f $home/tmp/pids/unicorn.pid ]] && rm $home/tmp/pids/unicorn.pid
 chown -R discourse:www-data /shared/log/rails
-mkdir -p /var/log/postgres
+
+mkdir -p /var/log/{postgres,redis,3bot,unicorn,nginx,cron}
+
 # to start unicorn make sure you started postgres and redis and export  all envs
 bash /.prepare_postgres.sh
 supervisord -c /etc/supervisor/supervisord.conf
 
-if [[ "$fresh_install" == "yes" ]];then
-	su discourse -c 'bundle install --deployment --retry 3 --jobs 4 --verbose --without test development'
-	DEV_RAKE='/var/www/discourse/vendor/bundle/ruby/2.6.0/gems/railties-6.0.1/lib/rails/tasks/dev.rake'
-	if [[ -f $DEV_RAKE ]] ;then
-	        echo " $DEV_RAKE file is exist "
-	else
-        	echo " $DEV_RAKE file does not exist "
-        	cp /.dev.rake $DEV_RAKE
-        	chown discourse:discourse $DEV_RAKE
-	fi
-	su discourse -c 'bundle exec rake db:migrate'
-	su discourse -c 'bundle exec rake assets:precompile'
-fi
 
 exec "$@"
