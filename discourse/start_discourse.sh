@@ -11,10 +11,6 @@ for var in DISCOURSE_VERSION RAILS_ENV DISCOURSE_HOSTNAME DISCOURSE_SMTP_USER_NA
         fi
     done
 
-
-# to start unicorn make sure you started postgres and redis and export  all envs
-bash /.start_postgres.sh
-bash /.prepare_database.sh
 # prepare redis server
 [[ -d /etc/service/redis/log/ ]] || mkdir /etc/service/redis/log/ -p
 cat << EOF > /etc/service/redis/log/run
@@ -30,10 +26,6 @@ install -d -m 0755 -o redis -g redis /shared/redis_data
 sed -i 's/^bind .*$//g' /etc/redis/redis.conf
 sed -i 's|^dir .*$|dir /shared/redis_data|g' /etc/redis/redis.conf
 sed -i 's/^protected-mode yes/protected-mode no/g' /etc/redis/redis.conf
-
-exec chpst -u redis -U redis /usr/bin/redis-server /etc/redis/redis.conf &
-
-#nohup redis-server &
 
 chown -R discourse /home/discourse
 cat << EOF > /etc/cron.d/anacron
@@ -130,19 +122,7 @@ cd $home
 find $home ! -user discourse -exec chown discourse {} \+
 cd $home
 
-if [[ "$fresh_install" == "yes" ]];then
-	su discourse -c 'bundle install --deployment --retry 3 --jobs 4 --verbose --without test development'
-	DEV_RAKE='/var/www/discourse/vendor/bundle/ruby/2.6.0/gems/railties-6.0.1/lib/rails/tasks/dev.rake'
-	if [[ -f $DEV_RAKE ]] ;then
-	        echo " $DEV_RAKE file is exist "
-	else
-        	echo " $DEV_RAKE file does not exist "
-        	cp /.dev.rake $DEV_RAKE
-        	chown discourse:discourse $DEV_RAKE
-	fi
-	su discourse -c 'bundle exec rake db:migrate'
-	su discourse -c 'bundle exec rake assets:precompile'
-fi
+
 
 chmod +x /etc/runit/1.d/copy-env
 chmod +x /etc/service/unicorn/run
@@ -197,19 +177,32 @@ chown -R Debian-exim:mail /var/log/exim4
 chown -R Debian-exim:Debian-exim /var/spool/exim4/
 chown root:Debian-exim  /etc/exim4/passwd.client
 
-/etc/service/3bot_tmux/run
-/etc/service/cron/run &
 nginx -t
-/etc/service/nginx/run & 
 
 # TBD checking redis and postgres, should be running before start rails 
 
 cd $home
-echo wait 2 seconds to make sure redis and postgres are started 
-sleep 2
-# remove pid file unicron before start 
+# remove pid file unicron before start
 
 [[ -f $home/tmp/pids/unicorn.pid ]] && rm $home/tmp/pids/unicorn.pid
+chown -R discourse:www-data /shared/log/rails
+mkdir -p /var/log/postgres
+# to start unicorn make sure you started postgres and redis and export  all envs
+bash /.prepare_postgres.sh
+supervisord -c /etc/supervisor/supervisord.conf
 
-/etc/service/unicorn/run &
+if [[ "$fresh_install" == "yes" ]];then
+	su discourse -c 'bundle install --deployment --retry 3 --jobs 4 --verbose --without test development'
+	DEV_RAKE='/var/www/discourse/vendor/bundle/ruby/2.6.0/gems/railties-6.0.1/lib/rails/tasks/dev.rake'
+	if [[ -f $DEV_RAKE ]] ;then
+	        echo " $DEV_RAKE file is exist "
+	else
+        	echo " $DEV_RAKE file does not exist "
+        	cp /.dev.rake $DEV_RAKE
+        	chown discourse:discourse $DEV_RAKE
+	fi
+	su discourse -c 'bundle exec rake db:migrate'
+	su discourse -c 'bundle exec rake assets:precompile'
+fi
+
 exec "$@"

@@ -20,4 +20,3 @@ find /var/lib/postgresql -maxdepth 0 -empty -exec sh -c 'pg_dropcluster 10 main 
 cat /etc/resolv.conf
 #sed -i '/^nameserver 10./d' /etc/resolv.conf
 locale-gen en_US.UTF-8
-/etc/init.d/postgresql start
