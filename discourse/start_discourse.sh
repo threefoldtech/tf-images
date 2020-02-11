@@ -109,17 +109,6 @@ cd $home
 #gem update bundler
 find $home ! -user discourse -exec chown discourse {} \+
 
-cat << EOF > /etc/service/unicorn/run
-#!/bin/bash
-cd $home
-source /root/boot_env
-chown -R discourse:www-data /shared/log/rails
-#PATH=$PATH:$home/bin
-LD_PRELOAD=$RUBY_ALLOCATOR HOME=/home/discourse USER=discourse exec thpoff chpst -u discourse:www-data -U discourse:www-data bundle exec config/unicorn_launcher -E production -c config/unicorn.conf.rb
-
-EOF
-
-
 chmod +x /etc/runit/1.d/copy-env
 chmod +x /etc/service/unicorn/run
 chmod +x /etc/service/nginx/run

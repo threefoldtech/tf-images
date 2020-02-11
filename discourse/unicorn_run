@@ -1,6 +1,5 @@
-#! /bin/bash
-
-set -ex
+#!/bin/bash
+cd $home
 for var  in $(cat /root/boot_env) ; do export $var ; done
 
 if [[ "$fresh_install" == "yes" ]];then
@@ -16,3 +15,7 @@ if [[ "$fresh_install" == "yes" ]];then
 	su discourse -c 'bundle exec rake db:migrate'
 	su discourse -c 'bundle exec rake assets:precompile'
 fi
+
+chown -R discourse:www-data /shared/log/rails
+PATH=$PATH:$home/bin LD_PRELOAD=$RUBY_ALLOCATOR HOME=/home/discourse USER=discourse exec thpoff chpst -u discourse:www-data -U discourse:www-data bundle exec config/unicorn_launcher -E production -c config/unicorn.conf.rb
+

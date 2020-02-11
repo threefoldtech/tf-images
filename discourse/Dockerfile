@@ -19,6 +19,7 @@ COPY start_discourse.sh /.start_discourse.sh
 RUN mkdir /etc/service/3bot_tmux
 COPY tmux_3bot.sh /etc/service/3bot_tmux/run
 COPY restic_backup.sh /.restic_backup.sh
-COPY rake_install.sh /.rake_install.sh
+#COPY rake_install.sh /.rake_install.sh
+COPY unicorn_run /etc/service/unicorn/run
 RUN chmod +x /.start_discourse.sh
 ENTRYPOINT ["/.start_discourse.sh"]
