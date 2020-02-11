@@ -1,6 +1,8 @@
 #!/bin/bash
+set -ex
+#TBD check that precomile finished successfully in checking if condition 
 cd $home
-for var  in $(cat /root/boot_env) ; do export $var ; done
+#source /root/boot_env
 
 if [[ "$fresh_install" == "yes" ]];then
 	su discourse -c 'bundle install --deployment --retry 3 --jobs 4 --verbose --without test development'
@@ -15,7 +17,9 @@ if [[ "$fresh_install" == "yes" ]];then
 	su discourse -c 'bundle exec rake db:migrate'
 	su discourse -c 'bundle exec rake assets:precompile'
 fi
-
-chown -R discourse:www-data /shared/log/rails
-PATH=$PATH:$home/bin LD_PRELOAD=$RUBY_ALLOCATOR HOME=/home/discourse USER=discourse exec thpoff chpst -u discourse:www-data -U discourse:www-data bundle exec config/unicorn_launcher -E production -c config/unicorn.conf.rb
+# remove old pid
+[[ -f $home/tmp/pids/unicorn.pid ]] && rm $home/tmp/pids/unicorn.pid
+echo $PWD
+sleep 5
+LD_PRELOAD=$RUBY_ALLOCATOR HOME=/var/www/discourse USER=discourse exec thpoff chpst -u discourse:www-data -U discourse:www-data bundle exec config/unicorn_launcher -E production -c config/unicorn.conf.rb
 

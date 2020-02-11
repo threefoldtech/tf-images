@@ -165,8 +165,7 @@ nginx -t
 
 cd $home
 # remove pid file unicron before start
-
-[[ -f $home/tmp/pids/unicorn.pid ]] && rm $home/tmp/pids/unicorn.pid
+#[[ -f $home/tmp/pids/unicorn.pid ]] && rm $home/tmp/pids/unicorn.pid
 chown -R discourse:www-data /shared/log/rails
 
 mkdir -p /var/log/{postgres,redis,3bot,unicorn,nginx,cron}
