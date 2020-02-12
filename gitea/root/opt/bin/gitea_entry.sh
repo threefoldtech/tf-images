@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-
 if [ "${USER}" != "git" ]; then
     # rename user
     sed -i -e "s/^git\:/${USER}\:/g" /etc/passwd

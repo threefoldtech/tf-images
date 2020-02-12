@@ -9,7 +9,7 @@ change xmon to whatever image name.
 # Running
 
 ```
-docker run -ti --rm -e POSTGRES_DB=gitea -e DB_TYPE=postgres -e DB_HOST=localhost:5432 -e DB_USER=postgres -e DB_PASSWORD=postgres -e APP_NAME=myrepos -e ADMIN_USER=xmon -e ADMIN_PASSWORD=xmon -e ADMIN_EMAIL=xmon@there.com -e ROOT_URL=172.17.0.2:3000 xmon/gitea /bin/bash
+ docker run -ti --rm -p 3000:3000 -e POSTGRES_DB=gitea -e DB_TYPE=postgres -e DB_HOST=localhost:5432 -e DB_USER=postgres -e DB_PASSWORD=postgres -e APP_NAME=myrepos -e ROOT_URL=http://167.172.153.0:3000 -v /data:/data -v /data/postgres:/var/lib/postgresql/data bishoyabdo/gitea /bin/bash
 ```
 
 ## missing

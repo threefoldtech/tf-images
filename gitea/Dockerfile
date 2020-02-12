@@ -1,7 +1,6 @@
 FROM  gitea/gitea:latest
 
-RUN apk update &&  apk upgrade && apk add --no-cache supervisor openssh bash
-
+RUN apk update &&  apk upgrade && apk add --no-cache supervisor openssh bash dcron curl wget rsync ca-certificates
 # alpine includes "postgres" user/group in base install
 #   /etc/passwd:22:postgres:x:70:70::/var/lib/postgresql:/bin/sh
 #   /etc/group:34:postgres:x:70:
@@ -10,7 +9,7 @@ RUN apk update &&  apk upgrade && apk add --no-cache supervisor openssh bash
 
 RUN set -eux; \
 	addgroup -g 70 -S postgres; \
-	adduser -u 70 -S -D -G postgres -H -h /var/lib/postgresql postgres; \
+	adduser -u 70 -S -D -G postgres -H -h /var/lib/postgresql -s /bin/bash postgres; \
 	mkdir -p /var/lib/postgresql; \
 	chown -R postgres:postgres /var/lib/postgresql
 
@@ -148,7 +147,6 @@ RUN mkdir -p "$PGDATA" && chown -R postgres:postgres "$PGDATA" && chmod 777 "$PG
 VOLUME /var/lib/postgresql/data
 
 # COPY docker-entrypoint.sh /usr/local/bin/
-
 COPY supervisor.conf /etc/supervisor/supervisord.conf
 COPY root/opt/bin /opt/bin
 EXPOSE 5432
