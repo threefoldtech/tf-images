@@ -1,20 +1,18 @@
-
-
 FROM  gitea/gitea:latest
 
-RUN apk update &&  apk upgrade && apk add bash
+RUN apk update &&  apk upgrade && apk add --no-cache supervisor openssh bash
 
 # alpine includes "postgres" user/group in base install
 #   /etc/passwd:22:postgres:x:70:70::/var/lib/postgresql:/bin/sh
 #   /etc/group:34:postgres:x:70:
 # the home directory for the postgres user, however, is not created by default
 # see https://github.com/docker-library/postgres/issues/274
-RUN set -ex; \
-    postgresHome="$(getent passwd postgres)"; \
-    postgresHome="$(echo "$postgresHome" | cut -d: -f6)"; \
-    [ "$postgresHome" = '/var/lib/postgresql' ]; \
-    mkdir -p "$postgresHome"; \
-    chown -R postgres:postgres "$postgresHome"
+
+RUN set -eux; \
+	addgroup -g 70 -S postgres; \
+	adduser -u 70 -S -D -G postgres -H -h /var/lib/postgresql postgres; \
+	mkdir -p /var/lib/postgresql; \
+	chown -R postgres:postgres /var/lib/postgresql
 
 # su-exec (gosu-compatible) is installed further down
 
@@ -151,11 +149,11 @@ VOLUME /var/lib/postgresql/data
 
 # COPY docker-entrypoint.sh /usr/local/bin/
 
-
+COPY supervisor.conf /etc/supervisor/supervisord.conf
 COPY root/opt/bin /opt/bin
 EXPOSE 5432
 
-ENTRYPOINT ["/bin/sh", "opt/bin/run_all.sh" ]
+ENTRYPOINT ["/bin/sh", "/opt/bin/run_all.sh" ]
 
 
 
