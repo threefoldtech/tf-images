@@ -15,9 +15,9 @@ change bishoyabdo to whatever image name.
 ## ssh 
  - to ssh echo your public key in /data/git/.ssh/authorized_keys
 
- - ssh container using user git not root as home dir is /data/git 
+ - ssh container using user `git` not root as home dir is /data/git 
     ```
-    ssh root@167.172.153.0 -p222
+    ssh git@167.172.153.0 -p222
     ``` 
 
 ## missing
