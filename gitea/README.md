@@ -40,3 +40,5 @@ change bishoyabdo to whatever image name.
 ## admin account 
 
  - is configured in initial setup when login to ROOT_RUL http://167.172.153.0:3000 as below 
+ ![admin](admin.png)
+ 
