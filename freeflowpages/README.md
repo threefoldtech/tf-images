@@ -1,8 +1,16 @@
 - freeflowpages is based on humhub opensource
+- to build docker image run 
+ 
+ ```
+  docker build -t bishoyabdo/freeflowpages:latest .
+  docker push bishoyabdo/freeflowpages:latest
+  ```
+- convert flist using threefold hub ( https://hub.grid.tf/docker-convert) so flist so flist gonna be
+   https://hub.grid.tf/mikhaieb/bishoyabdo-freeflowpages-latest.flist
+
 - to create containers and env got to below repo
   https://docs.grid.tf/threefold/itenv_threefold_main/src/branch/master/freeflowpages/
 
-- flist name : https://hub.grid.tf/mikhaieb/bishoyabdo-freeflowpages-latest.flist
 ## env variables 
 
 ```
