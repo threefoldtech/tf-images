@@ -36,7 +36,7 @@ https://docs.grid.tf/threefold/itenv_threefold_main/src/branch/master/freeflowpa
 2 - reboot container, will install remain modules like rest, Freeflow, threebot_login and reeflow_extras
 
 3 - after reboot module should be install and enabled, only Restful module need to enabled manually as below
-    [enable](rest.png)
+    ![enable](rest.png)
 
 4 - flist has a crontabs to backup locally and to restic   
 
