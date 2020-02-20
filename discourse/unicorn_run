@@ -21,5 +21,6 @@ fi
 [[ -f $home/tmp/pids/unicorn.pid ]] && rm $home/tmp/pids/unicorn.pid
 echo $PWD
 sleep 5
+chown -R discourse /var/www/discourse
 LD_PRELOAD=$RUBY_ALLOCATOR HOME=/var/www/discourse USER=discourse exec thpoff chpst -u discourse:www-data -U discourse:www-data bundle exec config/unicorn_launcher -E production -c config/unicorn.conf.rb
 
