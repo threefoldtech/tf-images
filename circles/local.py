@@ -1,10 +1,12 @@
 from .common import *
 import os
 
-MEDIA_URL = "http://localhost/media/"
-STATIC_URL = "http://localhost/static/"
-SITES["front"]["scheme"] = 'http'
-SITES["front"]["domain"] = 'localhost'
+TAIGA_HOSTNAME = os.environ['TAIGA_HOSTNAME']
+
+MEDIA_URL = f"https://{TAIGA_HOSTNAME}/media/"
+STATIC_URL = f"https://{TAIGA_HOSTNAME}/static/"
+SITES["front"]["scheme"] = 'https'
+SITES["front"]["domain"] = f"{TAIGA_HOSTNAME}"
 
 DEBUG = False
 PUBLIC_REGISTER_ENABLED = True

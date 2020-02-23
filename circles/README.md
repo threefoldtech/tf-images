@@ -7,7 +7,7 @@ https://hub.grid.tf/tf-autobuilder/threefoldtech-Threefold-Circles-Flist-autosta
 
 - you should set all below env variables when create the container and use the domain naming instead ip address in HOST_IP as below 
 
-- env variables are : SECRET_KEY , EMAIL_HOST, EMAIL_HOST_USER, EMAIL_HOST_PASSWORD, HOST_IP, HTTP_PORT=80
+- env variables are : SECRET_KEY , EMAIL_HOST, EMAIL_HOST_USER, EMAIL_HOST_PASSWORD, TAIGA_HOSTNAME, HTTP_PORT=80
 
 - also you need configure restic env variables : RESTIC_REPOSITORY AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY RESTIC_PASSWORD"
 

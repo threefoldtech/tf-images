@@ -39,6 +39,7 @@ COPY supervisor.conf /etc/supervisor/supervisord.conf
 COPY backup.sh /.backup.sh
 COPY all_cron /.all_cron
 COPY postgres_entry.sh /.postgres_entry.sh
+COPY rabbitmq.sh  /.rabbitmq.sh 
 RUN chmod +x /.*
 ENTRYPOINT ["/.start_circles.sh"]
 

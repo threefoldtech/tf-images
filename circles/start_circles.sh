@@ -18,13 +18,10 @@ chmod 640 /etc/ssl/private/ssl-cert-snakeoil.key
 chown postgres:ssl-cert /etc/ssl/private
 chown -R postgres:postgres  /var/run/postgresql
 chown -R postgres:postgres /etc/postgresql
+
+# initialize postgres dir if it is empty
 find /var/lib/postgresql -maxdepth 0 -empty -exec sh -c 'pg_dropcluster 10 main && pg_createcluster 10 main' \;
 
-
-#echo "prepare postgres"
-#/bin/bash /.postgres_entry.sh postgres
-
-#
 echo 'remove a record was added by zos that make our server slow, below is resolv.conf file contents'
 
 if grep "10." /etc/resolv.conf ; then
@@ -51,24 +48,18 @@ chmod 4755 /usr/bin/sudo
 
 sed -i "s/listen 80 default_server/listen $HTTP_PORT default_server/g" /etc/nginx/conf.d/taiga.conf
 
-# add logs dir for taiga logs
-[[ -d  /home/taiga/logs ]] || mkdir -p /home/taiga/logs
-sudo nginx -t
-mkdir -p /var/log/{ssh,postgres,taiga-back,taiga-events,nginx,rabbitmq,cron}
-
+# add taiga user
 if getent passwd taiga; then
     echo username taiga is already exist
 else
-    adduser taiga
-    adduser taiga sudo
+    #adduser taiga
+    #adduser taiga sudo
+    useradd -d /home/taiga -G sudo -s /bin/bash taiga
     passwd -d taiga
 fi
 
-# start supervisord
-supervisord -c /etc/supervisor/supervisord.conf
-
-echo wait 5 seconds postgres to start
-sleep 5
+# start postgres by init only for preparing taiga 
+/etc/init.d/postgresql start
 
 # taiga setup script
 echo starting taiga setup script
@@ -79,11 +70,29 @@ chown -R taiga:taiga /home/taiga
 echo  starting taiga prepare script
 su taiga -c 'bash /.prepare_taiga.sh'
 
-# Start rabbitmq-server and create user+vhost
-rabbitmqctl add_user taiga $SECRET_KEY
-rabbitmqctl add_vhost taiga
-rabbitmqctl set_permissions -p taiga taiga '.*' '.*' '.*'
-
 crontab /.all_cron
 
 exec "$@"
+# add logs dir for taiga logs
+[[ -d  /home/taiga/logs ]] || mkdir -p /home/taiga/logs
+sudo nginx -t
+mkdir -p /var/log/{ssh,postgres,rabbitmq,taiga-back,taiga-events,nginx,rabbitmq,cron}
+
+# stop postgres to start it by supervisord
+/etc/init.d/postgresql stop
+# start supervisord
+supervisord -c /etc/supervisor/supervisord.conf
+
+echo wait 5 seconds for rabbitmq starting 
+sleep 5
+# Start rabbitmq-server and create user+vhost
+if ! rabbitmqctl add_user taiga $SECRET_KEY ; then
+	echo creating fail, try again 
+	rabbitmqctl add_user taiga $SECRET_KEY
+fi
+
+rabbitmqctl add_vhost taiga
+rabbitmqctl set_permissions -p taiga taiga '.*' '.*' '.*'
+
+
+
