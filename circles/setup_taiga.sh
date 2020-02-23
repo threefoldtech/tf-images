@@ -14,7 +14,7 @@ if [[ ! -d /home/taiga/taiga-back ]] ; then
     git checkout production
     su taiga && cd /home/taiga && sudo virtualenv -p /usr/bin/python3 taiga
     local_file='/home/taiga/taiga-back/settings/local.py'
-    wget https://raw.githubusercontent.com/threefoldtech/tf-images/circles/master/local.py -O $local_file
+    wget https://raw.githubusercontent.com/threefoldtech/tf-images/master/circles/local.py -O $local_file
     # Install dependencies and populate database
  #   cd /home/taiga/taiga-back
  #   virtualenv -p /usr/bin/python3 taiga
@@ -34,7 +34,7 @@ if [[ ! -d /home/taiga/taiga-front-dist ]] ; then
     git checkout production
     git pull
     taiga_front_conf='/home/taiga/taiga-front-dist/dist/conf.json'
-    wget https://raw.githubusercontent.com/threefoldtech/tf-images/master/taiga-front-dist.conf -O $taiga_front_conf
+    wget https://raw.githubusercontent.com/threefoldtech/tf-images/master/circles/taiga-front-dist.conf -O $taiga_front_conf
 
 else
     echo taiga_front-dist is already exist, updating taiga-front repo now
