@@ -4,7 +4,7 @@
 
 - note server only work with https due to threebot login require this 
 
-- you should set all below env variables when create the container and use the domain naming instead ip address in HOST_IP as below 
+- you should set all below env variables when create the container and use the domain naming instead ip address in TAIGA_HOSTNAME as below 
 
 - env variables are : SECRET_KEY , EMAIL_HOST, EMAIL_HOST_USER, EMAIL_HOST_PASSWORD, TAIGA_HOSTNAME, HTTP_PORT=80
 
