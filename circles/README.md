@@ -6,7 +6,12 @@ docker build -t bishoyabdo/circles:latest .
 ### start docker container
 
 ```
-docker run -i -t  -p2204:22 -p804:80   -e PRIVATE_KEY='urkey'  -e THREEBOT_URL=https://login.staging.jimber.org -e OPEN_KYC_URL=https://openkyc.staging.jimber.org/verification/verify-sei -v ~/mytaiga/postgresdata:/var/lib/postgresql -v ~/mytaiga/tiagahome:/home/taiga --name circles-test -e EMAIL_HOST=smtp.gmail.com -e EMAIL_HOST_PASSWORD=password -e EMAIL_HOST_USER=no-reply@threefold.tech -e TAIGA_HOSTNAME=test-circles.threefold.me -e HTTP_PORT=80 -e SECRET_KEY=scret bishoyabdo/circles:latest  bash
+docker run -i -t  -p2204:22 -p804:80   -e PRIVATE_KEY='urkey'  -e THREEBOT_URL=https://login.staging.jimber.org \ 
+-e OPEN_KYC_URL=https://openkyc.staging.jimber.org/verification/verify-sei -v ~/mytaiga/postgresdata:/var/lib/postgresql\ 
+-v ~/mytaiga/tiagahome:/home/taiga --name circles-test -e EMAIL_HOST=smtp.gmail.com -e EMAIL_HOST_PASSWORD=password\
+-e EMAIL_HOST_USER=no-reply@threefold.tech -e TAIGA_HOSTNAME=test-circles.threefold.me -e HTTP_PORT=80\ 
+-e SECRET_KEY=scret  -e SECRET_KEY=pass -e RESTIC_REPOSITORY=s3:https://s3.grid.tf/circles-test \
+-e RESTIC_PASSWORD=password -e AWS_ACCESS_KEY_ID=key_id  -e AWS_SECRET_ACCESS_KEY=key bishoyabdo/circles:latest  bash
 
 ```
 ### Threefold-Circles-Flist
