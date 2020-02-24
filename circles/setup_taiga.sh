@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -ex
+set -x
 
 # create a database user and taiga database
 #sudo -u postgres createuser taiga
@@ -12,7 +12,8 @@ if [[ ! -d /home/taiga/taiga-back ]] ; then
     git clone https://github.com/threefoldtech/Threefold-Circles.git taiga-back
     cd taiga-back
     git checkout production
-    su taiga && cd /home/taiga && sudo virtualenv -p /usr/bin/python3 taiga
+    chown -R taiga:taiga /home/taiga
+    sudo -u taiga virtualenv -p /usr/bin/python3 taiga
     local_file='/home/taiga/taiga-back/settings/local.py'
     wget https://raw.githubusercontent.com/threefoldtech/tf-images/master/circles/local.py -O $local_file
     # Install dependencies and populate database
@@ -48,11 +49,7 @@ fi
 
 if [[ ! -d /home/taiga/taiga-events ]]; then
     cd /home/taiga
-    git clone https://github.com/threefoldtech/Threefold-Circles-events.git taiga-events
-    su taiga \
-    && cd taiga-events \
-    && git checkout master \
-    && git pull
+    git clone https://github.com/threefoldtech/Threefold-Circles-events.git taiga-events -b master
 
 else
     echo taiga-events is already exist, updating taiga-event repo
@@ -61,7 +58,5 @@ else
     git pull
 fi
 # complete events installation
-su taiga \
-&& cd /home/taiga/taiga-events \
-&& npm install \
-&& cp config.example.json config.json
+chown -R taiga:taiga /home/taiga
+cd /home/taiga/taiga-events && su taiga -c "npm install && cp config.example.json config.json"

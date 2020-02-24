@@ -1,18 +1,12 @@
 #!/usr/bin/env bash
 set -ex
 
-echo "checking env variables was set correctly "
-
-if [[ -z "$SECRET_KEY" ]] || [[ -z "$EMAIL_HOST" ]] || [[ -z "$EMAIL_HOST_USER" ]] || [[ -z "$EMAIL_HOST_PASSWORD" ]] || [[ -z "$TAIGA_HOSTNAME" ]] || [[ -z "$HTTP_PORT" ]] ; then
-    echo " one of below variables are not set yet, Please set it in creating your container"
-    echo "SECRET_KEY EMAIL_HOST EMAIL_HOST_USER EMAIL_HOST_PASSWORD HOST_IP HTTP_PORT"
-    exit 1
-fi
-
 # Install dependencies and populate database
 cd /home/taiga/taiga-back
 virtualenv -p /usr/bin/python3 taiga
 sudo /home/taiga/taiga-back/taiga/bin/pip3 install -r requirements.txt
+echo "wait 3 seconds to sync data to disk is required by ZeroOS in mounting points"
+sleep 3 ; sync
 /home/taiga/taiga-back/taiga/bin/python3 manage.py migrate --noinput
 /home/taiga/taiga-back/taiga/bin/python3 manage.py loaddata initial_user
 /home/taiga/taiga-back/taiga/bin/python3 manage.py loaddata initial_project_templates

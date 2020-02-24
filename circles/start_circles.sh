@@ -2,6 +2,18 @@
 set -ex
 
 export DEBIAN_FRONTEND=noninteractive
+
+echo "checking env variables was set correctly "
+
+for var in  SECRET_KEY EMAIL_HOST EMAIL_HOST_USER EMAIL_HOST_PASSWORD TAIGA_HOSTNAME HTTP_PORT PRIVATE_KEY  THREEBOT_URL OPEN_KYC_URL
+    do
+        if [ -z "${!var}" ]
+        then
+                 echo "$var not set, Please set it in creating your container"
+                 exit 1
+        fi
+    done
+
 # prepare ssh
 chmod 400 -R /etc/ssh/
 mkdir -p /run/sshd
@@ -72,7 +84,6 @@ su taiga -c 'bash /.prepare_taiga.sh'
 
 crontab /.all_cron
 
-exec "$@"
 # add logs dir for taiga logs
 [[ -d  /home/taiga/logs ]] || mkdir -p /home/taiga/logs
 sudo nginx -t
@@ -94,5 +105,4 @@ fi
 rabbitmqctl add_vhost taiga
 rabbitmqctl set_permissions -p taiga taiga '.*' '.*' '.*'
 
-
-
+exec "$@"

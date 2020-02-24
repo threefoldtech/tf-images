@@ -1,4 +1,15 @@
-# Threefold-Circles-Flist
+### build image 
+
+```
+docker build -t bishoyabdo/circles:latest .
+```
+### start docker container
+
+```
+docker run -i -t  -p2204:22 -p804:80   -e PRIVATE_KEY='urkey'  -e THREEBOT_URL=https://login.staging.jimber.org -e OPEN_KYC_URL=https://openkyc.staging.jimber.org/verification/verify-sei -v ~/mytaiga/postgresdata:/var/lib/postgresql -v ~/mytaiga/tiagahome:/home/taiga --name circles-test -e EMAIL_HOST=smtp.gmail.com -e EMAIL_HOST_PASSWORD=password -e EMAIL_HOST_USER=no-reply@threefold.tech -e TAIGA_HOSTNAME=test-circles.threefold.me -e HTTP_PORT=80 -e SECRET_KEY=scret bishoyabdo/circles:latest  bash
+
+```
+### Threefold-Circles-Flist
 
 	https://hub.grid.tf/mikhaieb/bishoyabdo-circles-latest.flist
 
@@ -37,3 +48,18 @@ http://test.circles.com {
 }
 
 ```
+- you should do all above steps to get a working circles server ,verfiy env varaibles by run command `env` in shell
+- check local.py file settings if you got troubles  /home/taiga/taiga-back/settings/local.py
+- you can check supervior service as below 
+    ```
+    # supervisorctl status all
+    
+    cron:cron_00                     RUNNING   pid 1560, uptime 0:18:23
+    nginx                            RUNNING   pid 1550, uptime 0:18:23
+    postgres                         RUNNING   pid 1549, uptime 0:18:23
+    rabbitmq                         RUNNING   pid 1551, uptime 0:18:23
+    ssh                              RUNNING   pid 1548, uptime 0:18:23
+    taiga-back                       RUNNING   pid 1552, uptime 0:18:23
+    taiga-events                     RUNNING   pid 1555, uptime 0:18:23
+    
+    ```
