@@ -1,5 +1,5 @@
 #! /bin/bash
-set -x
+#set -x
 bkp_directory='/home/taiga/taiga-backup'
 media_directory='/home/taiga/taiga-back/media'
 [ -d $bkp_directory ] || ( mkdir $bkp_directory && chown -R taiga:taiga $bkp_directory )

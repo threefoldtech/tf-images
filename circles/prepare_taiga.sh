@@ -1,15 +1,15 @@
 #!/usr/bin/env bash
-set -ex
+set -x
 
 # Install dependencies and populate database
 cd /home/taiga/taiga-back
 virtualenv -p /usr/bin/python3 taiga
 sudo /home/taiga/taiga-back/taiga/bin/pip3 install -r requirements.txt
-echo "wait 3 seconds to sync data to disk is required by ZeroOS in mounting points"
-sleep 3 ; sync
 /home/taiga/taiga-back/taiga/bin/python3 manage.py migrate --noinput
 /home/taiga/taiga-back/taiga/bin/python3 manage.py loaddata initial_user
 /home/taiga/taiga-back/taiga/bin/python3 manage.py loaddata initial_project_templates
+echo "wait 3 seconds to sync data to disk is required by ZeroOS in mounting points"
+sleep 3 ; sync
 /home/taiga/taiga-back/taiga/bin/python3 manage.py compilemessages
 /home/taiga/taiga-back/taiga/bin/python3 manage.py collectstatic --noinput
 
