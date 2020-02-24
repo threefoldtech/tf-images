@@ -17,6 +17,14 @@
 - Dockerfile info: [taiga](./taiga/README.md)
 - flist https://hub.grid.tf/hosnys/hossnys-taiga-latest.flist
 
+## Circles
+- Dockerfile info: [circles](./circles/README.md)
+- flist https://hub.grid.tf/mikhaieb/bishoyabdo-circles-latest.flist
+
+## Freeflowpages
+- Dockerfile info: [freeflowpages](./freeflowpages/README.md)
+- flist https://hub.grid.tf/mikhaieb/bishoyabdo-freeflowpages-latest.flist
+
 ## Wordpress
 - Dockerfile info: [wordpress](./wordpress/README.md)
 - flist?
