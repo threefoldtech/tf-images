@@ -179,6 +179,7 @@ bash /.prepare_postgres.sh
 
 # just start postgres to create intial db
 /etc/init.d/postgresql start
+/usr/bin/redis-server  --daemonize yes
 
 bash /.prepare_database.sh
 
@@ -195,12 +196,12 @@ if [[ "$fresh_install" == "yes" ]];then
         	chown discourse:discourse $DEV_RAKE
 	fi
 	su discourse -c 'bundle exec rake db:migrate'
-	su discourse -c 'bundle exec rake assets:precompile'
+	su discourse -c 'bundle exec rake assets:precompile' 
 fi
 
 # stop postgres to start it using supervisord
 /etc/init.d/postgresql stop
-
+/usr/bin/redis-cli shutdown
 supervisord -c /etc/supervisor/supervisord.conf
 
 
