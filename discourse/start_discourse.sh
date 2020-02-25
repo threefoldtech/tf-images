@@ -123,9 +123,9 @@ chmod +x /usr/local/bin/rbtrace
 chmod +x /usr/local/bin/stackprof
 chmod +x /etc/update-motd.d/10-web
 chmod +x /etc/runit/1.d/00-ensure-links
-chmod +x /etc/service/3bot_tmux/run
 chmod +x /etc/service/cron/run
 chmod +x /etc/service/nginx/run
+
 
 cat << EOF > /.backup.sh
 set -x
