@@ -65,6 +65,7 @@ export OPEN_KYC_URL=$OPEN_KYC_URL
 
 mkdir -p /var/nginx/cache
 
+env | grep -v "PATH\=" | grep -v "HOME\=" | grep -v "PWD\=" | grep -v "SHLVL\="|grep -v "TERM\=" >> /etc/environment
 env > /root/boot_env
 
 echo "################# all env should be exist from outside and from above ###################"
@@ -163,8 +164,6 @@ chown -R Debian-exim:mail /var/log/exim4
 chown -R Debian-exim:Debian-exim /var/spool/exim4/
 chown root:Debian-exim  /etc/exim4/passwd.client
 
-nginx -t
-
 # TBD checking redis and postgres, should be running before start rails 
 
 cd $home
@@ -173,6 +172,8 @@ cd $home
 chown -R discourse:www-data /shared/log/rails
 
 mkdir -p /var/log/{postgres,redis,3bot,unicorn,nginx,cron}
+
+nginx -t
 
 # to start unicorn make sure you started postgres and redis and export  all envs
 bash /.prepare_postgres.sh
