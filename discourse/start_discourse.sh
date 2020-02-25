@@ -37,26 +37,25 @@ cat << EOF > /etc/cron.d/anacron
 
 EOF
 
-export RUBY_GC_HEAP_GROWTH_MAX_SLOTS=40000
-export RUBY_GC_HEAP_INIT_SLOTS=400000
-export RUBY_GC_HEAP_OLDOBJECT_LIMIT_FACTOR=1.5
-export RUBY_GLOBAL_METHOD_CACHE_SIZE=131072
-export PG_MAJOR=10
-export SHLVL=3
-export UNICORN_SIDEKIQS=1
+[[ -z "${RUBY_GC_HEAP_GROWTH_MAX_SLOTS}" ]] && export RUBY_GC_HEAP_GROWTH_MAX_SLOTS=40000
+[[ -z "${RUBY_GC_HEAP_INIT_SLOTS}" ]] &&  export RUBY_GC_HEAP_INIT_SLOTS=400000
+[[ -z "${RUBY_GC_HEAP_OLDOBJECT_LIMIT_FACTOR}" ]] &&  export RUBY_GC_HEAP_OLDOBJECT_LIMIT_FACTOR=1.5
+[[ -z "${RUBY_GLOBAL_METHOD_CACHE_SIZE}" ]] &&  export RUBY_GLOBAL_METHOD_CACHE_SIZE=131072
+[[ -z "${PG_MAJOR}" ]] &&  export PG_MAJOR=10
+[[ -z "${UNICORN_SIDEKIQS}" ]] &&  export UNICORN_SIDEKIQS=1
+[[ -z "${DISCOURSE_DB_SOCKET}" ]] &&  export DISCOURSE_DB_SOCKET=/var/run/postgresql
+[[ -z "${home}" ]] &&  export home=/var/www/discourse
+[[ -z "${upload_size}" ]] &&  export upload_size=10m
+[[ -z "${UNICORN_WORKERS}" ]] &&  export UNICORN_WORKERS=4
+[[ -z "${DISCOURSE_SMTP_ENABLE_START_TLS}" ]] &&  export DISCOURSE_SMTP_ENABLE_START_TLS=true
+
 export LC_ALL=en_US.UTF-8
 export LANGUAGE=en_US.UTF-8
 export LANG=en_US.UTF-8
-export DISCOURSE_DB_SOCKET=/var/run/postgresql
 
 export version=$DISCOURSE_VERSION
-export home=/var/www/discourse
-export upload_size=10m
-
-export UNICORN_WORKERS=4
 export DISCOURSE_DB_HOST=
 export DISCOURSE_DB_PORT=
-export DISCOURSE_SMTP_ENABLE_START_TLS=true
 export HOME=/root
 export THREEBOT_PRIVATE_KEY=$THREEBOT_PRIVATE_KEY
 export FLASK_SECRET_KEY=$FLASK_SECRET_KEY
@@ -66,7 +65,6 @@ export OPEN_KYC_URL=$OPEN_KYC_URL
 mkdir -p /var/nginx/cache
 
 env | grep -v "PATH\=" | grep -v "HOME\=" | grep -v "PWD\=" | grep -v "SHLVL\="|grep -v "TERM\=" >> /etc/environment
-env > /root/boot_env
 
 echo "################# all env should be exist from outside and from above ###################"
 [[ -d $home ]] || mkdir $home
@@ -83,7 +81,7 @@ else
         echo $home not empty so only update it
         cd $home
         git status
-	git stash
+	    git stash
         git pull
 fi
 
@@ -170,7 +168,7 @@ cd $home
 #[[ -f $home/tmp/pids/unicorn.pid ]] && rm $home/tmp/pids/unicorn.pid
 chown -R discourse:www-data /shared/log/rails
 
-mkdir -p /var/log/{postgres,redis,3bot,unicorn,nginx,cron}
+mkdir -p /var/log/{ssh,postgres,redis,3bot,unicorn,nginx,cron}
 
 nginx -t
 
@@ -187,16 +185,16 @@ cd $home
 
 if [[ "$fresh_install" == "yes" ]];then
 	su discourse -c 'bundle install --deployment --retry 3 --jobs 4 --verbose --without test development'
-	DEV_RAKE='/var/www/discourse/vendor/bundle/ruby/2.6.0/gems/railties-6.0.1/lib/rails/tasks/dev.rake'
-	if [[ -f $DEV_RAKE ]] ;then
-	        echo " $DEV_RAKE file is exist "
-	else
-        	echo " $DEV_RAKE file does not exist "
-        	cp /.dev.rake $DEV_RAKE
-        	chown discourse:discourse $DEV_RAKE
-	fi
 	su discourse -c 'bundle exec rake db:migrate'
 	su discourse -c 'bundle exec rake assets:precompile' 
+fi
+
+DEV_RAKE='/var/www/discourse/vendor/bundle/ruby/2.6.0/gems/railties-6.0.1/lib/rails/tasks/dev.rake'
+if [[ -f $DEV_RAKE ]] ;then
+        echo " $DEV_RAKE file is exist , so this mean bundle installation seems completed successfully "
+else
+        echo " $DEV_RAKE file does not exist, Please check seems bundle installation does not completed successfully "
+        exit 1
 fi
 
 # stop postgres to start it using supervisord
