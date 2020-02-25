@@ -126,9 +126,6 @@ chmod +x /etc/runit/1.d/00-ensure-links
 chmod +x /etc/service/3bot_tmux/run
 chmod +x /etc/service/cron/run
 chmod +x /etc/service/nginx/run
-chmod +x /etc/service/unicorn/run
-
-
 
 cat << EOF > /.backup.sh
 set -x
