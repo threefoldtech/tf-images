@@ -69,7 +69,6 @@ env | grep -v "PATH\=" | grep -v "HOME\=" | grep -v "PWD\=" | grep -v "SHLVL\="|
 env > /root/boot_env
 
 echo "################# all env should be exist from outside and from above ###################"
-cat ~/boot_env
 [[ -d $home ]] || mkdir $home
 if [ "$(find $home -maxdepth 0 -empty)" ]; then
 	export fresh_install="yes"
@@ -105,7 +104,7 @@ force_https = 'true'
 EOF
 
 #chown -R discourse:www-data /shared/log/rails /shared/uploads /shared/backups /shared/tmp
-rm /etc/nginx/sites-enabled/default
+[[ -f /etc/nginx/sites-enabled/default ]] && rm /etc/nginx/sites-enabled/default
 mkdir -p /var/nginx/cache
 sed -i "s#pid /run/nginx.pid#daemon off#g" /etc/nginx/nginx.conf
 
@@ -177,6 +176,31 @@ nginx -t
 
 # to start unicorn make sure you started postgres and redis and export  all envs
 bash /.prepare_postgres.sh
+
+# just start postgres to create intial db
+/etc/init.d/postgresql start
+
+bash /.prepare_database.sh
+
+cd $home
+
+if [[ "$fresh_install" == "yes" ]];then
+	su discourse -c 'bundle install --deployment --retry 3 --jobs 4 --verbose --without test development'
+	DEV_RAKE='/var/www/discourse/vendor/bundle/ruby/2.6.0/gems/railties-6.0.1/lib/rails/tasks/dev.rake'
+	if [[ -f $DEV_RAKE ]] ;then
+	        echo " $DEV_RAKE file is exist "
+	else
+        	echo " $DEV_RAKE file does not exist "
+        	cp /.dev.rake $DEV_RAKE
+        	chown discourse:discourse $DEV_RAKE
+	fi
+	su discourse -c 'bundle exec rake db:migrate'
+	su discourse -c 'bundle exec rake assets:precompile'
+fi
+
+# stop postgres to start it using supervisord
+/etc/init.d/postgresql stop
+
 supervisord -c /etc/supervisor/supervisord.conf
 
 
