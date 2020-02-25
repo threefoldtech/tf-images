@@ -33,5 +33,5 @@
 - flist https://hub.grid.tf/mikhaieb/bishoyabdo-gitea-latest.flist
 
 ## CRM
-- Dockerfile info: [gitea](./crm/README.md)
-- flist https://hub.grid.tf/mikhaieb/bishoyabdo-crm-latest.flist
+- Dockerfile info: [crm](./crm/README.md)
+- flist ?
