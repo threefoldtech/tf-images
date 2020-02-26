@@ -48,6 +48,7 @@ EOF
 [[ -z "${upload_size}" ]] &&  export upload_size=10m
 [[ -z "${UNICORN_WORKERS}" ]] &&  export UNICORN_WORKERS=4
 [[ -z "${DISCOURSE_SMTP_ENABLE_START_TLS}" ]] &&  export DISCOURSE_SMTP_ENABLE_START_TLS=true
+# TOBD DISCOURSE_CDN_URL
 
 export LC_ALL=en_US.UTF-8
 export LANGUAGE=en_US.UTF-8
@@ -66,7 +67,6 @@ mkdir -p /var/nginx/cache
 
 env | grep -v "PATH\=" | grep -v "HOME\=" | grep -v "PWD\=" | grep -v "SHLVL\="|grep -v "TERM\=" >> /etc/environment
 
-echo "################# all env should be exist from outside and from above ###################"
 [[ -d $home ]] || mkdir $home
 if [ "$(find $home -maxdepth 0 -empty)" ]; then
 	export fresh_install="yes"
@@ -96,7 +96,7 @@ smtp_port = '$DISCOURSE_SMTP_PORT'
 smtp_password = '$DISCOURSE_SMTP_PASSWORD'
 db_host = ''
 db_port = ''
-smtp_enable_start_tls = 'true'
+smtp_enable_start_tls = '$DISCOURSE_SMTP_ENABLE_START_TLS'
 force_https = 'true'
 
 EOF
@@ -198,6 +198,5 @@ fi
 /etc/init.d/postgresql stop
 /usr/bin/redis-cli shutdown
 supervisord -c /etc/supervisor/supervisord.conf
-
 
 exec "$@"

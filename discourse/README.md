@@ -62,3 +62,6 @@ forum11.threefold.io
 }
 
 ```
+### Reference
+
+https://github.com/discourse/discourse_docker
