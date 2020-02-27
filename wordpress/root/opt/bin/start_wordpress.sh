@@ -1,7 +1,10 @@
 #!/usr/bin/env bash
-set -ex
-
 chmod +x /opt/bin/*
+
+# prepare ssh
+[ -d /etc/ssh/ ] && chmod 400 -R /etc/ssh/
+mkdir -p /run/sshd
+[ -d /root/.ssh/ ] || mkdir /root/.ssh
 
 echo "runing mariadb"
 /bin/bash /opt/bin/mariadb_entry.sh mysqld  #--character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci& #--user=root&

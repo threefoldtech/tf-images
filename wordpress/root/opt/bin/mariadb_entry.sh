@@ -1,5 +1,5 @@
 #!/bin/bash
-set -exo pipefail
+set -eo pipefail
 shopt -s nullglob
 
 # if command starts with an option, prepend mysqld
