@@ -27,7 +27,7 @@
 
 ## Wordpress
 - Dockerfile info: [wordpress](./wordpress/README.md)
-- flist?
+- flist https://hub.grid.tf/mikhaieb/bishoyabdo-wordpress-latest.flist
 ## Gitea
 - Dockerfile info: [gitea](./gitea/README.md)
 - flist https://hub.grid.tf/mikhaieb/bishoyabdo-gitea-latest.flist

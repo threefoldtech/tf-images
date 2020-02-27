@@ -2,6 +2,11 @@
 set -ex
 echo "checking env variables was set correctly "
 
+# prepare ssh
+[ -d /etc/ssh/ ] && chmod 400 -R /etc/ssh/
+mkdir -p /run/sshd
+[ -d /root/.ssh/ ] || mkdir /root/.ssh
+
 for var in DISCOURSE_VERSION RAILS_ENV DISCOURSE_HOSTNAME DISCOURSE_SMTP_USER_NAME DISCOURSE_SMTP_ADDRESS DISCOURSE_DEVELOPER_EMAILS DISCOURSE_SMTP_PORT THREEBOT_PRIVATE_KEY FLASK_SECRET_KEY THREEBOT_URL OPEN_KYC_URL 
     do
         if [ -z "${!var}" ]
