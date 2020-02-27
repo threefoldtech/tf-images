@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -euo pipefail
+set -exuo pipefail
 
 # usage: file_env VAR [DEFAULT]
 #    ie: file_env 'XYZ_DB_PASSWORD' 'example'
@@ -287,4 +287,4 @@ EOPHP
 	done
 fi
 
-exec "$@"
+#exec "$@"

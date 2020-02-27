@@ -1,5 +1,5 @@
 #!/bin/bash
-set -eo pipefail
+set -exo pipefail
 shopt -s nullglob
 
 # if command starts with an option, prepend mysqld
@@ -196,4 +196,4 @@ if [ "$1" = 'mysqld' -a -z "$wantHelp" ]; then
 	fi
 fi
 
-exec "$@"
+#exec "$@"

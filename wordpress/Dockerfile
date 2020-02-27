@@ -1,9 +1,11 @@
-
-
 FROM  wordpress:latest
 
 # add our user and group first to make sure their IDs get assigned consistently, regardless of whatever dependencies get added
 RUN groupadd -r mysql && useradd -r -g mysql mysql
+RUN apt-get update
+RUN apt-get install -y cron python3 python3-pip vim openssh-server
+RUN pip3 install --upgrade setuptools
+RUN pip3 install supervisor
 
 # https://bugs.debian.org/830696 (apt uses gpgv by default in newer releases, rather than gpg)
 RUN set -ex; \
@@ -76,13 +78,12 @@ RUN set -ex; \
     apt-key list
 
 # bashbrew-architectures: amd64 arm64v8 ppc64le
-ENV MARIADB_MAJOR 10.4
-ENV MARIADB_VERSION 1:10.4.8+maria~bionic
+ENV MARIADB_MAJOR=10.3
+ENV MARIADB_VERSION=1:10.3.22-0+deb10u1
 # release-status:Stable
 # (https://downloads.mariadb.org/mariadb/+releases/)
 
 RUN set -e;\
-    echo "deb http://ftp.osuosl.org/pub/mariadb/repo/$MARIADB_MAJOR/ubuntu bionic main" > /etc/apt/sources.list.d/mariadb.list; \
     { \
     echo 'Package: *'; \
     echo 'Pin: release o=MariaDB'; \
@@ -100,7 +101,7 @@ RUN set -ex; \
     } | debconf-set-selections; \
     apt-get update; \
     apt-get install -y \
-    "mariadb-server=$MARIADB_VERSION" \
+    mariadb-server \
     # mariadb-backup is installed at the same time so that `mysql-common` is only installed once from just mariadb repos
     mariadb-backup \
     socat \
@@ -130,11 +131,14 @@ EXPOSE 3306
 
 
 COPY root/opt/bin /opt/bin
-
+#RUN mkdir /etc/supervisor
+COPY supervisor.conf /etc/supervisor/supervisord.conf
 
 RUN chmod +x /opt/bin/*
-
-ENTRYPOINT ["/opt/bin/run_all.sh" ]
+RUN rm /opt/bin/start_wordpress.sh
+COPY root/opt/bin/start_wordpress.sh /.start_wordpress.sh
+RUN chmod +x /.start_wordpress.sh
+ENTRYPOINT ["/.start_wordpress.sh" ]
 
 
 
