@@ -34,4 +34,4 @@
 
 ## CRM
 - Dockerfile info: [crm](./crm/README.md)
-- flist ?
+- flist : pending in issue https://github.com/Incubaid/crm/issues/159
