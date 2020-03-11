@@ -119,10 +119,14 @@ ffp_files_prepare ()
         {
 		iyo_file="/var/www/html/humhub/protected/humhub/modules/user/authclient/IYO.php"
 		[ -f "$iyo_file" ] || wget https://raw.githubusercontent.com/freeflowpages/freeflow-iyo-module/master/IYO.php -O $iyo_file
-		#common_file="/var/www/html/humhub/protected/config/common.php"
+		common_file="/var/www/html/humhub/protected/config/common.php"
 		dynamic_file="/var/www/html/humhub/protected/config/dynamic.php"
 		htaccess_file="/var/www/html/humhub/.htaccess"
 		#wget https://raw.githubusercontent.com/freeflowpages/freeflow-flist/master/common.php -O $common_file
+		
+		# fix env variables to appear in logs
+		sed -i "s|'logVars' => \['_GET', '_SERVER'\]|'logVars' => \['_GET'\]|g" $common_file
+
 		wget https://raw.githubusercontent.com/freeflowpages/freeflow-flist/master/dynamic.php -O $dynamic_file
 		[ -f /var/www/html/humhub/.htaccess.dist ] && mv /var/www/html/humhub/.htaccess.dist /var/www/html/humhub/.htaccess
 		wget https://raw.githubusercontent.com/freeflowpages/freeflow-flist/master/htaccess -O $htaccess_file
