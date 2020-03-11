@@ -43,6 +43,7 @@ modules_themes ()
                 cd /var/www/html/humhub/protected/modules/threebot_login
                 BRANCH=$(git branch | sed -nr 's/\*\s(.*)/\1/p')
                 if [ -z $BRANCH ] || [ $BRANCH = "staging" ]; then
+                    git stash
                     git pull
                 else
                     echo "please note 3bot branch is not staging you need to checkout to staging branch"
@@ -66,6 +67,7 @@ modules_themes ()
                 cd /var/www/html/humhub/protected/modules/freeflow_extras
                 BRANCH=$(git branch | sed -nr 's/\*\s(.*)/\1/p')
                 if [ -z $BRANCH ] || [ $BRANCH = "staging" ]; then
+                    git stash
                     git pull
                 else
                     echo "please note 3bot branch is not staging you need to checkout to staging branch"
@@ -92,6 +94,7 @@ modules_themes ()
                 /usr/bin/php /var/www/html/humhub/protected/yii module/enable threebot_login
             else
                 cd /var/www/html/humhub/protected/modules/threebot_login
+                git stash
                 git pull
             fi
 
@@ -104,6 +107,7 @@ modules_themes ()
                 /usr/bin/php /var/www/html/humhub/protected/yii module/enable freeflow_extras
             else
                 cd /var/www/html/humhub/protected/modules/freeflow_extras
+                git stash
                 git pull
             fi
         fi
@@ -115,10 +119,10 @@ ffp_files_prepare ()
         {
 		iyo_file="/var/www/html/humhub/protected/humhub/modules/user/authclient/IYO.php"
 		[ -f "$iyo_file" ] || wget https://raw.githubusercontent.com/freeflowpages/freeflow-iyo-module/master/IYO.php -O $iyo_file
-		common_file="/var/www/html/humhub/protected/config/common.php"
+		#common_file="/var/www/html/humhub/protected/config/common.php"
 		dynamic_file="/var/www/html/humhub/protected/config/dynamic.php"
 		htaccess_file="/var/www/html/humhub/.htaccess"
-		wget https://raw.githubusercontent.com/freeflowpages/freeflow-flist/master/common.php -O $common_file
+		#wget https://raw.githubusercontent.com/freeflowpages/freeflow-flist/master/common.php -O $common_file
 		wget https://raw.githubusercontent.com/freeflowpages/freeflow-flist/master/dynamic.php -O $dynamic_file
 		[ -f /var/www/html/humhub/.htaccess.dist ] && mv /var/www/html/humhub/.htaccess.dist /var/www/html/humhub/.htaccess
 		wget https://raw.githubusercontent.com/freeflowpages/freeflow-flist/master/htaccess -O $htaccess_file
