@@ -13,18 +13,6 @@ sleep 3 ; sync
 /home/taiga/taiga-back/taiga/bin/python3 manage.py compilemessages
 /home/taiga/taiga-back/taiga/bin/python3 manage.py collectstatic --noinput
 
-# edit backend
-sed -i "s|smtp_email_host|$EMAIL_HOST|g" /home/taiga/taiga-back/settings/local.py
-sed -i "s|email_user|$EMAIL_HOST_USER|g" /home/taiga/taiga-back/settings/local.py
-sed -i "s|email_password|$EMAIL_HOST_PASSWORD|g" /home/taiga/taiga-back/settings/local.py
-sed -i "s|your_sceret_key|$SECRET_KEY|g" /home/taiga/taiga-back/settings/local.py
-# below varaibles are made by python env varaiables
-#sed -i "s|http://localhost/static/|https://$HOST_IP/static/|g"  /home/taiga/taiga-back/settings/local.py
-#sed -i "s|http://localhost/media/|https://$HOST_IP/media/|g" /home/taiga/taiga-back/settings/local.py
-#sed -i "s|'localhost'|\"$HOST_IP\"|g" /home/taiga/taiga-back/settings/local.py
-#sed -i "s|'http'|'https'|g" /home/taiga/taiga-back/settings/local.py
-
-
 # Edit conf files for frontend
 sed -i "s|https://circles.threefold.me/api|https://$TAIGA_HOSTNAME/api|g" /home/taiga/taiga-front-dist/dist/conf.json
 sed -i "s|wss://circles.threefold.me/events|wss://$TAIGA_HOSTNAME/events|g" /home/taiga/taiga-front-dist/dist/conf.json

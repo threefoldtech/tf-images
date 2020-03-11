@@ -14,12 +14,7 @@ if [[ ! -d /home/taiga/taiga-back ]] ; then
     git checkout production
     chown -R taiga:taiga /home/taiga
     sudo -u taiga virtualenv -p /usr/bin/python3 taiga
-    local_file='/home/taiga/taiga-back/settings/local.py'
-    wget https://raw.githubusercontent.com/threefoldtech/tf-images/master/circles/local.py -O $local_file
-    # Install dependencies and populate database
- #   cd /home/taiga/taiga-back
- #   virtualenv -p /usr/bin/python3 taiga
- #   /home/taiga/taiga-back/taiga/bin/pip3 install -r requirements.txt
+
 else
     echo taiga back dir is already exist, updating taiga-back repo now
     cd /home/taiga/taiga-back
@@ -28,14 +23,15 @@ else
 
 fi
 
+local_file='/home/taiga/taiga-back/settings/local.py'
+wget https://raw.githubusercontent.com/threefoldtech/tf-images/master/circles/local.py -O $local_file
+
 if [[ ! -d /home/taiga/taiga-front-dist ]] ; then
     cd /home/taiga
     git clone https://github.com/threefoldtech/Threefold-Circles-front-dist.git taiga-front-dist
     cd taiga-front-dist
     git checkout production
     git pull
-    taiga_front_conf='/home/taiga/taiga-front-dist/dist/conf.json'
-    wget https://raw.githubusercontent.com/threefoldtech/tf-images/master/circles/taiga-front-dist.conf -O $taiga_front_conf
 
 else
     echo taiga_front-dist is already exist, updating taiga-front repo now
@@ -43,8 +39,11 @@ else
     git stash
     git pull
 
-
 fi
+
+taiga_front_conf='/home/taiga/taiga-front-dist/dist/conf.json'
+wget https://raw.githubusercontent.com/threefoldtech/tf-images/master/circles/taiga-front-dist.conf -O $taiga_front_conf
+
 # Events installation
 
 if [[ ! -d /home/taiga/taiga-events ]]; then
