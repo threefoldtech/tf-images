@@ -6,10 +6,13 @@ docker build -t bishoyabdo/circles:latest .
 ### start docker container
 
 ```
-docker run -i -t  -p2204:22 -p804:80   -e PRIVATE_KEY='urkey'  -e THREEBOT_URL=https://login.staging.jimber.org \ 
--e OPEN_KYC_URL=https://openkyc.staging.jimber.org/verification/verify-sei -v ~/mytaiga/postgresdata:/var/lib/postgresql\ 
+docker run -i -t  -p2204:22 -p804:80  -v ~/mytaiga/postgresdata:/var/lib/postgresql -v ~/mytaiga/sshkey:/root/.ssh \
 -v ~/mytaiga/tiagahome:/home/taiga --name circles-test -e EMAIL_HOST=smtp.gmail.com -e EMAIL_HOST_PASSWORD=password\
 -e EMAIL_HOST_USER=no-reply@threefold.tech -e TAIGA_HOSTNAME=test-circles.threefold.me -e HTTP_PORT=80\ 
+-e PRIVATE_KEY="3bot private key" \ 
+-e FLASK_SECRET_KEY="flash secert" \ 
+-e THREEBOT_URL=https://login.staging.jimber.org \ 
+-e OPEN_KYC_URL=https://openkyc.staging.jimber.org/verification/verify-sei \
 -e SECRET_KEY=scret  -e SECRET_KEY=pass -e RESTIC_REPOSITORY=s3:https://s3.grid.tf/circles-test \
 -e RESTIC_PASSWORD=password -e AWS_ACCESS_KEY_ID=key_id  -e AWS_SECRET_ACCESS_KEY=key bishoyabdo/circles:latest  bash
 
@@ -22,21 +25,12 @@ docker run -i -t  -p2204:22 -p804:80   -e PRIVATE_KEY='urkey'  -e THREEBOT_URL=h
 
 - you should set all below env variables when create the container and use the domain naming instead ip address in TAIGA_HOSTNAME as below 
 
-- env variables are : SECRET_KEY , EMAIL_HOST, EMAIL_HOST_USER, EMAIL_HOST_PASSWORD, TAIGA_HOSTNAME, HTTP_PORT=80
+- env variables are : SECRET_KEY , EMAIL_HOST, EMAIL_HOST_USER, EMAIL_HOST_PASSWORD, TAIGA_HOSTNAME, HTTP_PORT, PRIVATE_KEY
+                    FLASK_SECRET, THREEBOT_URL, OPEN_KYC_URL     
 
 - also you need configure restic env variables : RESTIC_REPOSITORY AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY RESTIC_PASSWORD"
 
 - admin is create by default admin/123123 and to login admin account use https://staging.circles.threefold.me/admin/ 
-
-```
-container.py create -n 10.102.251.225 -iyocl 9Xk-WsnhkPi8c9 --clientsecret GjT \ 
--f https://hub.grid.tf/mikhaieb/bishoyabdo-circles-latest.flist \ 
--p '2222:22' -p '80:80' --name tiaga_test -envs SECRET_KEY=myscret -envs EMAIL_HOST=test@test.com \ 
--envs  RESTIC_REPOSITORY="s3:https://s3.grid.tf/taiga-test" -envs AWS_ACCESS_KEY_ID="myaccessid" \ 
--envs AWS_SECRET_ACCESS_KEY="myscret" -envs RESTIC_PASSWORD="mypass"
-
-```
-
 
 - create your ur https redirection in caddy server 
 
