@@ -1,7 +1,6 @@
 from .common import *
 import os
-import ipdb
-ipdb.set_trace()
+
 TAIGA_HOSTNAME = os.environ['TAIGA_HOSTNAME']
 secret_key = os.environ['SECRET_KEY']
 email_host = os.environ['EMAIL_HOST']
