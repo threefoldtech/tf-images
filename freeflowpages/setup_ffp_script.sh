@@ -122,14 +122,14 @@ ffp_files_prepare ()
 		common_file="/var/www/html/humhub/protected/config/common.php"
 		dynamic_file="/var/www/html/humhub/protected/config/dynamic.php"
 		htaccess_file="/var/www/html/humhub/.htaccess"
-		#wget https://raw.githubusercontent.com/freeflowpages/freeflow-flist/master/common.php -O $common_file
-		
+		wget https://raw.githubusercontent.com/freeflowpages/freeflow-flist/master/common.php -O $common_file
 		# fix env variables to appear in logs
-		sed -i "s|'logVars' => \['_GET', '_SERVER'\]|'logVars' => \['_GET'\]|g" $common_file
-
+		app_common_file="/var/www/html/humhub/protected/humhub/config/common.php"
+		sed -i "s|'logVars' => \['_GET', '_SERVER'\]|'logVars' => \['_GET'\]|g" $app_common_file
 		wget https://raw.githubusercontent.com/freeflowpages/freeflow-flist/master/dynamic.php -O $dynamic_file
 		[ -f /var/www/html/humhub/.htaccess.dist ] && mv /var/www/html/humhub/.htaccess.dist /var/www/html/humhub/.htaccess
 		wget https://raw.githubusercontent.com/freeflowpages/freeflow-flist/master/htaccess -O $htaccess_file
+		chown -R www-data:www-data /var/www/
 		# run migrate script incase humhub database is old and migrated
 		/usr/bin/php /var/www/html/humhub/protected/yii migrate/up --includeModuleMigrations=1
 		/usr/bin/php /var/www/html/humhub/protected/yii module/update-all

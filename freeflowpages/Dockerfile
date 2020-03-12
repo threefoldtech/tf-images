@@ -8,21 +8,30 @@ RUN apt-get install php-intl php-zip wget -y
 RUN apt-get install php-ldap php-apcu php-sqlite3 php-imagick imagemagick -y
 RUN apt-get install cron ssh telnet python3-pip -y
 RUN apt-get install net-tools iputils-ping vim curl tmux rsync git -y
-RUN apt-get install golang-go redis-server -y
+RUN apt-get install redis-server -y
 # install supervisor
 RUN pip3 install supervisor
 
-RUN set -ex;\
+ARG GOROOT=/usr/local/go
+ARG PATH=$GOROOT/bin:$PATH
+
+# install latest go then restic
+RUN set -ex; \
+   wget https://dl.google.com/go/go1.13.7.linux-amd64.tar.gz; \
+   tar -xvf go1.13.7.linux-amd64.tar.gz; \
+    mv go /usr/local; \
+    export PATH=$GOROOT/bin:$PATH ; \
+    echo "export PATH=$GOROOT/bin:$PATH" >>  ~/.profile ; \
     git clone https://github.com/restic/restic; \
-    cd restic ; \
+    cd restic; \
     go run build.go; \
     cp -p restic /usr/bin/restic; \
-    rm -rf restic; \
-    cd /etc/apache2/sites-available; \
-    rm 000-default.conf
+    rm -rf restic
 
 COPY freeflowpages.com.conf /etc/apache2/sites-available/freeflowpages.com.conf
+
 RUN set -ex ; \
+    rm /etc/apache2/sites-enabled/000-default.conf ; \
     a2ensite freeflowpages.com.conf; \
     a2enmod rewrite
 
