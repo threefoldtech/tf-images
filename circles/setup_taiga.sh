@@ -11,7 +11,7 @@ if [[ ! -d /home/taiga/taiga-back ]] ; then
     cd /home/taiga
     git clone https://github.com/threefoldtech/Threefold-Circles.git taiga-back
     cd taiga-back
-    git checkout production
+    git checkout $version
     chown -R taiga:taiga /home/taiga
     sudo -u taiga virtualenv -p /usr/bin/python3 taiga
 
@@ -30,7 +30,7 @@ if [[ ! -d /home/taiga/taiga-front-dist ]] ; then
     cd /home/taiga
     git clone https://github.com/threefoldtech/Threefold-Circles-front-dist.git taiga-front-dist
     cd taiga-front-dist
-    git checkout production
+    git checkout $version
     git pull
 
 else

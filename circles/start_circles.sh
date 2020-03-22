@@ -14,6 +14,10 @@ for var in  SECRET_KEY EMAIL_HOST EMAIL_HOST_USER EMAIL_HOST_PASSWORD TAIGA_HOST
         fi
     done
 
+[[ -z "${TAIGA_VERSION}" ]] &&  export TAIGA_VERSION=production
+
+export version=${TAIGA_VERSION}
+
 # prepare ssh
 chmod 400 -R /etc/ssh/
 mkdir -p /run/sshd
