@@ -18,8 +18,17 @@ if [[ ! -d /home/taiga/taiga-back ]] ; then
 else
     echo taiga back dir is already exist, updating taiga-back repo now
     cd /home/taiga/taiga-back
-    git stash
-    git pull
+    BRANCH=$(git branch | sed -nr 's/\*\s(.*)/\1/p')
+    if [ -z $BRANCH ] || [ $BRANCH = ${version} ]; then
+      git stash
+      git pull
+    else
+      echo "$BRANCH branch not correct change it to ${version} branch"
+      git reset --hard
+      git pull
+      git checkout ${version}
+      git pull
+    fi
 
 fi
 
@@ -36,9 +45,17 @@ if [[ ! -d /home/taiga/taiga-front-dist ]] ; then
 else
     echo taiga_front-dist is already exist, updating taiga-front repo now
     cd /home/taiga/taiga-front-dist
-    git stash
-    git pull
-
+    BRANCH=$(git branch | sed -nr 's/\*\s(.*)/\1/p')
+    if [ -z $BRANCH ] || [ $BRANCH = ${version} ]; then
+      git stash
+      git pull
+    else
+      echo "$BRANCH branch not correct change it to ${version} branch"
+      git reset --hard
+      git pull
+      git checkout ${version}
+      git pull
+    fi
 fi
 
 taiga_front_conf='/home/taiga/taiga-front-dist/dist/conf.json'
