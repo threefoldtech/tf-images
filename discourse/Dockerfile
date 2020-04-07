@@ -8,7 +8,7 @@ RUN git clone https://github.com/restic/restic \
     && go run build.go \
     && cp -p restic /usr/bin/restic \
     && rm -rf restic 
-RUN pip3 install uwsgi flask pynacl uwsgi requests flask_sessionstore
+RUN pip3 install uwsgi flask pynacl requests flask_sessionstore
 RUN pip3 install Werkzeug==0.16.0
 # install supervisor
 RUN pip3 install supervisor
