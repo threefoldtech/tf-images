@@ -32,13 +32,13 @@ RUN apt-get update -y \
     nano \
     python3 \
     python3-dev \
-    python3-pip;
+    python3-pip \
+    cron
 
 
 RUN apt-get remove libnice* -y
 
 RUN curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
-
 RUN apt install -y nodejs
 
 RUN cd / \
@@ -115,7 +115,20 @@ RUN apt-get install -y \
     nginx \
     python3 \
     python3-dev \
-    python3-pip
+    python3-pip \
+    curl \
+    vim \
+    ca-certificates
+
+RUN curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
+
+RUN apt install -y nodejs
+
+# install yran
+RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg > pubkey.gpg && sudo apt-key add pubkey.gpg && rm pubkey.gpg \
+&& echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list \
+&& apt update \
+&& apt install --no-install-recommends yarn
 
 RUN apt-get remove libnice* -y
 
@@ -133,6 +146,13 @@ RUN cd / \
     && cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr .. \
     && make \
     && sudo make install
+
+# install supervisor
+RUN pip3 install supervisor
+
+# install uwsgi
+RUN pip3 install uwsgi flask pynacl requests flask_sessionstore
+RUN pip3 install Werkzeug==0.16.0
 
 RUN mkdir -p /opt/janus/bin/
 
@@ -166,7 +186,7 @@ CMD pip3 install uwsgi
 
 ## Frontend
 RUN  git clone https://github.com/threefoldtech/freeflowconnect-frontend /frontend/
-WORKON /frontend
+WORkDIR /frontend
 CMD yarn install
 CMD yarn build
 CMD yarn lint

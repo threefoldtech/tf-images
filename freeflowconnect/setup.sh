@@ -23,7 +23,7 @@ if [[ ! -d /frontend ]] ; then
     yarn lint
 else
     echo Free Flow backend dir already exists, updating repo now
-    cd /backend
+    cd /frontend
     git stash
     git pull
     yarn install

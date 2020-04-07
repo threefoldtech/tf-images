@@ -5,14 +5,14 @@ export DEBIAN_FRONTEND=noninteractive
 
 echo "checking env variables was set correctly "
 
-for var in  SECRET_KEY EMAIL_HOST EMAIL_HOST_USER EMAIL_HOST_PASSWORD TAIGA_HOSTNAME HTTP_PORT PRIVATE_KEY  THREEBOT_URL OPEN_KYC_URL
-    do
-        if [ -z "${!var}" ]
-        then
-                 echo "$var not set, Please set it in creating your container"
-                 exit 1
-        fi
-    done
+#for var in  SECRET_KEY EMAIL_HOST EMAIL_HOST_USER EMAIL_HOST_PASSWORD TAIGA_HOSTNAME HTTP_PORT PRIVATE_KEY  THREEBOT_URL OPEN_KYC_URL
+#    do
+#        if [ -z "${!var}" ]
+#        then
+#                 echo "$var not set, Please set it in creating your container"
+#                 exit 1
+#        fi
+#    done
 
 # prepare ssh
 chmod 400 -R /etc/ssh/
@@ -25,7 +25,7 @@ if grep "10." /etc/resolv.conf ; then
   sed -i '/^nameserver 10./d' /etc/resolv.conf
 fi
 
-locale-gen en_US.UTF-8
+#locale-gen en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 
 env | grep -v "PATH\=" | grep -v "HOME\=" | grep -v "PWD\=" | grep -v "SHLVL\=" >> /etc/environment
@@ -36,7 +36,10 @@ bash /.setup.sh
 
 crontab /.all_cron
 
+mkdir -p /var/log/{ssh,janus,ff_connect,rabbitmq,cron}
+
 # start supervisord
+# need to check how to start frontend
 supervisord -c /etc/supervisor/supervisord.conf
 
 exec "$@"

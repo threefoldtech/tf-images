@@ -6,8 +6,8 @@ server {
     client_max_body_size 50M;
     charset utf-8;
 
-    access_log /var/logs/nginx.access.log;
-    error_log /var/logs/nginx.error.log;
+    access_log /var/logs/nginx/access.log;
+    error_log /var/logs/nginx/error.log;
 
     # Frontend
     location / {
