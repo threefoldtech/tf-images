@@ -5,14 +5,15 @@ export DEBIAN_FRONTEND=noninteractive
 
 echo "checking env variables was set correctly "
 
-#for var in  SECRET_KEY EMAIL_HOST EMAIL_HOST_USER EMAIL_HOST_PASSWORD TAIGA_HOSTNAME HTTP_PORT PRIVATE_KEY  THREEBOT_URL OPEN_KYC_URL
-#    do
-#        if [ -z "${!var}" ]
-#        then
-#                 echo "$var not set, Please set it in creating your container"
-#                 exit 1
-#        fi
-#    done
+for var in  THREE_BOT_CONNECT_URL
+    do
+        if [ -z "${!var}" ]
+        then
+                 echo "$var not set, Please set it in creating your container"
+                 exit 1
+        fi
+    done
+
 
 # prepare ssh
 chmod 400 -R /etc/ssh/
@@ -30,16 +31,17 @@ export LC_ALL=en_US.UTF-8
 
 env | grep -v "PATH\=" | grep -v "HOME\=" | grep -v "PWD\=" | grep -v "SHLVL\=" >> /etc/environment
 
+mkdir -p /var/log/{ssh,janus,ff_connect,cron,redis}
+
 # setup script
 echo starting Free Flow conenct setup script
 bash /.setup.sh
-
-crontab /.all_cron
-
-mkdir -p /var/log/{ssh,janus,ff_connect,rabbitmq,cron}
-
 # start supervisord
 # need to check how to start frontend
 supervisord -c /etc/supervisor/supervisord.conf
+crontab /.all_cron
+
+# add enty for redis host
+echo "127.0.0.1      redis" >> /etc/hosts
 
 exec "$@"

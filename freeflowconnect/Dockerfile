@@ -53,7 +53,7 @@ RUN cd / \
     && cd usrsctp \
     && ./bootstrap \
     && ./configure --prefix=/usr \
-    && make \
+    && make -j4 \
     && sudo make install
 
 RUN cd / \
@@ -63,7 +63,7 @@ RUN cd / \
     && mkdir build \
     && cd build \
     && cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr .. \
-    && make \
+    && make -j4 \
     && sudo make install
 
 RUN cd / \
@@ -71,14 +71,14 @@ RUN cd / \
     && cd libnice-0.1.16 \
     && ./autogen.sh \
     && ./configure --prefix=/usr \
-    && make && make install
+    && make -j4 && make install
 
 RUN  git clone https://github.com/threefoldtech/freeflowconnect_janus /janus-gateway/
 
 WORKDIR /janus-gateway/
 RUN ./autogen.sh
 RUN ./configure --prefix=/opt/janus --enable-javascript-es-module --disable-unix-sockets --disable-rabbitmq --disable-mqtt --disable-plugin-audiobridge --disable-plugin-echotest --disable-plugin-recordplay --disable-plugin-sip --disable-plugin-sipre --disable-plugin-nosip --disable-plugin-voicemail
-RUN make CFLAGS='-std=c99'
+RUN make CFLAGS='-std=c99' -j4
 RUN make install
 
 FROM ubuntu:18.04
@@ -118,7 +118,10 @@ RUN apt-get install -y \
     python3-pip \
     curl \
     vim \
-    ca-certificates
+    ca-certificates \
+    cron \
+    openssh-server \
+    redis-server
 
 RUN curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
 
@@ -180,16 +183,10 @@ COPY --from=builder /janus-gateway/html/* /janus-gateway/html/
 ## Backend
 RUN  git clone https://github.com/threefoldtech/freeflowconnect-backend /backend/
 
-WORKDIR /backend
-CMD pip3 install -r requirements.txt
 CMD pip3 install uwsgi
 
 ## Frontend
 RUN  git clone https://github.com/threefoldtech/freeflowconnect-frontend /frontend/
-WORkDIR /frontend
-CMD yarn install
-CMD yarn build
-CMD yarn lint
 
 # configure nginx
 RUN rm /etc/nginx/sites-enabled/default
@@ -201,4 +198,4 @@ COPY backup.sh /.backup.sh
 COPY all_cron /.all_cron
 
 RUN chmod +x /.*
-#ENTRYPOINT ["/.start.sh"]
+ENTRYPOINT ["/.start.sh"]
