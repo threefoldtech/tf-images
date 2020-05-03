@@ -19,7 +19,6 @@ change bishoyabdo to whatever image name.
     ```
     ssh git@167.172.153.0 -p222
     ``` 
-
 ## missing
 
 - itsyou.online (low prio)
@@ -37,11 +36,13 @@ change bishoyabdo to whatever image name.
     gitea    openssh
     
     ```
-## admin account 
+## initial setup 
 
- - is configured in initial setup when login to ROOT_RUL http://167.172.153.0:3000 as below 
+ - you can login to initial setup page by using ROOT_RUL http://167.172.153.0:3000 
+ - set `Database Type` PostgreSQL and set other configuration as env variables 
+ - set admin account as below
  ![admin](admin.png)
- 
+  - if you did not register admin account in init page, admin user will be the fist user registered   
  ## references 
  
  - gitea image is gitea/gitea:latest,  https://github.com/go-gitea/gitea
