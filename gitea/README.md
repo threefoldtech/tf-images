@@ -9,7 +9,7 @@ change bishoyabdo to whatever image name.
 # Running
 
 ```
- docker run -ti --rm -p 222:22 -p 3000:3000 -e POSTGRES_DB=gitea -e DB_TYPE=postgres -e DB_HOST=localhost:5432 -e DB_USER=postgres -e DB_PASSWORD=postgres -e APP_NAME=myrepos -e ROOT_URL=http://167.172.153.0:3000 -v /data:/data -v /data/postgres:/var/lib/postgresql/data bishoyabdo/gitea /bin/bash
+docker run -it -p 222:22 -p 3000:3000 -e pub_key="ssh-rsa AAAA" -e POSTGRES_DB=gitea -e DB_TYPE=postgres -e DB_HOST=localhost:5432 -e POSTGRES_USER=postgres  -e POSTGRES_PASSWORD=pass -e APP_NAME=myrepos -e ROOT_URL=http://localhost:3000   -v /data:/data -v /data/postgres:/var/lib/postgresql/data bishoyabdo/gitea
 ```
 
 ## ssh 
