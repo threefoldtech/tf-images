@@ -42,7 +42,10 @@ change bishoyabdo to whatever image name.
  - set `Database Type` PostgreSQL and set other configuration as env variables 
  - set admin account as below
  ![admin](admin.png)
-  - if you did not register admin account in init page, admin user will be the fist user registered   
+  - 
+  
+  
+  if you did not register admin account in init page, admin user will be the fist user registered   
  ## references 
  
  - gitea image is gitea/gitea:latest,  https://github.com/go-gitea/gitea

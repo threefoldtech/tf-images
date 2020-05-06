@@ -1,0 +1,7 @@
+#!/bin/bash
+set -x
+[[ -f ./setup ]] && source ./setup
+
+pushd /app/gitea > /dev/null
+    exec su-exec postgres /usr/local/bin/postgres -D /var/lib/postgresql/data
+popd
