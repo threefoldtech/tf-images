@@ -25,10 +25,10 @@ RUN     curl -sL https://deb.nodesource.com/setup_14.x | bash -  ; \
 	apt-get install nodejs -y
 
 COPY supervisor.conf /etc/supervisor/supervisord.conf
-COPY start_tfwebserver.sh /start_tfwebserver.sh
+COPY start_conscious_internet.sh /start_conscious_internet.sh
 
-RUN chmod  +x  /start_tfwebserver.sh
-ENTRYPOINT ["/start_tfwebserver.sh" ]
+RUN chmod  +x  /start_conscious_internet.sh
+ENTRYPOINT ["/start_conscious_internet.sh" ]
 
 # to support zosv1 , can removed later
 COPY startup.toml /.startup.toml

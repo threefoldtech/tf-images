@@ -3,6 +3,6 @@ name = "bash"
 running_delay = -1
 [startup.setup.args]
 script = """
-./start_tfwebserver.sh
+./start_conscious_internet.sh
 """
 
