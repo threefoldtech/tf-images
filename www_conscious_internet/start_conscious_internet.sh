@@ -15,6 +15,8 @@ for var in SEND_GRID_KEY SUPPORT_EMAIL_FROM SUPPORT_EMAIL_TO WEBHOOK_SECRET
 mkdir -p /run/sshd
 [ -d /root/.ssh/ ] || mkdir /root/.ssh
 
+[[ -z "${CONSCIOUS_INTERNET_BRANCH}" ]] &&  export CONSCIOUS_INTERNET_BRANCH=development
+
 export DEST=/opt
 
 if [ -d "$DEST/www_conscious_internet" ] ; then

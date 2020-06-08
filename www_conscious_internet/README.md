@@ -9,7 +9,7 @@ change bishoyabdo to whatever image name.
 # Running
 
 ```
-docker run -it --name consciousinternet  -e SEND_GRID_KEY=secret  -e SUPPORT_EMAIL_FROM=urmail -e SUPPORT_EMAIL_TO=urmail -e WEBHOOK_SECRET=68dggg -p80:80 bishoyabdo/consciousinternet:latest bash
+docker run -it --name consciousinternet -e CONSCIOUS_INTERNET_BRANCH=staging -e SEND_GRID_KEY=secret  -e SUPPORT_EMAIL_FROM=urmail -e SUPPORT_EMAIL_TO=urmail -e WEBHOOK_SECRET=68dggg -p80:80 bishoyabdo/consciousinternet:latest bash
 ```
 
 -  [start_conscious_internet.sh](start_conscious_internet.sh) script manage all services by supervisord
