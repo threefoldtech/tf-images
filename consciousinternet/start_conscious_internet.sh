@@ -36,6 +36,8 @@ else
     cd  $DEST/www_conscious_internet/public
     git clone "https://github.com/threefoldfoundation/data_threefold_projects_friends"  -b  master threefold
 fi
+cd $DEST/www_conscious_internet/
+bash build.sh
 
 mkdir /var/log/{conscious_internet,ssh}/ -p
 supervisord -c /etc/supervisor/supervisord.conf
