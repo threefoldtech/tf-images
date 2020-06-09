@@ -3,12 +3,11 @@ FROM ubuntu:18.04
 ARG DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update ; \
-    apt-get install -y  curl git tmux ; \
-    apt-get install -y python3 python3-pip python3-dev ; \
-    apt-get install -y sudo openssh-server vim net-tools
+    apt-get install -y curl git supervisor ; \
+    apt-get install -y openssh-server vim net-tools iputils-ping
 
 # install supervisor
-RUN pip3 install supervisor
+#RUN pip3 install supervisor
 
 # install crystal-lang.org
 
