@@ -3,7 +3,7 @@ FROM ubuntu:18.04
 ARG DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update ; \
-    apt-get install -y curl git supervisor ; \
+    apt-get install -y curl git supervisor gnupg; \
     apt-get install -y openssh-server vim net-tools iputils-ping
 
 # install supervisor

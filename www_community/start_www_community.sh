@@ -14,7 +14,7 @@ for var in SEND_GRID_KEY SUPPORT_EMAIL_FROM SUPPORT_EMAIL_TO WEBHOOK_SECRET
 [ -d /etc/ssh/ ] && chmod 400 -R /etc/ssh/
 mkdir -p /run/sshd
 [ -d /root/.ssh/ ] || mkdir /root/.ssh
-[[ -z "${AMBASSADORS_BRANCH}" ]] &&  export AMBASSADORS_BRANCH=development
+[[ -z "${COMMUNITY_BRANCH}" ]] &&  export COMMUNITY_BRANCH=development
 
 export DEST=/opt
 if [ -d "$DEST/www_community" ] ; then
@@ -24,7 +24,7 @@ if [ -d "$DEST/www_community" ] ; then
 else
     mkdir -p $DEST
     cd $DEST
-    git clone "https://github.com/threefoldfoundation/www_community"  -b ${AMBASSADORS_BRANCH} www_community
+    git clone "https://github.com/threefoldfoundation/www_community"  -b ${COMMUNITY_BRANCH} www_community
 fi
 
 if [ -d "$DEST/www_community/public/threefold" ] ; then
