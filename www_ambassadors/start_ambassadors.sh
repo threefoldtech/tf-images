@@ -17,28 +17,28 @@ mkdir -p /run/sshd
 [[ -z "${AMBASSADORS_BRANCH}" ]] &&  export AMBASSADORS_BRANCH=development
 
 export DEST=/opt
-if [ -d "$DEST/www_ambassadors" ] ; then
-    echo " - www_ambassadors DIR ALREADY THERE, pulling it"
-    cd $DEST/www_ambassadors
+if [ -d "$DEST/www_community" ] ; then
+    echo " - www_community DIR ALREADY THERE, pulling it"
+    cd $DEST/www_community
     git pull
 else
     mkdir -p $DEST
     cd $DEST
-    git clone "https://github.com/threefoldfoundation/www_ambassadors"  -b ${AMBASSADORS_BRANCH} www_ambassadors
+    git clone "https://github.com/threefoldfoundation/www_community"  -b ${AMBASSADORS_BRANCH} www_community
 fi
 
-if [ -d "$DEST/www_ambassadors/public/threefold" ] ; then
+if [ -d "$DEST/www_community/public/threefold" ] ; then
     echo " - threefold DIR ALREADY THERE, pulling it"
-    cd $DEST/www_ambassadors/public/threefold
+    cd $DEST/www_community/public/threefold
     git pull
 else
-    mkdir -p $DEST/www_ambassadors/public/threefold
-    cd  $DEST/www_ambassadors/public
+    mkdir -p $DEST/www_community/public/threefold
+    cd  $DEST/www_community/public
     git clone "https://github.com/threefoldfoundation/data_threefold_projects_friends"  -b  master threefold
 fi
-cd $DEST/www_ambassadors/
+cd $DEST/www_community/
 bash build.sh
 
-mkdir /var/log/{ambassadors,ssh}/ -p
+mkdir /var/log/{www_community,ssh}/ -p
 supervisord -c /etc/supervisor/supervisord.conf
 exec "$@"

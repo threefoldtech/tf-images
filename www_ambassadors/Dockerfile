@@ -23,10 +23,10 @@ RUN curl -sL https://deb.nodesource.com/setup_14.x | bash -  ; \
 	apt-get install nodejs -y
 
 COPY supervisor.conf /etc/supervisor/supervisord.conf
-COPY start_ambassadors.sh /start_ambassadors.sh
+COPY start_www_community.sh /start_www_community.sh
 
-RUN chmod  +x  /start_ambassadors.sh
-ENTRYPOINT ["/start_ambassadors.sh" ]
+RUN chmod  +x  /start_www_community.sh
+ENTRYPOINT ["/start_www_community.sh" ]
 
 # to support zosv1 , can removed later
 COPY startup.toml /.startup.toml
