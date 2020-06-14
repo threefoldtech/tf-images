@@ -30,7 +30,12 @@
 - flist https://hub.grid.tf/mikhaieb/bishoyabdo-wordpress-latest.flist
 ## Gitea
 - Dockerfile info: [gitea](./gitea/README.md)
-- flist https://hub.grid.tf/mikhaieb/bishoyabdo-gitea-latest.flist
+- flist https://hub.grid.tf/tf-official-apps/gitea-latest.flist
+
+## Ubuntu
+- Ubuntu 18.04 flist : https://hub.grid.tf/tf-bootable/3bot-ubuntu-18.04.flist
+- Ubuntu 19.10 flist : https://hub.grid.tf/tf-bootable/3bot-ubuntu-19.10.flist
+- Ubuntu 20.04 flist : https://hub.grid.tf/tf-bootable/3bot-ubuntu-20.04.flist
 
 ## CRM
 - Dockerfile info: [crm](./crm/README.md)
