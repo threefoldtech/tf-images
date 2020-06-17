@@ -36,7 +36,11 @@ if [ -d "$DEST/www_conscious_internet/public/threefold" ] ; then
 else
     mkdir -p $DEST/www_conscious_internet/public/threefold
     cd  $DEST/www_conscious_internet/public
-    git clone "https://github.com/threefoldfoundation/data_threefold_projects_friends"  -b  master threefold
+    DATA_REPO_BRANCH=master
+    if [[ "$CONSCIOUS_INTERNET_BRANCH" == "production" ]]; then
+	    DATA_REPO_BRANCH=production
+    fi
+    git clone "https://github.com/threefoldfoundation/data_threefold_projects_friends"  -b  ${DATA_REPO_BRANCH} threefold
 fi
 cd $DEST/www_conscious_internet/
 bash build.sh

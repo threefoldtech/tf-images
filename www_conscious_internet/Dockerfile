@@ -24,6 +24,12 @@ RUN curl -sSL https://dist.crystal-lang.org/apt/setup.sh |  bash ; \
 RUN     curl -sL https://deb.nodesource.com/setup_14.x | bash -  ; \
 	apt-get install nodejs -y
 
+RUN apt remove crystal -y
+
+RUN wget https://github.com/crystal-lang/crystal/releases/download/0.34.0/crystal_0.34.0-1_amd64.deb
+RUN dpkg -i crystal_0.34.0-1_amd64.deb && rm crystal_0.34.0-1_amd64.deb
+
+
 COPY supervisor.conf /etc/supervisor/supervisord.conf
 COPY start_conscious_internet.sh /start_conscious_internet.sh
 
