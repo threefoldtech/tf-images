@@ -32,10 +32,17 @@
 - Dockerfile info: [gitea](./gitea/README.md)
 - flist https://hub.grid.tf/tf-official-apps/gitea-latest.flist
 
-## Ubuntu
-- Ubuntu 18.04 flist : https://hub.grid.tf/tf-bootable/3bot-ubuntu-18.04.flist
-- Ubuntu 19.10 flist : https://hub.grid.tf/tf-bootable/3bot-ubuntu-19.10.flist
-- Ubuntu 20.04 flist : https://hub.grid.tf/tf-bootable/3bot-ubuntu-20.04.flist
+## Ubuntu 18
+- Dockerfile info: [Ubuntu 18](./ubuntu_18/README.md)
+- flist : https://hub.grid.tf/tf-bootable/3bot-ubuntu-18.04.flist
+
+## Ubuntu 19
+- Dockerfile info: [Ubuntu 19](./ubuntu_19/README.md)
+- flist : https://hub.grid.tf/tf-bootable/3bot-ubuntu-19.10.flist
+
+## Ubuntu 20 
+- Dockerfile info: [Ubuntu 20 ](./ubuntu_20/README.md)
+- flist : https://hub.grid.tf/tf-bootable/3bot-ubuntu-20.04.flist
 
 ## CRM
 - Dockerfile info: [crm](./crm/README.md)
