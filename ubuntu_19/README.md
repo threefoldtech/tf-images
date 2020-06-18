@@ -16,4 +16,4 @@ ssh roo@{CONTAINER_IP}
 ```
 
 ## flist
-https://hub.grid.tf/tf-bootable/3bot-ubuntu-18.04.flist
+https://hub.grid.tf/tf-bootable/3bot-ubuntu-19.10.flist
