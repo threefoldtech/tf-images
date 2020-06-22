@@ -131,7 +131,7 @@ ffp_files_prepare ()
 		wget https://raw.githubusercontent.com/freeflowpages/freeflow-flist/master/htaccess -O $htaccess_file
 		chown -R www-data:www-data /var/www/
 		# run migrate script incase humhub database is old and migrated
-		/usr/bin/php /var/www/html/humhub/protected/yii migrate/up --includeModuleMigrations=1
+		/usr/bin/php /var/www/html/humhub/protected/yii migrate/up --includeModuleMigrations=1 --interactive=0
 		/usr/bin/php /var/www/html/humhub/protected/yii module/update-all
         }
 
