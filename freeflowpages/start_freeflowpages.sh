@@ -61,6 +61,11 @@ sed -i "s|our_aws_secret_key|${AWS_SECRET_ACCESS_KEY}|g" /.backup.sh
 sed -i "s|our_restic_repository|${RESTIC_REPOSITORY}|g" /.backup.sh
 sed -i "s|our_restic_password|${RESTIC_PASSWORD}|g" /.backup.sh
 
+# stop backup incase staging one
+if [[ "$threebot_stag" == "True" ]] || [ "$threebot_stag" = "true" ] ; then
+	sed -i '/backup.sh/d' /.all_cron
+fi
+	
 crontab /.all_cron
 
 

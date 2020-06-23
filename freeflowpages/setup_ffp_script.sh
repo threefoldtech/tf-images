@@ -80,10 +80,6 @@ modules_themes ()
 
         else
 
-            echo "disable debug mode in production by disabling it from index.php file"
-            cd /var/www/html/humhub
-            sed -i "s|defined('YII_DEBUG') or define('YII_DEBUG', true);||g" index.php
-            sed -i "s|defined('YII_ENV') or define('YII_ENV', 'dev');||g" index.php
             echo "Please verify if you need a 3bot login modules for staging only set it to be True, now installing production one .... "
             if [ ! -d /var/www/html/humhub/protected/modules/threebot_login ];then
                 cd /var/www/html/humhub/protected/modules/
@@ -122,17 +118,21 @@ ffp_files_prepare ()
 		common_file="/var/www/html/humhub/protected/config/common.php"
 		dynamic_file="/var/www/html/humhub/protected/config/dynamic.php"
 		htaccess_file="/var/www/html/humhub/.htaccess"
-		wget https://raw.githubusercontent.com/freeflowpages/freeflow-flist/master/common.php -O $common_file
+		wget https://raw.githubusercontent.com/threefoldtech/tf-images/master/freeflowpages/common.php -O $common_file
 		# fix env variables to appear in logs
 		app_common_file="/var/www/html/humhub/protected/humhub/config/common.php"
 		sed -i "s|'logVars' => \['_GET', '_SERVER'\]|'logVars' => \['_GET'\]|g" $app_common_file
-		wget https://raw.githubusercontent.com/freeflowpages/freeflow-flist/master/dynamic.php -O $dynamic_file
+		wget https://raw.githubusercontent.com/threefoldtech/tf-images/master/freeflowpages/dynamic.php -O $dynamic_file
 		[ -f /var/www/html/humhub/.htaccess.dist ] && mv /var/www/html/humhub/.htaccess.dist /var/www/html/humhub/.htaccess
-		wget https://raw.githubusercontent.com/freeflowpages/freeflow-flist/master/htaccess -O $htaccess_file
+		wget https://raw.githubusercontent.com/threefoldtech/tf-images/master/freeflowpages/htaccess -O $htaccess_file
 		chown -R www-data:www-data /var/www/
 		# run migrate script incase humhub database is old and migrated
 		/usr/bin/php /var/www/html/humhub/protected/yii migrate/up --includeModuleMigrations=1 --interactive=0
 		/usr/bin/php /var/www/html/humhub/protected/yii module/update-all
+
+            	echo "disable debug mode by disabling it from index.php file"
+            	sed -i "s|defined('YII_DEBUG') or define('YII_DEBUG', true);||g" /var/www/html/humhub/index.php
+            	sed -i "s|defined('YII_ENV') or define('YII_ENV', 'dev');||g" /var/www/html/humhub/index.php
         }
 
 if [ -f /var/www/html/humhub/protected/humhub/config/common.php ]; then
