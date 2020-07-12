@@ -1,6 +1,5 @@
 #!/bin/sh
-set -x
-
+set -xe
 
 if [ "${USER}" != "git" ]; then
     # rename user
@@ -40,6 +39,9 @@ else
         chown git:git /data/git/.ssh/authorized_keys
 
 fi
+
+cd /app/gitea && /app/gitea/gitea cert --host $DOMAIN && chown -R git:git /app/gitea                                                                                                                                  
+chown -R git:git /data/gitea
 
 if [ $# -gt 0 ]; then
     exec "$@"

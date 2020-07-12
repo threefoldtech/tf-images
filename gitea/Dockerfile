@@ -1,6 +1,6 @@
-FROM  gitea/gitea:latest
-
-RUN apk update &&  apk upgrade && apk add --no-cache supervisor openssh bash dcron curl wget rsync ca-certificates
+FROM  threefolddev/gitea_3bot
+#ARG LLVM_CONFIG='/usr/lib/llvm8/bin/llvm-config'
+RUN apk update &&  apk upgrade && apk add --no-cache supervisor openssh bash dcron curl wget rsync ca-certificates openssl
 # alpine includes "postgres" user/group in base install
 #   /etc/passwd:22:postgres:x:70:70::/var/lib/postgresql:/bin/sh
 #   /etc/group:34:postgres:x:70:
@@ -54,7 +54,7 @@ RUN set -ex \
 		libxml2-dev \
 		libxslt-dev \
 		linux-headers \
-		llvm9-dev clang g++ \
+		llvm-dev clang g++ \
 		make \
 #		openldap-dev \
 		openssl-dev \
@@ -158,6 +158,7 @@ RUN mkdir -p /etc/s6/postgres
 COPY root/opt/postgres_s6 /etc/s6/postgres
 EXPOSE 5432
 RUN chmod +x -R /opt/bin/ /etc/s6/postgres
+COPY templ_app.ini /etc/templates/app.ini
 COPY start_gitea.sh /start_gitea.sh
 RUN chmod  +x  /start_gitea.sh
 ENTRYPOINT ["/start_gitea.sh" ]
