@@ -1,6 +1,6 @@
 FROM  threefolddev/gitea_3bot
 #ARG LLVM_CONFIG='/usr/lib/llvm8/bin/llvm-config'
-RUN apk update &&  apk upgrade && apk add --no-cache supervisor openssh bash dcron curl wget rsync ca-certificates openssl
+RUN apk update &&  apk upgrade && apk add --no-cache openssh bash dcron curl wget rsync ca-certificates openssl nginx
 # alpine includes "postgres" user/group in base install
 #   /etc/passwd:22:postgres:x:70:70::/var/lib/postgresql:/bin/sh
 #   /etc/group:34:postgres:x:70:
@@ -152,13 +152,20 @@ VOLUME /var/lib/postgresql/data
 EXPOSE 5432
 #CMD ["postgres"]
 
-COPY supervisor.conf /etc/supervisor/supervisord.conf
+
+#nginx 
+
+RUN mkdir -p /etc/nginx /run/nginx   /etc/nginx/conf.d
+
+COPY nginx-app.conf  /etc/templates/default.conf
 COPY root/opt/bin /opt/bin
 RUN mkdir -p /etc/s6/postgres
+RUN mkdir -p /etc/s6/nginx
 COPY root/opt/postgres_s6 /etc/s6/postgres
+COPY root/opt/nginx_s6 /etc/s6/nginx
+
 EXPOSE 5432
-RUN chmod +x -R /opt/bin/ /etc/s6/postgres
-COPY templ_app.ini /etc/templates/app.ini
+RUN chmod +x -R /opt/bin/ /etc/s6/postgres /etc/s6/nginx
 COPY start_gitea.sh /start_gitea.sh
 RUN chmod  +x  /start_gitea.sh
 ENTRYPOINT ["/start_gitea.sh" ]

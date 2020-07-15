@@ -1,0 +1,10 @@
+#!/bin/bash
+set -x
+mkdir -p /var/log/nginx
+if ! [ -f /etc/nginx/conf.d/cert.pem ] &&  ! [ -f /etc/nginx/conf.d/key.pem ] ;then
+	[ -d /etc/nginx/conf.d ] || mkdir /etc/nginx/conf.d
+	cd /etc/nginx/conf.d
+	openssl req -subj '/CN=localhost' -x509 -newkey rsa:4096 -nodes -keyout key.pem -out cert.pem -days 365
+fi
+
+nginx -g 'daemon off;'
