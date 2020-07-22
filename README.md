@@ -47,3 +47,8 @@
 ## CRM
 - Dockerfile info: [crm](./crm/README.md)
 - flist : pending in issue https://github.com/Incubaid/crm/issues/159
+
+## publishingtools
+
+- Dockerfile info: [publishingtools](./publishingtools/README.md)
+- flist: <https://hub.grid.tf/ahmed_hanafy_1/ahmedhanafy725-pubtools-https.flist>
