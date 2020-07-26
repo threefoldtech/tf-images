@@ -1,4 +1,4 @@
-### Details for CouchDB solution / flist herein### 
+### Details for CouchDB solution / flist herein
 
 **flist = https://hub.grid.tf/arehman/v2-couchdb-0-2.flist**
 
