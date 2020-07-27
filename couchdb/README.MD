@@ -1,4 +1,4 @@
-### Details for CouchDB solution / flist herein### 
+### Details for CouchDB solution / flist herein
 
 **flist = https://hub.grid.tf/arehman/v2-couchdb-0-2.flist**
 
@@ -25,7 +25,9 @@
 
 ## How to verify ?
 
-http://172.17.10.35:5984/_utils   (replace 172.17.10.35 with your container IP, port remains same though)
+Note : (Replace 172.17.10.35 with your container IP, port remains same though)
+
+http://172.17.10.35:5984/_utils   
 
 Login with DB admin and password and go to http://172.17.10.35:5984/_utils/#/verifyinstall
 

@@ -1,5 +1,5 @@
 # flist
-	https://hub.grid.tf/bishoy.3bot/threefolddev-discourse_all_in_one.flist
+	 https://hub.grid.tf/bishoy.3bot/threefolddev-discourse_all_in_one-latest.flist
 
 # Building
 
