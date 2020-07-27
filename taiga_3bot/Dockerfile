@@ -41,7 +41,6 @@ RUN curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
 RUN rm /etc/nginx/sites-enabled/default
 COPY nginx_conf  /etc/nginx/conf.d/taiga.conf 
 COPY nginx_conf  /tmp/taiga.conf 
-COPY start_taiga.sh /.start_circles.sh
 COPY setup_taiga.sh /.setup_taiga.sh
 COPY prepare_taiga.sh /.prepare_taiga.sh
 COPY supervisor.conf /etc/supervisor/supervisord.conf

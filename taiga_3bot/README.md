@@ -3,6 +3,10 @@
 ```
 docker build -t threefolddev/taiga_all_in_one .
 ```
+### Entrypoint 
+```
+/.setup_taiga.sh
+```
 ### start docker container
 
 ```
