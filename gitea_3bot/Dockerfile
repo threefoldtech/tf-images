@@ -157,7 +157,6 @@ EXPOSE 5432
 
 RUN mkdir -p /etc/nginx /run/nginx   /etc/nginx/conf.d
 
-COPY nginx-app.conf  /etc/templates/default.conf
 COPY root/opt/bin /opt/bin
 RUN mkdir -p /etc/s6/postgres
 RUN mkdir -p /etc/s6/nginx
@@ -169,5 +168,3 @@ RUN chmod +x -R /opt/bin/ /etc/s6/postgres /etc/s6/nginx
 COPY start_gitea.sh /start_gitea.sh
 RUN chmod  +x  /start_gitea.sh
 ENTRYPOINT ["/start_gitea.sh" ]
-
-
