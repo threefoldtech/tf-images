@@ -42,10 +42,11 @@ RUN rm /etc/nginx/sites-enabled/default
 COPY nginx_conf  /etc/nginx/conf.d/taiga.conf 
 COPY nginx_conf  /tmp/taiga.conf 
 COPY setup_taiga.sh /.setup_taiga.sh
+COPY start_taiga.sh /.start_taiga.sh
 COPY prepare_taiga.sh /.prepare_taiga.sh
 COPY supervisor.conf /etc/supervisor/supervisord.conf
 COPY postgres_entry.sh /.postgres_entry.sh
 COPY rabbitmq.sh  /.rabbitmq.sh 
 RUN chmod +x /.*
-ENTRYPOINT ["/.start_circles.sh"]
+ENTRYPOINT ["/.start_taiga.sh"]
 

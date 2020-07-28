@@ -115,5 +115,4 @@ fi
 
 sed -i "s/TAIGA_HOSTNAME/$TAIGA_HOSTNAME/g" /etc/nginx/conf.d/taiga.conf
 sudo nginx -t
-
-exec "$@"
+tail -f /dev/null
