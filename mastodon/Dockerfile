@@ -133,13 +133,14 @@ RUN cd ~ && \
 	OTP_SECRET=precompile_placeholder SECRET_KEY_BASE=precompile_placeholder rails assets:precompile && \
 	yarn cache clean
 
-# Set the work dir and the container entry point
-WORKDIR /opt/mastodon
-#ENTRYPOINT ["/tini", "--"]
+USER root
 EXPOSE 3000 4000
-RUN [[ -d  /var/log ]] || mkdir -p  /var/log
-RUN mkdir -p /var/log/{ssh,postgres,redis,mastodon-web,streaming,sidekiq,nginx,rabbitmq,cron}
+RUN echo 'mastodon ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+RUN [ -d  /var/log ] || mkdir -p  /var/log
 RUN rm /etc/nginx/sites-available/default
 RUN rm /etc/nginx/sites-enabled/default
 COPY mastodon.conf /etc/nginx/sites-available/mastodon
+COPY start_mastodon.sh /start_mastodon.sh
+RUN chmod +x /start_mastodon.sh
+#ENTRYPOINT ["/start_mastodon.sh"]
 
