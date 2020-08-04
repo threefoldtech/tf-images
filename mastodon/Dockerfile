@@ -145,5 +145,5 @@ COPY mastodon.conf /etc/nginx/sites-available/mastodon
 COPY start_mastodon.sh /start_mastodon.sh
 
 RUN chmod +x /start_mastodon.sh
-#ENTRYPOINT ["/start_mastodon.sh"]
+ENTRYPOINT ["/start_mastodon.sh"]
 

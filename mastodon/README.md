@@ -1,3 +1,22 @@
+# Building
+
+in the taiga directory
+
+`docker build -t threefolddev/mastodon .`
+
+## Running
+
+```bash
+docker run -it --name masstodon -e DOMAIN=64.227.1.81 -e DB_USER=mastodon -e DB_NAME=mastodon_production  \ 
+-e SMTP_SERVER=smtp.sendgrid.net -e SMTP_PORT=587 \ 
+-e SMTP_LOGIN=apikey -e SMTP_PASSWORD=urpass -e SMTP_FROM_ADDRESS=urlmal \
+ -p80:80 -p443:443 threefolddev/mastodon
+```
+
+## Flist
+
+
+
 ![Mastodon](https://i.imgur.com/NhZc40l.png)
 ========
 
