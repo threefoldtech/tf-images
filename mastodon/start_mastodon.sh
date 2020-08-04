@@ -30,7 +30,18 @@ locale-gen en_US.UTF-8 || true
 /etc/init.d/postgresql start
 /usr/bin/redis-server  --daemonize yes
 su postgres -c 'psql -c "CREATE USER $DB_USER CREATEDB;"' || true
-su - mastodon -c "PATH="${PATH}:/opt/ruby/bin:/opt/node/bin"; RAILS_ENV=production bundle exec rails  db:setup ;RAILS_ENV=production bundle exec rails assets:precompile"
+su - mastodon -c \
+"PATH="${PATH}:/opt/ruby/bin:/opt/node/bin";\
+SECRET_KEY_BASE=$(bundle exec rake secret) ; \
+echo $SECRET_KEY_BASE ; \
+OTP_SECRET=$(bundle exec rake secret);\
+echo $OTP_SECRET ; \
+PAPERCLIP_SECRET=$(bundle exec rake secret) ; \
+echo $(bundle exec rake mastodon:webpush:generate_vapid_key); \
+ RAILS_ENV=production bundle exec rails  db:setup ; \
+ RAILS_ENV=production bundle exec rails assets:precompile;\
+
+ "
 
 [[ -f /etc/nginx/sites-enabled/default ]] && rm /etc/nginx/sites-enabled/default
 
