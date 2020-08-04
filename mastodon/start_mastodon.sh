@@ -1,3 +1,4 @@
+#!/bin/bash
 set -ex
 echo "checking env variables was set correctly "
 
@@ -5,14 +6,6 @@ echo "checking env variables was set correctly "
 [ -d /etc/ssh/ ] && chmod 400 -R /etc/ssh/
 mkdir -p /run/sshd
 [ -d /root/.ssh/ ] || mkdir /root/.ssh
-
-for var in DISCOURSE_VERSION RAILS_ENV DISCOURSE_HOSTNAME DISCOURSE_SMTP_USER_NAME DISCOURSE_SMTP_ADDRESS DISCOURSE_DEVELOPER_EMAILS DISCOURSE_SMTP_PORT THREEBOT_PRIVATE_KEY FLASK_SECRET_KEY THREEBOT_URL OPEN_KYC_URL
-    do
-        if [ -z "${!var}" ]
-        then
-                 echo "$var not set, Please set it in creating your container"
-        fi
-    done
 
 mkdir -p /var/log/{ssh,postgres,redis,web,streaming,sidekiq,nginx,rabbitmq,cron}
 # prepare postgres
@@ -29,19 +22,45 @@ locale-gen en_US.UTF-8 || true
 # just start postgres to create intial db
 /etc/init.d/postgresql start
 /usr/bin/redis-server  --daemonize yes
-su postgres -c 'psql -c "CREATE USER $DB_USER CREATEDB;"' || true
-su - mastodon -c \
-"PATH="${PATH}:/opt/ruby/bin:/opt/node/bin";\
-SECRET_KEY_BASE=$(bundle exec rake secret) ; \
-echo $SECRET_KEY_BASE ; \
-OTP_SECRET=$(bundle exec rake secret);\
-echo $OTP_SECRET ; \
-PAPERCLIP_SECRET=$(bundle exec rake secret) ; \
-echo $(bundle exec rake mastodon:webpush:generate_vapid_key); \
- RAILS_ENV=production bundle exec rails  db:setup ; \
- RAILS_ENV=production bundle exec rails assets:precompile;\
+su postgres -c "psql -c 'CREATE USER $DB_USER CREATEDB;'" || true
 
- "
+cd /opt/mastodon
+#export PATH=${PATH}:/opt/ruby/bin:/opt/node/bin;\
+export SECRET_KEY_BASE=$(bundle exec rake secret) ; \
+export OTP_SECRET=$(bundle exec rake secret);\
+export PAPERCLIP_SECRET=$(bundle exec rake secret) ; \
+TWO_VAPID_KEYS=$(bundle exec rake mastodon:webpush:generate_vapid_key); 
+export `echo $TWO_VAPID_KEYS | awk ' {print $1}'`
+export `echo $TWO_VAPID_KEYS | awk ' {print $2}'`
+if ! [[ -f /opt/mastodon/.env.production ]];then
+cat <<EOF > /opt/mastodon/.env.production
+LOCAL_DOMAIN=$DOMAIN
+SINGLE_USER_MODE=true
+SECRET_KEY_BASE=$SECRET_KEY_BASE
+	OTP_SECRET=$OTP_SECRET
+	VAPID_PRIVATE_KEY=$VAPID_PRIVATE_KEY
+	VAPID_PUBLIC_KEY=$VAPID_PUBLIC_KEY
+	DB_HOST=/var/run/postgresql
+	DB_PORT=5432
+	DB_NAME=$DB_NAME
+	DB_USER=$DB_USER
+	DB_PASS=
+	REDIS_HOST=localhost
+	REDIS_PORT=6379
+	REDIS_PASSWORD=
+	SMTP_SERVER=$SMTP_SERVER
+	SMTP_PORT=$SMTP_PORT
+	SMTP_LOGIN=$SMTP_LOGIN
+	SMTP_PASSWORD=$SMTP_PASSWORD
+	SMTP_FROM_ADDRESS=$SMTP_FROM_ADDRESS
+SMTP_AUTH_METHOD=none
+SMTP_OPENSSL_VERIFY_MODE=none
+EOF
+fi
+
+cat /opt/mastodon/.env.production
+find /opt/mastodon ! -user mastodon -exec chown mastodon:mastodon {} \+ 
+sudo -u mastodon  bash -c "export PATH=${PATH}:/opt/ruby/bin:/opt/node/bin; RAILS_ENV=production bundle exec rails  db:setup ; RAILS_ENV=production bundle exec rails assets:precompile"
 
 [[ -f /etc/nginx/sites-enabled/default ]] && rm /etc/nginx/sites-enabled/default
 
@@ -51,7 +70,11 @@ if ! [ -f /etc/nginx/conf.d/cert.pem ] &&  ! [ -f /etc/nginx/conf.d/key.pem ] ;t
 	openssl req -subj '/CN=localhost' -x509 -newkey rsa:4096 -nodes -keyout key.pem -out cert.pem -days 365
 
 fi
-sed -i "s/DOMAIN/$LOCAL_DOMAIN/g" /etc/nginx/sites-available/mastodon
+sed -i "s/DOMAIN/$DOMAIN/g" /etc/nginx/sites-available/mastodon 
+
+[[ -L /etc/nginx/sites-enabled/mastodon ]] || ln -s /etc/nginx/sites-available/mastodon /etc/nginx/sites-enabled/mastodon
+
+[[ -d /var/cache/nginx ]] || mkdir /var/cache/nginx -p
 sudo nginx -t
 
 # stop postgres to start it using supervisord
