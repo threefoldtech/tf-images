@@ -55,5 +55,5 @@
 
 ## peertube
 
-- Dockerfile info: [publishingtools](./peertube/README.md)
+- Dockerfile info: [peertube](./peertube/README.md)
 - flist: <https://hub.grid.tf/ashraf.3bot/threefoldtech-peertube-latest.flist>
