@@ -10,7 +10,7 @@ In the peertube directory run
 
 # Running
 
-`docker run -p 80:80 -p 433:433 -d {user/org}/peertube /usr/local/startup.sh {domain_name} {email}`
+`docker run -p 80:80 -p 433:433 -d {user/org}/peertube /usr/local/bin/startup.sh {domain_name} {email}`
 
 The domain name must be registered in a DNS server and forwards its http and https traffic to the container.
 
@@ -23,6 +23,12 @@ The username and password of the administrator is printed out in the logs you ca
 The configuration file is in `/var/www/peertube/config/production.yaml`. After modification the peertube server should by stopped and rerun using this command while in the `/var/www/peertube/peertube-latest` directory inside the container:
 
 `pkill peertube && NODE_ENV=production NODE_CONFIG_DIR=/var/www/peertube/config NODE_OPTIONS="--max-old-space-size=4096" npm start`
+
+# ZOS
+
+The entry point that should be used to run the container is:
+
+`/usr/local/bin/startup.sh {domain_name} {email}`
 
 # Environment
 
