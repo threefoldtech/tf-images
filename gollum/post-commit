@@ -1,0 +1,6 @@
+
+
+#!/bin/bash
+
+#Simple push to origin master
+git push origin master
