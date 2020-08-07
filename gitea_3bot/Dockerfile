@@ -155,8 +155,8 @@ EXPOSE 5432
 
 #nginx 
 
-RUN mkdir -p /etc/nginx /run/nginx   /etc/nginx/conf.d
-
+RUN mkdir -p /etc/nginx /run/nginx   /etc/nginx/conf.d /var/cache/nginx
+COPY nginx.conf /etc/nginx/conf.d/nginx-default.conf
 COPY root/opt/bin /opt/bin
 RUN mkdir -p /etc/s6/postgres
 RUN mkdir -p /etc/s6/nginx
