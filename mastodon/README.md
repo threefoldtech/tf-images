@@ -8,13 +8,13 @@ in the mastodon directory
 
 ```bash
 docker run -it --name masstodon -e DOMAIN=64.227.1.81 -e DB_USER=mastodon -e DB_NAME=mastodon_production  \ 
--e SMTP_SERVER=smtp.sendgrid.net -e SMTP_PORT=587 \ 
--e SMTP_LOGIN=apikey -e SMTP_PASSWORD=urpass -e SMTP_FROM_ADDRESS=urlmal \
+-e SMTP_SERVER=smtp.gmail.com -e SMTP_PORT=587 \ 
+-e SMTP_LOGIN='no-reply@threefold.tech' -e SMTP_PASSWORD=urpass -e SMTP_FROM_ADDRESS='no-reply@threefold.tech' \
  -p80:80 -p443:443 threefolddev/mastodon
 ```
 
 ## Flist
-
+https://hub.grid.tf/bishoy.3bot/threefolddev-mastodon-latest.flist
 
 ## setup 
 
