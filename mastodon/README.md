@@ -1,6 +1,6 @@
 # Building
 
-in the taiga directory
+in the mastodon directory
 
 `docker build -t threefolddev/mastodon .`
 
