@@ -21,7 +21,10 @@ export version=${TAIGA_VERSION}
 chmod 400 -R /etc/ssh/
 mkdir -p /run/sshd
 [ -d /root/.ssh/ ] || mkdir /root/.ssh
-
+# fix /etc/hosts
+if ! grep -q "localhost" /etc/hosts; then
+	echo "127.0.0.1 localhost" >> /etc/hosts
+fi
 # prepare postgres
 mkdir -p /var/lib/postgresql
 mkdir -p /var/log/postgresql
@@ -36,9 +39,6 @@ chown -R postgres:postgres /etc/postgresql
 
 # initialize postgres dir if it is empty
 find /var/lib/postgresql -maxdepth 0 -empty -exec sh -c 'pg_dropcluster 10 main && pg_createcluster 10 main' \;
-
-echo 'remove a record was added by zos that make our server slow, below is resolv.conf file contents'
-
 
 locale-gen en_US.UTF-8
 export LC_ALL=en_US.UTF-8
