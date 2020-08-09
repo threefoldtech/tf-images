@@ -114,7 +114,7 @@ RUN apt -y --no-install-recommends install \
 RUN pip3 install supervisor
 
 # Copy over mastodon source, and dependencies from building, and set permissions
-COPY --chown=mastodon:mastodon . /opt/mastodon
+RUN chown mastodon:mastodon git clone https://github.com/tootsuite/mastodon /opt/mastodon
 COPY --from=build-dep --chown=mastodon:mastodon /opt/mastodon /opt/mastodon
 
 # Run mastodon services in prod mode
