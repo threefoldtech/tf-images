@@ -52,3 +52,8 @@
 
 - Dockerfile info: [publishingtools](./publishingtools/README.md)
 - flist: <https://hub.grid.tf/ahmed_hanafy_1/ahmedhanafy725-pubtools-https.flist>
+
+## peertube
+
+- Dockerfile info: [peertube](./peertube/README.md)
+- flist: <https://hub.grid.tf/ashraf.3bot/threefoldtech-peertube-latest.flist>
