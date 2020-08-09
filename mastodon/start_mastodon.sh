@@ -60,7 +60,7 @@ fi
 
 cat /opt/mastodon/.env.production
 find /opt/mastodon ! -user mastodon -exec chown mastodon:mastodon {} \+ 
-sudo -u mastodon  bash -c "export PATH=${PATH}:/opt/ruby/bin:/opt/node/bin; RAILS_ENV=production bundle exec rails  db:setup ; RAILS_ENV=production bundle exec rails assets:precompile"
+sudo -u mastodon  bash -c "export SAFETY_ASSURED=1; export PATH=${PATH}:/opt/ruby/bin:/opt/node/bin; RAILS_ENV=production bundle exec rails  db:setup ; RAILS_ENV=production bundle exec rails assets:precompile"
 
 [[ -f /etc/nginx/sites-enabled/default ]] && rm /etc/nginx/sites-enabled/default
 
