@@ -1,11 +1,24 @@
 #!/bin/bash
 set -ex
-echo "checking env variables was set correctly "
+#TODO "checking env variables was set correctly "
 
-# prepare ssh
+if [ -z ${pub_key+x} ]; then
+
+        echo pub_key does not set in env variables
+else
+
+        [[ -d /root/.ssh ]] || mkdir -p /root/.ssh
+        echo $pub_key >> /root/.ssh/authorized_keys
+
+fi
+
 [ -d /etc/ssh/ ] && chmod 400 -R /etc/ssh/
 mkdir -p /run/sshd
-[ -d /root/.ssh/ ] || mkdir /root/.ssh
+
+# fix /etc/hosts
+if ! grep -q "localhost" /etc/hosts; then
+	echo "127.0.0.1 localhost" >> /etc/hosts
+fi
 
 mkdir -p /var/log/{ssh,postgres,redis,web,streaming,sidekiq,nginx,rabbitmq,cron}
 # prepare postgres
