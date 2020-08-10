@@ -48,4 +48,11 @@ docker run -it --name gitea -p 222:22 -p80:80 -p443:443 -e pub_key="ssh-rsa AAAA
   if you did not register admin account in init page, admin user will be the fist user registered   
  ## references 
  
- - gitea image is gitea/gitea:latest,  https://github.com/go-gitea/gitea
+ - gitea_all_in_one image depend on threefolddev/gitea_3bot,  to build follow below :
+ 
+ ```
+git clone https://github.com/threefoldtech/tf-gitea
+cd tf-gitea
+docker build -t  threefolddev/gitea_3bot .
+
+```
