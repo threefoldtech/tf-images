@@ -115,6 +115,7 @@ COPY --chown=couchdb:couchdb default.ini /opt/couchdb/etc/default.d/
 COPY --chown=couchdb:couchdb vm.args /opt/couchdb/etc/
 
 COPY docker-entrypoint.sh /usr/local/bin
+COPY local.ini /opt/couchdb/etc
 RUN ln -s usr/local/bin/docker-entrypoint.sh /docker-entrypoint.sh # backwards compat
 ENTRYPOINT ["tini", "--", "/docker-entrypoint.sh"]
 
