@@ -1,6 +1,6 @@
 # CouchDB 
 
-**CouchDB version = 3.1** (which is the latest at the time of this writeup)
+**CouchDB version = 3.1** (which is the latest at the time of this writeup).
 This is a single node but can participate in a cluster.
 
 ## How to build ?
@@ -47,10 +47,6 @@ http://your_host_ip:5984/_utils/#/verifyinstall
 **NOTE : To customize any settings for coucdb, use the local.ini to edit. For instance, you can change the default admin password for couchdb.**
 
 ## Details for CouchDB solution & flist herein
-
-CouchDB version = 3.1 which is the latest
-
-This is a single node but can participate in a cluster.
 
 **flist = https://hub.grid.tf/arehman/v2-couchdb-0-2.flist**
 
