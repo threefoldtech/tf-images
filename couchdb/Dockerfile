@@ -116,8 +116,11 @@ COPY --chown=couchdb:couchdb vm.args /opt/couchdb/etc/
 
 COPY docker-entrypoint.sh /usr/local/bin
 COPY local.ini /opt/couchdb/etc
-RUN ln -s usr/local/bin/docker-entrypoint.sh /docker-entrypoint.sh # backwards compat
-ENTRYPOINT ["tini", "--", "/docker-entrypoint.sh"]
+COPY start_couchdb.sh /
+
+RUN ln -s usr/local/bin/docker-entrypoint.sh /docker-entrypoint.sh 
+
+ENTRYPOINT ["/start_couchdb.sh"]
 
 VOLUME /opt/couchdb/data
 
@@ -125,5 +128,3 @@ VOLUME /opt/couchdb/data
 # 4369: Erlang portmap daemon (epmd)
 # 9100: CouchDB cluster communication port
 EXPOSE 5984 4369 9100
-CMD ["/opt/couchdb/bin/couchdb"]
-CMD ["/usr/sbin/sshd -D"]
