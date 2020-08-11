@@ -12,10 +12,8 @@ WORKDIR /mm
 ADD https://releases.mattermost.com/5.24.2/mattermost-team-5.24.2-linux-amd64.tar.gz .
 RUN tar -zxvf ./mattermost-team-5.24.2-linux-amd64.tar.gz
 ADD config_docker.json ./mattermost/config/config_docker.json
-ADD start_mattermost.sh .
+ADD start_mattermost.sh /
 
-RUN chmod +x ./start_mattermost.sh
-ENTRYPOINT ./start_mattermost.sh
 
 # Create default storage directory
 RUN mkdir ./mattermost-data
@@ -23,3 +21,6 @@ VOLUME /mm/mattermost-data
 
 # Ports
 EXPOSE 8065
+
+RUN chmod +x /start_mattermost.sh
+ENTRYPOINT ["/start_mattermost.sh"]

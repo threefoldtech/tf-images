@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # enable ssh
 chmod 600 /etc/ssh/*_key
 echo $pub_key > ~/.ssh/authorized_keys
