@@ -33,6 +33,11 @@ You can then do to spin the container with your created image. Map host ports as
 docker run -dit --name=mycdb -p 5984:5984 --hostname=mycdb mycouchdb:4.0 bash
 ```
 
+To verify,
+
+```
+http://your_host_ip:5984/_utils/#/verifyinstall
+```
 
 **NOTE : To customize any settings for coucdb, use the local.ini to edit. For instance, you can change the default admin password for couchdb.**
 
