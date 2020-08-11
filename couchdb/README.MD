@@ -32,6 +32,12 @@ Removing intermediate container 911a501193c1
 Successfully built 4ceadee4624e
 ```
 
+## How to do a custom build for CouchDB ? ##
+
+To customize any settings for couchdb that you want to build with the image, make your changes in this file ==> local.ini 
+
+For instance, you can change the default admin password for couchdb.
+
 ## How to run ? ##
 
 You can then spin the container with your created image. Map host ports as needed.
@@ -46,12 +52,9 @@ docker run -dit --name=mycdb -p 5984:5984 --hostname=mycdb mycouchdb:4.0 bash
 http://your_host_ip:5984/_utils/#/verifyinstall
 ```
 
-**NOTE : To customize any settings for coucdb, use the local.ini to edit. For instance, you can change the default admin password for couchdb.**
+# Details for CouchDB solution & flist herein #
 
-## Details for CouchDB solution & flist herein
-
-**flist = https://hub.grid.tf/arehman/v2-couchdb-0-2.flist**
-
+## Couchdb Configuration ## 
 **Environment variables**
 
 - pub_key (your ssh key)
@@ -73,7 +76,12 @@ http://your_host_ip:5984/_utils/#/verifyinstall
 /opt/couchdb/log
 
 
-## How to verify ?
+## Couchdb flist ##
+
+Launch on the ThreeFold grid,
+
+**flist = https://hub.grid.tf/arehman/v2-couchdb-0-2.flist**
+
 
 Note : (Replace 172.17.10.35 with your container IP, port remains same though)
 
