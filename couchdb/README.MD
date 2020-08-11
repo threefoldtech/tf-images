@@ -27,7 +27,7 @@ Removing intermediate container 911a501193c1
 Successfully built 4ceadee4624e
 ```
 
-You can then do to spin the container with your created image. Map host ports as needed.
+You can then spin the container with your created image. Map host ports as needed.
 
 ```
 docker run -dit --name=mycdb -p 5984:5984 --hostname=mycdb mycouchdb:4.0 bash
