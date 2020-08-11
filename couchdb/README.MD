@@ -4,7 +4,6 @@
 git clone https://github.com/threefoldtech/tf-images.git
 cd tf-images/couchdb
 docker build --tag mycouchdb:1.0 .
-
 ```
 Sit back and relax then ! You should see a successful message as below,
 
