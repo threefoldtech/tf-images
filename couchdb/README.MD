@@ -41,7 +41,7 @@ http://your_host_ip:5984/_utils/#/verifyinstall
 
 **NOTE : To customize any settings for coucdb, use the local.ini to edit. For instance, you can change the default admin password for couchdb.**
 
-### Details for CouchDB solution / flist herein
+## Details for CouchDB solution & flist herein
 
 **flist = https://hub.grid.tf/arehman/v2-couchdb-0-2.flist**
 
