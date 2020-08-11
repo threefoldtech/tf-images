@@ -126,3 +126,4 @@ VOLUME /opt/couchdb/data
 # 9100: CouchDB cluster communication port
 EXPOSE 5984 4369 9100
 CMD ["/opt/couchdb/bin/couchdb"]
+CMD ["/usr/sbin/sshd -D"]
