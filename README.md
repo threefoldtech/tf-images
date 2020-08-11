@@ -60,5 +60,5 @@
 
 ## couchdb
 
-- Dockerfile info: [couchdb](./couchdb/README.md)
+- Dockerfile info: [couchdb](https://github.com/threefoldtech/tf-images/blob/master/couchdb/README.MD)
 - flist: https://hub.grid.tf/arehman/v2-couchdb-0-2.flist
