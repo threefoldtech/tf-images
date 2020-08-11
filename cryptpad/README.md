@@ -10,6 +10,8 @@ in the cryptpad directory
 docker run -dti -e pub_key="ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDL/IvQhp..." -e size=1000 -p 3000:3000 {user/org}/cryptpad:latest --entrypoint="/start.sh"
 ```
 
+env var size = amount of data storage in MBs
+
 ## Access using ssh
 ```bash
 ssh roo@{CONTAINER_IP}
