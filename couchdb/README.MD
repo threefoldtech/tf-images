@@ -1,5 +1,8 @@
 # CouchDB 
 
+**CouchDB version = 3.1** (which is the latest at the time of this writeup)
+This is a single node but can participate in a cluster.
+
 ## How to build ?
 
 ```
