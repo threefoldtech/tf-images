@@ -1,4 +1,6 @@
-# How to Build ?
+# CouchDB 
+
+## How to build ?
 
 ```
 git clone https://github.com/threefoldtech/tf-images.git
