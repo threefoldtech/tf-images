@@ -13,6 +13,9 @@ RUN set -ex; \
         ca-certificates \
         dirmngr \
         gnupg \
+        openssh-server \ 
+        net-tools \
+        vim \
      ; \
     rm -rf /var/lib/apt/lists/*
 
