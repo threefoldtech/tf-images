@@ -2,6 +2,7 @@
 set -x
 
 # Install dependencies and populate database
+cd /home/taiga/taiga-back
 /taiga/bin/python3 manage.py migrate --noinput
 /taiga/bin/python3 manage.py loaddata initial_user
 /taiga/bin/python3 manage.py loaddata initial_project_templates
@@ -16,3 +17,5 @@ sed -i "s|wss://circles.threefold.me/events|wss://$TAIGA_HOSTNAME/events|g" /hom
 # Edit config.json for events
 sed -i "s|amqp://guest:guest@localhost:5672|amqp://taiga:$SECRET_KEY@localhost:5672/taiga|g" /home/taiga/taiga-events/config.json
 sed -i "s|mysecret|$SECRET_KEY|g" /home/taiga/taiga-events/config.json
+
+cd /home/taiga/taiga-events && npm install && cp config.example.json config.json
