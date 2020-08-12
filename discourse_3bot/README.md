@@ -45,7 +45,7 @@ docker run -i -p80:80 -p443:443 -p2207:22 -p804:80 --name forum-test -e DISCOURS
 - from admin discourse, you can set a periodic backup to be taken in path /var/www/discourse/public/backups/default
 
 ### configuration for https
-    we are using self-sgined by nginx
+    we are using testing certificate from letsencrypt by nginx
     
 ### Reference
 

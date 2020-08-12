@@ -2,7 +2,7 @@ FROM  threefolddev/tf_discourse:latest
 RUN rm -rf /var/www/discourse
 RUN apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get install net-tools iputils-ping -y \
-    && apt install -y libsodium-dev python-pip python3-pip tmux
+    && apt install -y libsodium-dev python-pip python3-pip tmux certbot python-certbot-nginx
 
 #RUN git clone https://github.com/restic/restic \
 #    && cd restic \
