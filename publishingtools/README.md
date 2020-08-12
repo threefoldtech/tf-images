@@ -1,6 +1,10 @@
-# Building
+## Before building
 
-In the publishingtools directory
+`caddy` and `trc` binaries should be in this directory.
+
+## Building
+
+In the publishingtools directory.
 
 ```bash
 docker build --force-rm -t {user/org}/publishingtools .
