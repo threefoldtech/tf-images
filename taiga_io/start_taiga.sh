@@ -26,7 +26,7 @@ if ! grep -q "localhost" /etc/hosts; then
 fi
 
 echo "preparing postgresql environment"
-useradd postgres 
+su taiga -c 'bash /.postgres_entry.sh'
 mkdir -p /home/taiga/logs && mkdir -p /var/log/{ssh,postgresql,rabbitmq,taiga-back,taiga-events,nginx,rabbitmq,cron}
 mkdir -p /var/lib/postgresql
 chown -R postgres.postgres /var/lib/postgresql/
