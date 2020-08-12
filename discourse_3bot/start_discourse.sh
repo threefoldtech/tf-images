@@ -1,4 +1,8 @@
 #!/usr/bin/env bash
+
+echo "127.0.0.1 localhost" > /etc/hosts
+chmod 666 /etc/redis/redis.conf
+
 set -ex
 echo "checking env variables was set correctly "
 
@@ -113,12 +117,18 @@ sed -i "s#pid /run/nginx.pid#daemon off#g" /etc/nginx/nginx.conf
 sed -i "s/DISCOURSE_HOSTNAME/$DISCOURSE_HOSTNAME/g" /etc/nginx/conf.d/discourse.conf
 
 if ! [ -f /etc/nginx/conf.d/cert.pem ] &&  ! [ -f /etc/nginx/conf.d/key.pem ] ;then
-	[ -d /etc/nginx/conf.d ] || mkdir /etc/nginx/conf.d
-	cd /etc/nginx/conf.d
-	openssl req -subj '/CN=localhost' -x509 -newkey rsa:4096 -nodes -keyout key.pem -out cert.pem -days 365
-	certbot certonly --nginx -n -m $DISCOURSE_DEVELOPER_EMAILS -d $DISCOURSE_HOSTNAME --agree-tos
-	mv /etc/letsencrypt/live/$DISCOURSE_HOSTNAME/fullchain.pem /etc/nginx/conf.d/cert.pem
-	mv /etc/letsencrypt/live/$DISCOURSE_HOSTNAME/privkey.pem /etc/nginx/conf.d/key.pem
+  [ -d /etc/nginx/conf.d ] || mkdir /etc/nginx/conf.d
+  cd /etc/nginx/conf.d
+  openssl req -subj '/CN=localhost' -x509 -newkey rsa:4096 -nodes -keyout key.pem -out cert.pem -days 365	
+  sed -i 's/daemon/# daemon/' /etc/nginx/nginx.conf
+  service nginx start
+  certbot certonly --test-cert --nginx -n -m $DISCOURSE_DEVELOPER_EMAILS -d $DISCOURSE_HOSTNAME --agree-tos
+  rm /etc/nginx/conf.d/cert.pem
+  rm /etc/nginx/conf.d/key.pem
+  ln -s /etc/letsencrypt/live/$DISCOURSE_HOSTNAME/fullchain.pem /etc/nginx/conf.d/cert.pem
+  ln -s /etc/letsencrypt/live/$DISCOURSE_HOSTNAME/privkey.pem /etc/nginx/conf.d/key.pem
+  sed -i 's/# daemon/daemon/' /etc/nginx/nginx.conf
+  pkill -9 nginx # for some reason service nginx stop fails
 fi
 
 sudo nginx -t
