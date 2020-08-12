@@ -26,6 +26,7 @@ if ! grep -q "localhost" /etc/hosts; then
 fi
 
 echo "preparing postgresql environment"
+useradd postgres 
 mkdir -p /home/taiga/logs && mkdir -p /var/log/{ssh,postgresql,rabbitmq,taiga-back,taiga-events,nginx,rabbitmq,cron}
 mkdir -p /var/lib/postgresql
 chown -R postgres.postgres /var/lib/postgresql/
@@ -59,6 +60,7 @@ sed -i "s/listen 80 default_server/listen $HTTP_PORT default_server/g" /etc/ngin
 
 echo "Configuring postgres"
 /etc/init.d/postgresql start
+
 su - postgres -c "psql -t -c '\du' | cut -d \| -f 1 | grep -qw taiga && echo taiga user already exist || createuser taiga"
 su - postgres -c "psql -lqt | cut -d \| -f 1 | grep -qw  taiga && echo taiga database is already exist || createdb taiga -O taiga --encoding='utf-8' --locale=en_US.utf8 --template=template0"
 
