@@ -17,5 +17,3 @@ sed -i "s|wss://circles.threefold.me/events|wss://$TAIGA_HOSTNAME/events|g" /hom
 # Edit config.json for events
 sed -i "s|amqp://guest:guest@localhost:5672|amqp://taiga:$SECRET_KEY@localhost:5672/taiga|g" /home/taiga/taiga-events/config.json
 sed -i "s|mysecret|$SECRET_KEY|g" /home/taiga/taiga-events/config.json
-
-cd /home/taiga/taiga-events && npm install && cp config.example.json config.json
