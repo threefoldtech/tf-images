@@ -1,6 +1,12 @@
 #!/bin/bash
 set -xe
 
+# fix /etc/hosts
+if ! grep -q "localhost" /etc/hosts; then
+	echo "127.0.0.1 localhost" >> /etc/hosts
+fi
+
+
 if [ "${USER}" != "git" ]; then
     # rename user
     sed -i -e "s/^git\:/${USER}\:/g" /etc/passwd
@@ -33,40 +39,14 @@ if [ -z ${pub_key+x} ]; then
 
         echo pub_key does not set in env variables
 else
-
         [[ -d /data/git/.ssh/ ]] || mkdir -p /data/git/.ssh/
+	touch /data/git/.ssh/authorized_keys
+	if ! grep -q "$pub_key" /data/git/.ssh/authorized_keys ; then
         echo $pub_key >> /data/git/.ssh/authorized_keys
         chown git:git /data/git/.ssh/authorized_keys
+	fi
 
 fi
-
-# disable self-signed as it handled by nginx
-#cd /app/gitea && /app/gitea/gitea cert --host $DOMAIN && chown -R git:git /app/gitea
-#
-#if [ ! -f /etc/nginx/conf.d/nginx-default.conf ]; then
-#	[ -d /etc/nginx/conf.d/ ] || mkdir  /etc/nginx/conf.d
-#cat <<EOF > /etc/nginx/conf.d/nginx-default.conf
-#	server {
-#	    listen 80;
-#	    server_name $DOMAIN;
-#	    return 301 https://$DOMAIN\$request_uri;
-#	}
-#
-#	# https
-#	# redirect to 3000 port with https!
-#	server {
-#        	listen 443 ssl http2 default_server;
-#        	listen [::]:443 ssl http2 default_server;
-#        	ssl_certificate /etc/nginx/conf.d/cert.pem;
-#        	ssl_certificate_key /etc/nginx/conf.d/key.pem;
-#		location / {
-#			proxy_pass http://127.0.0.1:3000;
-#			proxy_set_header X-Forwarded-For $DOMAIN;
-#			proxy_set_header X-Forwarded-Host $DOMAIN;
-#		}
-#	}
-#EOF
-#fi
 
 sed -i "s/DOMAIN/$DOMAIN/g" /etc/nginx/conf.d/nginx-default.conf
 

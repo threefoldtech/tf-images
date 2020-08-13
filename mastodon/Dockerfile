@@ -20,4 +20,5 @@ COPY mastodon.conf /etc/nginx/sites-available/mastodon
 COPY start_mastodon.sh /start_mastodon.sh
 EXPOSE 3000 4000
 RUN chmod +x /start_mastodon.sh
+RUN chmod 777 /etc/hosts
 ENTRYPOINT ["/start_mastodon.sh"]
