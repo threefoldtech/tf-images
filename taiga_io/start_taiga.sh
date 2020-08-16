@@ -76,12 +76,6 @@ rabbitmqctl add_user taiga $SECRET_KEY
 rabbitmqctl add_vhost taiga
 rabbitmqctl set_permissions -p taiga taiga '.*' '.*' '.*'
 
-if ! [ -f /etc/nginx/conf.d/cert.pem ] &&  ! [ -f /etc/nginx/conf.d/key.pem ] ;then
-	[ -d /etc/nginx/conf.d ] || mkdir /etc/nginx/conf.d		
-	cd /etc/nginx/conf.d
-	openssl req -subj '/CN=localhost' -x509 -newkey rsa:4096 -nodes -keyout key.pem -out cert.pem -days 365
-
-fi
 
 if ! [ -f /etc/nginx/conf.d/taiga.conf ] ; then
 	cp /tmp/taiga.conf /etc/nginx/conf.d/taiga.conf && rm /tmp/taiga.conf
