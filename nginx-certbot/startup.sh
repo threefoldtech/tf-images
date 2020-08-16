@@ -7,11 +7,16 @@ cp /config/nginx.conf /etc/nginx/sites-enabled/default
 sed -i "s/DOMAIN/$DOMAIN/g" /etc/nginx/sites-enabled/default
 sed -i "s/SOLUTION_IP/$SOLUTION_IP/g" /etc/nginx/sites-enabled/default
 sed -i "s/SOLUTION_PORT/$SOLUTION_PORT/g" /etc/nginx/sites-enabled/default
+cmd="certbot --nginx --agree-tos  -m "$EMAIL" --non-interactive --domains $DOMAIN"
 if [ "$ENFORCE_HTTPS" = 'true' ] ; then
-  certbot --nginx --agree-tos  -m "$EMAIL" --non-interactive --domains $DOMAIN --redirect
+  cmd=$cmd" --redirect"
 else
-  certbot --nginx --agree-tos  -m "$EMAIL" --non-interactive --domains $DOMAIN --no-redirect
+  cmd=$cmd" --no-redirect"
 fi
+if [ "$TEST_CERT" = 'true' ] ; then
+  cmd=$cmd" --test-cert"
+fi
+$cmd
 service nginx stop
 nginx -g 'daemon off;'
 
