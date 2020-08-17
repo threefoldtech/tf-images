@@ -13,12 +13,7 @@ RUN apt-get update &&\
     apt-get update &&\
     apt-get install -y nodejs yarn &&\
     rm -rf /var/lib/apt/lists/* &&\
-    sed -i 's/archive/us.archive/g' /etc/apt/sources.list &&\
     apt-get update &&\
-    apt-get -y install software-properties-common &&\
-    add-apt-repository -y ppa:certbot/certbot &&\
-    apt-get update &&\
-    apt-get -y install certbot python-certbot-nginx &&\
     mkdir -p /var/www/peertube/config /var/www/peertube/storage
 
 # Download PeerTube's source code.
@@ -27,9 +22,8 @@ WORKDIR /var/www/peertube/peertube-latest
 
 # Install Node.js dependencies and setup PostgreSQL
 COPY setup_postgres.sql /tmp/
-RUN  cp config/production.yaml.example ../config/production.yaml &&\
-     cp support/nginx/peertube /etc/nginx/sites-available/ &&\
-     mkdir -p /root/.ssh/ &&\
+
+RUN  mkdir -p /root/.ssh/ &&\
      touch /root/.ssh/authorized_keys &&\
      yarn install --pure-lockfile &&\
      npm run build -- --light &&\
@@ -38,6 +32,8 @@ RUN  cp config/production.yaml.example ../config/production.yaml &&\
      yarn cache clean &&\
      service postgresql start &&\
      su postgres -c "psql --file=/tmp/setup_postgres.sql"
+
+COPY production.yaml /var/www/peertube/config/production.yaml
 
 # Expose PeerTube sources as a volume
 VOLUME /var/www/peertube/peertube-latest
