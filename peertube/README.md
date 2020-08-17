@@ -10,11 +10,9 @@ In the peertube directory run
 
 # Running
 
-`docker run -p 80:80 -p 433:433 -d {user/org}/peertube /usr/local/bin/startup.sh {domain_name} {email}`
+`docker run -p 80:80 -p 433:433 -d {user/org}/peertube /usr/local/bin/startup.sh {domain_name}`
 
-The domain name must be registered in a DNS server and forwards its http and https traffic to the container.
-
-The startup script issues a certificate using certbot and associates its mail with the passed email. Then it initializes an nginx server to serve a peertube instance on https (http redirected to https).
+The domain name is the one used to access the website. Registering the domain and issueing a certificate is done in other containers.
 
 The username and password of the administrator is printed out in the logs you can access them using:
 
@@ -28,7 +26,7 @@ The configuration file is in `/var/www/peertube/config/production.yaml`. After m
 
 The entry point that should be used to run the container is:
 
-`/usr/local/bin/startup.sh {domain_name} {email}`
+`/usr/local/bin/startup.sh {domain_name}`
 
 # Environment
 
