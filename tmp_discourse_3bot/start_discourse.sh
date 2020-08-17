@@ -1,31 +1,17 @@
 #!/usr/bin/env bash
+
+echo "127.0.0.1 localhost" > /etc/hosts
+chmod 666 /etc/redis/redis.conf
+
 set -ex
 echo "checking env variables was set correctly "
+
 # prepare ssh
 [ -d /etc/ssh/ ] && chmod 400 -R /etc/ssh/
 mkdir -p /run/sshd
 [ -d /root/.ssh/ ] || mkdir /root/.ssh
 
-# fix /etc/hosts
-if ! grep -q "localhost" /etc/hosts; then
-	echo "127.0.0.1 localhost" >> /etc/hosts
-fi
-
-#  check pub key
-if [ -z ${pub_key+x} ]; then
-
-        echo pub_key does not set in env variables
-else
-
-        [[ -d /root/.ssh ]] || mkdir -p /root/.ssh
-
-				if ! grep -q "$pub_key" /root/.ssh/authorized_keys; then
-					echo $pub_key >> /root/.ssh/authorized_keys
-				fi
-fi
-
-
-for var in RAILS_ENV DISCOURSE_HOSTNAME DISCOURSE_SMTP_USER_NAME DISCOURSE_SMTP_ADDRESS DISCOURSE_DEVELOPER_EMAILS DISCOURSE_SMTP_PORT THREEBOT_PRIVATE_KEY FLASK_SECRET_KEY THREEBOT_URL OPEN_KYC_URL
+for var in DISCOURSE_VERSION RAILS_ENV DISCOURSE_HOSTNAME DISCOURSE_SMTP_USER_NAME DISCOURSE_SMTP_ADDRESS DISCOURSE_DEVELOPER_EMAILS DISCOURSE_SMTP_PORT THREEBOT_PRIVATE_KEY FLASK_SECRET_KEY THREEBOT_URL OPEN_KYC_URL 
     do
         if [ -z "${!var}" ]
         then
@@ -34,7 +20,6 @@ for var in RAILS_ENV DISCOURSE_HOSTNAME DISCOURSE_SMTP_USER_NAME DISCOURSE_SMTP_
     done
 
 # prepare redis server
-chmod 666 /etc/redis/redis.conf
 [[ -d /etc/service/redis/log/ ]] || mkdir /etc/service/redis/log/ -p
 cat << EOF > /etc/service/redis/log/run
 #!/bin/sh
@@ -52,6 +37,7 @@ sed -i 's/^protected-mode yes/protected-mode no/g' /etc/redis/redis.conf
 
 chown -R discourse /home/discourse
 cat << EOF > /etc/cron.d/anacron
+
         SHELL=/bin/sh
         PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 
@@ -76,6 +62,7 @@ export LC_ALL=en_US.UTF-8
 export LANGUAGE=en_US.UTF-8
 export LANG=en_US.UTF-8
 
+export version=$DISCOURSE_VERSION
 export DISCOURSE_DB_HOST=
 export DISCOURSE_DB_PORT=
 export HOME=/root
@@ -87,6 +74,24 @@ export OPEN_KYC_URL=$OPEN_KYC_URL
 mkdir -p /var/nginx/cache
 
 env | grep -v "PATH\=" | grep -v "HOME\=" | grep -v "PWD\=" | grep -v "SHLVL\="|grep -v "TERM\=" >> /etc/environment
+
+[[ -d $home ]] || mkdir $home
+if [ "$(find $home -maxdepth 0 -empty)" ]; then
+	export fresh_install="yes"
+	echo $home is empty, then clone repo
+	git clone https://github.com/threefoldtech/threefold-forums -b $version $home
+	cd $home
+	mkdir -p tmp/pids
+	mkdir -p tmp/sockets
+	touch tmp/.gitkeep
+
+else
+        echo $home not empty so only update it
+        cd $home
+        git status
+	    git stash
+        git pull
+fi
 
 cat << EOF > /var/www/discourse/config/discourse.conf
 
@@ -125,24 +130,51 @@ if ! [ -f /etc/nginx/conf.d/cert.pem ] &&  ! [ -f /etc/nginx/conf.d/key.pem ] ;t
   sed -i 's/# daemon/daemon/' /etc/nginx/nginx.conf
   pkill -9 nginx # for some reason service nginx stop fails
 fi
+
 sudo nginx -t
+
 #  ensure we are on latest bundler
 cd $home
 #gem update bundler
 find $home ! -user discourse -exec chown discourse {} \+
 
+chmod +x /etc/runit/1.d/copy-env
 chmod +x /etc/service/unicorn/run
+chmod +x /etc/service/nginx/run
+chmod +x /etc/runit/3.d/01-nginx
+chmod +x /etc/runit/3.d/02-unicorn
+chmod +x /usr/local/bin/discourse
+chmod +x /usr/local/bin/rails
+chmod +x /usr/local/bin/rake
+chmod +x /usr/local/bin/rbtrace
+chmod +x /usr/local/bin/stackprof
+chmod +x /etc/update-motd.d/10-web
+chmod +x /etc/runit/1.d/00-ensure-links
+chmod +x /etc/service/cron/run
+chmod +x /etc/service/nginx/run
 
+
+echo checking postgres and redis are running and export
+mkdir -p /shared/log/rails
 [[ -d /var/log/exim4 ]] || mkdir -p /var/log/exim4
 [[ -f /var/log/exim4/mainlog ]] || touch /var/log/exim4/mainlog
+chmod -R u+rwx /var/log/exim4 /var/spool/exim4/
+chown -R Debian-exim:mail /var/log/exim4
+chown -R Debian-exim:Debian-exim /var/spool/exim4/
+chown root:Debian-exim  /etc/exim4/passwd.client
 
 # TBD checking redis and postgres, should be running before start rails 
 
 cd $home
+# remove pid file unicron before start
+#[[ -f $home/tmp/pids/unicorn.pid ]] && rm $home/tmp/pids/unicorn.pid
+chown -R discourse:www-data /shared/log/rails
+
 mkdir -p /var/log/{ssh,postgres,redis,3bot,unicorn,nginx,cron}
+
 nginx -t
 
-# to start unicorn make sure you started postgres and redis
+# to start unicorn make sure you started postgres and redis and export  all envs
 bash /.prepare_postgres.sh
 
 # just start postgres to create intial db
@@ -152,7 +184,20 @@ bash /.prepare_postgres.sh
 bash /.prepare_database.sh
 
 cd $home
-su discourse -c 'RAILS_ENV=production  bundle exec rake  db:migrate ;bundle exec rails assets:precompile '
+
+if [[ "$fresh_install" == "yes" ]];then
+	su discourse -c 'bundle install --deployment --retry 3 --jobs 4 --verbose --without test development'
+	su discourse -c 'bundle exec rake db:migrate'
+	su discourse -c 'bundle exec rake assets:precompile' 
+fi
+
+DEV_RAKE='/var/www/discourse/vendor/bundle/ruby/2.6.0/gems/railties-6.0.1/lib/rails/tasks/dev.rake'
+if [[ -f $DEV_RAKE ]] ;then
+        echo " $DEV_RAKE file is exist , so this mean bundle installation seems completed successfully "
+else
+        echo " $DEV_RAKE file does not exist, Please check seems bundle installation does not completed successfully "
+        exit 1
+fi
 
 # stop postgres to start it using supervisord
 /etc/init.d/postgresql stop
