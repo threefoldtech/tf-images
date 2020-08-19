@@ -8,9 +8,11 @@ mkdir -p /run/sshd
 
 # fix /etc/hosts
 if ! grep -q "localhost" /etc/hosts; then
+	touch /etc/hosts
+	chmod  644 /etc/hosts
+	echo $HOSTNAME  localhost >> /etc/hosts
 	echo "127.0.0.1 localhost" >> /etc/hosts
 fi
-chmod 777 /etc/hosts
 #  check pub key
 if [ -z ${pub_key+x} ]; then
 

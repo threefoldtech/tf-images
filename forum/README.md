@@ -10,10 +10,6 @@ in the discourse directory
     docker push threefolddev/forum_all_in_one
 ```
 - then convert it form our hub to an flist https://hub.grid.tf
-- note we use a prepared image in Dockerfile called threefolddev/tf-discourse
-- tf-discourse image has some prepared configuration and scripts, this image created by below reference 
-- tf-discourse image prepared configuration and scripts are taken from following templates 
-   https://github.com/discourse/discourse_docker/tree/master/templates
 
 ## References
 
@@ -21,7 +17,7 @@ https://github.com/discourse/discourse_docker/tree/master/image/base
 
 ### create docker container 
 ```
-docker run -i -p80:80 -p443:443 -p2207:22 -p804:80 --name forum-test -e DISCOURSE_SMTP_PASSWORD="mypass" -e DISCOURSE_VERSION=staging -e RAILS_ENV=production -e DISCOURSE_HOSTNAME=64.227.1.81 -e DISCOURSE_SMTP_USER_NAME=apikey -e DISCOURSE_SMTP_ADDRESS=smtp.sendgrid.net -e DISCOURSE_DEVELOPER_EMAILS=bishoy@incubaid.com -e DISCOURSE_SMTP_PORT=587 -e THREEBOT_PRIVATE_KEY="mythreebotkey" -e FLASK_SECRET_KEY="flasksecret" -e THREEBOT_URL=https://login.threefold.me -e OPEN_KYC_URL=https://openkyc.live/verification/verify-sei threefolddev/forum_all_in_one
+docker run -i -p80:80 -p443:443 -p2207:22 -p804:80 --name forum-test -e DISCOURSE_SMTP_PASSWORD="mypass" -e DISCOURSE_VERSION=staging -e RAILS_ENV=production -e DISCOURSE_HOSTNAME=64.227.1.81 -e DISCOURSE_SMTP_USER_NAME=apikey -e DISCOURSE_SMTP_ADDRESS=smtp.sendgrid.net -e DISCOURSE_DEVELOPER_EMAILS=bishoy@incubaid.com -e DISCOURSE_SMTP_PORT=587 -e THREEBOT_PRIVATE_KEY="mythreebotkey" -e FLASK_SECRET_KEY="flasksecret" -e THREEBOT_URL=https://login.threefold.me -e OPEN_KYC_URL=https://openkyc.live/verification/verify-sei -e RESTIC_REPOSITORY=s3:https://s3.grid.tf/forum-test  -e RESTIC_PASSWORD="yourpass" -e AWS_ACCESS_KEY_ID=id  -e AWS_SECRET_ACCESS_KEY=accesskey threefolddev/forum_all_in_one
 ```
 
 ### additional env variables have a defaults if not set as below
@@ -46,6 +42,10 @@ docker run -i -p80:80 -p443:443 -p2207:22 -p804:80 --name forum-test -e DISCOURS
 
 ### configuration for https
     we are using self-sgined by nginx
+
+### more info
+- this flist same as discourse_3bot but with addataional package restic and its configuration.
+- there is a crontab uplaod backup to s3 server (minio).
     
 ### Reference
 
