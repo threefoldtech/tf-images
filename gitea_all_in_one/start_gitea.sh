@@ -1,6 +1,12 @@
 #!/bin/bash
 set -xe
 
+
+# TODO check $DOMAIN variables
+
+[[ -d /data/gitea/conf ]] || mkdir -p /data/gitea/conf
+cd /data/gitea/conf && /app/gitea/gitea cert --host $DOMAIN
+
 # fix /etc/hosts
 if ! grep -q "localhost" /etc/hosts; then
 	echo "127.0.0.1 localhost" >> /etc/hosts
@@ -48,7 +54,7 @@ else
 
 fi
 
-sed -i "s/DOMAIN/$DOMAIN/g" /etc/nginx/conf.d/nginx-default.conf
+#sed -i "s/DOMAIN/$DOMAIN/g" /etc/nginx/conf.d/nginx-default.conf
 
 chown -R git:git /data/gitea
 

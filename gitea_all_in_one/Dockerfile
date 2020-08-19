@@ -1,11 +1,27 @@
 FROM  threefolddev/gitea_3bot
 #ARG LLVM_CONFIG='/usr/lib/llvm8/bin/llvm-config'
-RUN apk update &&  apk upgrade && apk add --no-cache openssh bash dcron curl wget rsync ca-certificates openssl nginx
+RUN apk update &&  apk upgrade && apk add --no-cache openssh bash dcron curl wget rsync ca-certificates openssl 
 # alpine includes "postgres" user/group in base install
 #   /etc/passwd:22:postgres:x:70:70::/var/lib/postgresql:/bin/sh
 #   /etc/group:34:postgres:x:70:
 # the home directory for the postgres user, however, is not created by default
 # see https://github.com/docker-library/postgres/issues/274
+
+# set our environment variable
+ENV MUSL_LOCPATH="/usr/share/i18n/locales/musl"
+
+# install libintl
+# then install dev dependencies for musl-locales
+# clone the sources
+# build and install musl-locales
+# remove sources and compile artifacts
+# lastly remove dev dependencies again
+RUN apk --no-cache add libintl && \
+	apk --no-cache --virtual .locale_build add cmake make musl-dev gcc gettext-dev git && \
+	git clone https://gitlab.com/rilian-la-te/musl-locales && \
+	cd musl-locales && cmake -DLOCALE_PROFILE=OFF -DCMAKE_INSTALL_PREFIX:PATH=/usr . && make && make install && \
+	cd .. && rm -r musl-locales && \
+	apk del .locale_build
 
 RUN set -eux; \
 	addgroup -g 70 -S postgres; \
@@ -154,14 +170,10 @@ EXPOSE 5432
 
 
 #nginx 
-
-RUN mkdir -p /etc/nginx /run/nginx   /etc/nginx/conf.d /var/cache/nginx
-COPY nginx.conf /etc/nginx/conf.d/nginx-default.conf
 COPY root/opt/bin /opt/bin
 RUN mkdir -p /etc/s6/postgres
 COPY root/opt/postgres_s6 /etc/s6/postgres
-#COPY root/opt/nginx_s6 /etc/s6/nginx
-
+COPY gitea-ini-template  /etc/templates/app.ini
 EXPOSE 5432
 RUN chmod +x -R /opt/bin/ /etc/s6/postgres 
 COPY start_gitea.sh /start_gitea.sh
