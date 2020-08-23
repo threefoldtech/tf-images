@@ -138,7 +138,7 @@ ADD cron.d_anacron /etc/cron.d/anacron
 
 RUN apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get install net-tools iputils-ping -y \
-    && apt install -y libsodium-dev python-pip python3-pip tmux openssh-server certbot python-certbot-nginx
+    && apt install -y libsodium-dev python-pip python3-pip tmux openssh-server
 
 RUN pip3 install uwsgi flask pynacl requests flask_sessionstore
 RUN pip3 install Werkzeug==0.16.0
