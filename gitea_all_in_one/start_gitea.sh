@@ -9,9 +9,11 @@ cd /data/gitea/conf && /app/gitea/gitea cert --host $DOMAIN
 
 # fix /etc/hosts
 if ! grep -q "localhost" /etc/hosts; then
+	touch /etc/hosts
+	chmod  644 /etc/hosts
+	echo $HOSTNAME  localhost >> /etc/hosts
 	echo "127.0.0.1 localhost" >> /etc/hosts
 fi
-
 
 if [ "${USER}" != "git" ]; then
     # rename user

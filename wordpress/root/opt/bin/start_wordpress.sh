@@ -1,6 +1,24 @@
 #!/usr/bin/env bash
 chmod +x /opt/bin/*
+# fix /etc/hosts
+if ! grep -q "localhost" /etc/hosts; then
+	touch /etc/hosts
+	chmod  644 /etc/hosts
+	echo $HOSTNAME  localhost >> /etc/hosts
+	echo "127.0.0.1 localhost" >> /etc/hosts
+fi
+#  check pub key
+if [ -z ${pub_key+x} ]; then
 
+        echo pub_key does not set in env variables
+else
+
+        [[ -d /root/.ssh ]] || mkdir -p /root/.ssh
+
+				if ! grep -q "$pub_key" /root/.ssh/authorized_keys; then
+					echo $pub_key >> /root/.ssh/authorized_keys
+				fi
+fi
 # prepare ssh
 [ -d /etc/ssh/ ] && chmod 400 -R /etc/ssh/
 mkdir -p /run/sshd

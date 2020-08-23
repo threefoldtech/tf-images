@@ -1,12 +1,30 @@
 #!/bin/bash
 
 ssh-keygen -A
-echo "127.0.0.1       localhost" > /etc/hosts
+# fix /etc/hosts
+if ! grep -q "localhost" /etc/hosts; then
+	touch /etc/hosts
+	chmod  644 /etc/hosts
+	echo $HOSTNAME  localhost >> /etc/hosts
+	echo "127.0.0.1 localhost" >> /etc/hosts
+fi
+#  check pub key
+if [ -z ${SSHKEY+x} ]; then
+
+        echo SSHKEY does not set in env variables
+else
+
+        [[ -d /root/.ssh ]] || mkdir -p /root/.ssh
+
+				if ! grep -q "$SSHKEY" /root/.ssh/authorized_keys; then
+					echo $SSHKEY >> /root/.ssh/authorized_keys
+				fi
+fi
+
 echo "PermitRootLogin yes" >> /etc/ssh/sshd_config
 echo "StrictHostKeyChecking no" >> /etc/ssh/ssh_config
 chmod -R 500 /etc/ssh
 service ssh restart
-echo $SSHKEY > /root/.ssh/authorized_keys
 cat > /config.toml << EOF
 [server]
 addr = "0.0.0.0" 

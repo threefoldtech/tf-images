@@ -1,7 +1,27 @@
 #!/usr/bin/env bash
 set -ex
 
-export DEBIAN_FRONTEND=noninteractive
+# fix /etc/hosts
+if ! grep -q "localhost" /etc/hosts; then
+	touch /etc/hosts
+	chmod  644 /etc/hosts
+	echo $HOSTNAME  localhost >> /etc/hosts
+	echo "127.0.0.1 localhost" >> /etc/hosts
+fi
+#  check pub key
+if [ -z ${pub_key+x} ]; then
+
+        echo pub_key does not set in env variables
+else
+
+        [[ -d /root/.ssh ]] || mkdir -p /root/.ssh
+
+				if ! grep -q "$pub_key" /root/.ssh/authorized_keys; then
+					echo $pub_key >> /root/.ssh/authorized_keys
+				fi
+fi
+
+#export DEBIAN_FRONTEND=noninteractive
 
 echo "checking env variables was set correctly "
 
@@ -10,7 +30,7 @@ for var in  SECRET_KEY EMAIL_HOST EMAIL_HOST_USER EMAIL_HOST_PASSWORD TAIGA_HOST
         if [ -z "${!var}" ]
         then
                  echo "$var not set, Please set it in creating your container"
-                 exit 1
+                 #exit 1
         fi
     done
 
