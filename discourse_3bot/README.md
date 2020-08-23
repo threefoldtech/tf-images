@@ -21,7 +21,7 @@ https://github.com/discourse/discourse_docker/tree/master/image/base
 
 ### create docker container 
 ```
-docker run -i -p80:80 -p443:443 -p2207:22 -p804:80 --name forum-test -e DISCOURSE_SMTP_PASSWORD="mypass" -e DISCOURSE_VERSION=staging -e RAILS_ENV=production -e DISCOURSE_HOSTNAME=64.227.1.81 -e DISCOURSE_SMTP_USER_NAME=apikey -e DISCOURSE_SMTP_ADDRESS=smtp.sendgrid.net -e DISCOURSE_DEVELOPER_EMAILS=bishoy@incubaid.com -e DISCOURSE_SMTP_PORT=587 -e THREEBOT_PRIVATE_KEY="mythreebotkey" -e FLASK_SECRET_KEY="flasksecret" -e THREEBOT_URL=https://login.threefold.me -e OPEN_KYC_URL=https://openkyc.live/verification/verify-sei threefolddev/discourse_all_in_one
+docker run -i -p80:80 -p443:443 -p2207:22 -p804:80 --name forum-test -e UNICORN_BIND_ALL="true" -e DISCOURSE_SMTP_PASSWORD="mypass" -e DISCOURSE_VERSION=staging -e RAILS_ENV=production -e DISCOURSE_HOSTNAME=64.227.1.81 -e DISCOURSE_SMTP_USER_NAME=apikey -e DISCOURSE_SMTP_ADDRESS=smtp.sendgrid.net -e DISCOURSE_DEVELOPER_EMAILS=bishoy@incubaid.com -e DISCOURSE_SMTP_PORT=587 -e THREEBOT_PRIVATE_KEY="mythreebotkey" -e FLASK_SECRET_KEY="flasksecret" -e THREEBOT_URL=https://login.threefold.me -e OPEN_KYC_URL=https://openkyc.live/verification/verify-sei threefolddev/discourse_all_in_one
 ```
 
 ### additional env variables have a defaults if not set as below
@@ -45,7 +45,7 @@ docker run -i -p80:80 -p443:443 -p2207:22 -p804:80 --name forum-test -e DISCOURS
 - from admin discourse, you can set a periodic backup to be taken in path /var/www/discourse/public/backups/default
 
 ### configuration for https
-    we are using self-sgined by nginx
+    The certificate related issues is delegated to the nginx certbot container. Note that this image won't work as a standalone website on http due to the necessity of https usage.
     
 ### Reference
 
