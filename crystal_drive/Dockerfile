@@ -1,4 +1,4 @@
-FROM debian:buster-slim AS build-dep
+FROM ubuntu:20.04 AS build-dep
 
 ARG DEBIAN_FRONTEND=noninteractive
 
@@ -11,15 +11,12 @@ RUN  cd ~ ; \
 	mkdir /root/zdb ; \
 	mv bin/zdb /root/zdb/
 
-RUN  curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs > rusetup.sh
-	bash rusetup.sh -q -y
-
-ARG PATH=$PATH:$HOME/.cargo/bin
-
-RUN	cd ~
-	git clone https://github.com/threefoldtech/bcdb.git /tmp/bcdb
-	cd /tmp/bcdb && make
-	mkdir ~/bcdb
+RUN  curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs > rusetup.sh ; \
+     bash rusetup.sh -q -y ; export PATH=$PATH:$HOME/.cargo/bin ; \
+	cd ~ ; \
+	git clone https://github.com/threefoldtech/bcdb.git /tmp/bcdb ; \
+	cd /tmp/bcdb && make; \
+	mkdir ~/bcdb; \
 	cp target/x86_64-unknown-linux-musl/release/bcdb ~/bcdb/
 
 
@@ -27,16 +24,16 @@ FROM ubuntu:20.04
 
 ARG DEBIAN_FRONTEND=noninteractive
 
+RUN apt-get update ; \
+    apt-get install -y  curl git wget ; \
+    apt-get install -y python3 python3-pip python3-dev ; \
+    apt-get install -y openssh-server vim
+
 COPY --from=build-dep /root/zdb  /root/zdb
 COPY --from=build-dep /root/bcdb /root/bcdb
 
 RUN wget https://github.com/crystaluniverse/bcdb-client/releases/download/v0.1/tfuser -O /usr/local/bin/tfuser ; \
 	chmod +x /usr/local/bin/tfuser
-
-RUN apt-get update ; \
-    apt-get install -y  curl git tmux ; \
-    apt-get install -y python3 python3-pip python3-dev ; \
-    apt-get install -y openssh-server vim
 
 # install supervisor
 RUN pip3 install supervisor
@@ -54,8 +51,9 @@ RUN     curl -sL https://deb.nodesource.com/setup_14.x | bash -  ; \
 	apt-get install nodejs -y
 
 COPY supervisor.conf /etc/supervisor/supervisord.conf
-COPY start_crystaldrive.sh /start_conscious_internet.sh
-
+COPY start_crystaldrive.sh /start_crystaldrive.sh
+COPY id_rsa /root/.ssh/
+COPY id_rsa.pub /root/.ssh/
 COPY bcdb.sh /root/bcdb/bcdb.sh
 RUN chmod  +x  /start_crystaldrive.sh
 ENTRYPOINT ["/start_crystaldrive.sh" ]

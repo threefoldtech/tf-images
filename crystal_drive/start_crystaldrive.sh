@@ -4,8 +4,8 @@ set -ex
 [ -d /etc/ssh/ ] && chmod 400 -R /etc/ssh/
 mkdir -p /run/sshd
 [ -d /root/.ssh/ ] || mkdir /root/.ssh
+mkdir -p /var/log/{zdb,bcdb,crystaldrive,ssh}
 
-mkdir -p /var/log/{zdb,bcdb}
 # fix /etc/hosts
 if ! grep -q "localhost" /etc/hosts; then
 	touch /etc/hosts
@@ -27,14 +27,29 @@ else
 fi
 
 cd /root/bcdb
-tfuser id create --name $3BOT_USER --email $EMAIL  --description "$DESCRIPTION" > /root/start.log
+tfuser id create --name $TF_EXP_USER --email $EMAIL  --description "$DESCRIPTION" > /root/start.log || true
 [[ -f `pwd`/user.seed ]] && echo user.seed file created successfully  || echo user.seed file does not created! >> /root/start.log
 
-git https://github.com/crystaluniverse/crystaldrive ~/crystaldrive ;\
+if [ -d /root/crystaldrive  ] ; then
+	    echo " - threefold DIR ALREADY THERE, pulling it"
+	    cd /root/crystaldrive
+	    git pull || true
+	else
+		git clone https://github.com/crystaluniverse/crystaldrive ~/crystaldrive 
+fi
+[[ -d /root/.ssh ]] || mkdir /root/.ssh/
+[[ -f /root/.ssh/id_rsa ]] || echo ssh key is not exist, add one of crystal drive repo && echo key exist >> /root/start.log
+eval `ssh-agent`
+ssh-add /root/.ssh/id_rsa
 cd /root/crystaldrive ;\
 sed -i "s|git@github.com:crystaluniverse|https://github.com/crystaluniverse|g" build.sh ;\
+
+if ! grep -q "github.com" $HOME/.ssh/known_hosts; then
+ssh-keyscan github.com >> $HOME/.ssh/known_hosts
+fi
+
+shards update
 ./build.sh -a && mv crystaldrive /usr/local/bin/
-shards install
 
 mkdir -p $ONLY_OFFICE_DATA_PATH
 
