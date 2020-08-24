@@ -37,11 +37,7 @@ if [ -d /root/crystaldrive  ] ; then
 	else
 		git clone https://github.com/crystaluniverse/crystaldrive ~/crystaldrive 
 fi
-[[ -d /root/.ssh ]] || mkdir /root/.ssh/
-[[ -f /root/.ssh/id_rsa ]] || echo ssh key is not exist, add one of crystal drive repo && echo key exist >> /root/start.log
-eval `ssh-agent`
-ssh-add /root/.ssh/id_rsa
-cd /root/crystaldrive ;\
+cd /root/crystaldrive ;
 sed -i "s|git@github.com:crystaluniverse|https://github.com/crystaluniverse|g" build.sh ;\
 
 if ! grep -q "github.com" $HOME/.ssh/known_hosts; then

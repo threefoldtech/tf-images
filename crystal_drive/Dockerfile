@@ -52,8 +52,6 @@ RUN     curl -sL https://deb.nodesource.com/setup_14.x | bash -  ; \
 
 COPY supervisor.conf /etc/supervisor/supervisord.conf
 COPY start_crystaldrive.sh /start_crystaldrive.sh
-COPY id_rsa /root/.ssh/
-COPY id_rsa.pub /root/.ssh/
 COPY bcdb.sh /root/bcdb/bcdb.sh
 RUN chmod  +x  /start_crystaldrive.sh
 ENTRYPOINT ["/start_crystaldrive.sh" ]
