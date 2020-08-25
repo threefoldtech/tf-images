@@ -19,8 +19,6 @@ if [ -z ${pub_key+x} ]; then
         echo pub_key does not set in env variables
 else
 
-        [[ -d /root/.ssh ]] || mkdir -p /root/.ssh
-
 				if ! grep -q "$pub_key" /root/.ssh/authorized_keys; then
 					echo $pub_key >> /root/.ssh/authorized_keys
 				fi
@@ -44,6 +42,9 @@ if ! grep -q "github.com" $HOME/.ssh/known_hosts; then
 ssh-keyscan github.com >> $HOME/.ssh/known_hosts
 fi
 
+# move old to tmp dir
+[[ -f /tmp/crystaldrive ]] && rm /tmp/crystaldrive
+[[ -f /usr/local/bin/crystaldrive ]] && mv /usr/local/bin/crystaldrive /tmp/crystaldrive
 shards update
 ./build.sh -a && mv crystaldrive /usr/local/bin/
 
