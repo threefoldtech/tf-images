@@ -16,12 +16,10 @@ docker run -i -p8080:3000 -p2207:22 --name crystaldrive-test -e TF_EXP_USER=myte
 - IMPORTANT : Please backup your seed file /root/bcdb/user.seed , is generated automtic on first time of container starting 
 		is created by providing the three env vars
 		```
-		
 		TF_EXP_USER=mytest4 -e EMAIL=mytest4@test.com -e DESCRIPTION=test4
-
 		```
 - pub_key=  is your ssh key 
-- /root/onlyoffice/data is the ONLY_OFFICE_DATA_PATH , you can make it shared as above to ~/onlyoffice-data
+- /root/onlyoffice/data is the ONLY_OFFICE_DATA_PATH inside container, you can make it shared as above to ~/onlyoffice-data in your host
 # flist
 	 https://hub.grid.tf/bishoy.3bot/threefolddev-crystaldrive-latest.flist
 # References
