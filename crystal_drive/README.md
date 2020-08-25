@@ -16,11 +16,9 @@ docker run -i -p8080:3000 -p2207:22 --name crystaldrive-test -e TF_EXP_USER=myte
 - IMPORTANT : Please backup your seed file /root/bcdb/user.seed , is generated automtic on first time of container starting 
 		is created by providing the three env vars
 		```
-		
-		TF_EXP_USER=mytest4 -e EMAIL=mytest4@test.com -e DESCRIPTION=test4
-
+		TF_EXP_USER=mytest4 -e EMAIL=mytest4@test.com -e DESCRIPTION=test
 		```
-- pub_key=  is your ssh key 
+-  ``` pub_key ```  is your ssh key 
 
 # flist
 	 https://hub.grid.tf/bishoy.3bot/threefolddev-crystaldrive-latest.flist
