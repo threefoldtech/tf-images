@@ -48,6 +48,6 @@ fi
 shards update
 ./build.sh -a && mv crystaldrive /usr/local/bin/
 
-mkdir -p $ONLY_OFFICE_DATA_PATH
-
+[ -d /root/onlyoffice/data ] || mkdir -p /root/onlyoffice/data
+export ONLY_OFFICE_DATA_PATH=/root/onlyoffice/data
 supervisord -n -c /etc/supervisor/supervisord.conf
