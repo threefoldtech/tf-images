@@ -82,5 +82,6 @@ cd /sandbox/code/github/crystaluniverse/publishingtools
 /trc -local localhost:80 -local-tls localhost:443 -remote $TRC_REMOTE &> trc.log &
 if [ "$TEST_CERT" = 'true' ] ; then
     yes | /caddy -ca https://acme-staging-v02.api.letsencrypt.org/directory -conf /Caddyfile
+else
+    yes | /caddy -conf /Caddyfile
 fi
-yes | /caddy -conf /Caddyfile
