@@ -7,6 +7,8 @@ cp /config/nginx.conf /etc/nginx/sites-enabled/default
 sed -i "s/DOMAIN/$DOMAIN/g" /etc/nginx/sites-enabled/default
 sed -i "s/SOLUTION_IP/$SOLUTION_IP/g" /etc/nginx/sites-enabled/default
 sed -i "s/SOLUTION_PORT/$SOLUTION_PORT/g" /etc/nginx/sites-enabled/default
+awk -v HTTP_CONFIG="$HTTP_CONFIG" -v HTTPS_CONFIG="$HTTPS_CONFIG" '{sub(/HTTP_CONFIG/, HTTP_CONFIG);sub(/HTTPS_CONFIG/, HTTPS_CONFIG);print;}' /etc/nginx/sites-enabled/default > /tmp/newfile
+mv /tmp/newfile /etc/nginx/sites-enabled/default
 cmd="certbot --nginx --agree-tos  -m "$EMAIL" --non-interactive --domains $DOMAIN"
 if [ "$ENFORCE_HTTPS" = 'true' ] ; then
   cmd=$cmd" --redirect"
