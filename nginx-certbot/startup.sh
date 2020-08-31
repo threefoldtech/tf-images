@@ -18,6 +18,6 @@ if [ "$TEST_CERT" = 'true' ] ; then
 fi
 service nginx start
 $cmd
-pkill -9 nginx
+service nginx stop
 nginx -g 'daemon off;'
 
