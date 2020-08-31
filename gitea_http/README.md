@@ -25,7 +25,7 @@ docker run -it --name gitea -p 222:22 -p80:80 -p443:443 -e pub_key="ssh-rsa AAAA
 
 ## flist 
 
-- https://hub.grid.tf/bishoy.3bot/threefolddev-gitea_all_in_one-latest.flist
+- https://hub.grid.tf/omar0.3bot/omarelawady-gitea_all_in_one-latest.flist
 
 ## notes
 
