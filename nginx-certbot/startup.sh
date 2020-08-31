@@ -16,7 +16,8 @@ fi
 if [ "$TEST_CERT" = 'true' ] ; then
   cmd=$cmd" --test-cert"
 fi
+service nginx start
 $cmd
-service nginx stop
+pkill -9 nginx
 nginx -g 'daemon off;'
 
