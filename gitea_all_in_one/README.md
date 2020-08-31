@@ -19,10 +19,9 @@ docker run -it --name gitea -p 222:22 -p80:80 -p443:443 -e pub_key="ssh-rsa AAAA
     ```
     ssh git@167.172.153.0 -p222
     ``` 
-## missing
+## new
 
-- itsyou.online (low prio)
-
+- 3bot login is enabled
 ## flist 
 
 - https://hub.grid.tf/bishoy.3bot/threefolddev-gitea_all_in_one-latest.flist
@@ -38,7 +37,7 @@ docker run -it --name gitea -p 222:22 -p80:80 -p443:443 -e pub_key="ssh-rsa AAAA
     ```
 ## initial setup 
 
- - you can login to initial setup page by using ROOT_RUL http://167.172.153.0
+ - you can login to initial setup page by using ROOT_RUL https://167.172.153.0:3000
  - set `Database Type` PostgreSQL and set other configuration as env variables 
  - set admin account as below
  ![admin](admin.png)
