@@ -80,8 +80,11 @@ fi
 cd /sandbox/code/github/crystaluniverse/publishingtools
 ./bin/tfweb -c /config.toml &> tfweb.log &
 /trc -local localhost:80 -local-tls localhost:443 -remote $TRC_REMOTE &> trc.log &
+for i in {1..6}; do
 if [ "$TEST_CERT" = 'true' ] ; then
     yes | /caddy -ca https://acme-staging-v02.api.letsencrypt.org/directory -conf /Caddyfile
 else
     yes | /caddy -conf /Caddyfile
 fi
+sleep 10
+done
