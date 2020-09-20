@@ -17,7 +17,14 @@ if [ "$TEST_CERT" = 'true' ] ; then
   cmd=$cmd" --test-cert"
 fi
 service nginx start
-$cmd
+
+for i in {1..6}; do
+if $cmd ; then
+        break
+fi
+sleep 10
+done
+
 service nginx stop
 nginx -g 'daemon off;'
 
