@@ -1,3 +1,5 @@
+#!/bin/bash
+
 chmod 600 /etc/ssh/*_key
 echo $PUBKEY > ~/.ssh/authorized_keys
 service ssh start
