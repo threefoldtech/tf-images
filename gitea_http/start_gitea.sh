@@ -1,12 +1,6 @@
 #!/bin/bash
 set -xe
 
-
-# TODO check $DOMAIN variables
-
-[[ -d /data/gitea/conf ]] || mkdir -p /data/gitea/conf
-cd /data/gitea/conf && /app/gitea/gitea cert --host $DOMAIN
-
 # fix /etc/hosts
 if ! grep -q "localhost" /etc/hosts; then
 	touch /etc/hosts
