@@ -1,0 +1,2 @@
+exec: bash -c "trc -local $SOLUTION_IP:$HTTP_PORT -local-tls $SOLUTION_IP:$HTTPS_PORT -remote $REMOTE_IP:$REMOTE_PORT"
+log: stdout
