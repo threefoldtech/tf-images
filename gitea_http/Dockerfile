@@ -168,12 +168,10 @@ VOLUME /var/lib/postgresql/data
 EXPOSE 5432
 #CMD ["postgres"]
 
-
 #nginx 
 COPY root/opt/bin /opt/bin
 RUN mkdir -p /etc/s6/postgres
 COPY root/opt/postgres_s6 /etc/s6/postgres
-COPY gitea-ini-template  /etc/templates/app.ini
 EXPOSE 5432
 RUN chmod +x -R /opt/bin/ /etc/s6/postgres 
 COPY start_gitea.sh /start_gitea.sh

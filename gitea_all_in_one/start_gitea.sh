@@ -1,7 +1,6 @@
 #!/bin/bash
 set -xe
 
-
 # TODO check $DOMAIN variables
 
 [[ -d /data/gitea/conf ]] || mkdir -p /data/gitea/conf

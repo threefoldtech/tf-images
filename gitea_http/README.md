@@ -2,13 +2,13 @@
 
 in the gitea directory
 
-`docker build -t threefolddev/gitea_all_in_one .`
+`docker build -t http_gitea_all_in_one .`
 
 
 # Running
 
 ```
-docker run -it --name gitea -p 222:22 -p80:80 -p443:443 -e pub_key="ssh-rsa AAAAB3" -e POSTGRES_USER=root  -e POSTGRES_PASSWORD=pass  -e POSTGRES_DB=gitea -e DB_TYPE=postgres -e DB_HOST=localhost:5432  -e APP_NAME=myrepos -e HTTP_PORT=3000 -e DOMAIN=167.172.153.0 -e ROOT_URL=https://167.172.153.0  -v /data:/data -v /data/postgres:/var/lib/postgresql/data -v /data/nginx:/etc/nginx/conf.d threefolddev/gitea_all_in_one
+docker run -it --name gitea -p 222:22 -p80:80 -e pub_key="ssh-rsa AAAAB3" -e POSTGRES_USER=root  -e POSTGRES_PASSWORD=pass  -e POSTGRES_DB=gitea -e DB_TYPE=postgres -e DB_HOST=localhost:5432  -e APP_NAME=myrepos -e HTTP_PORT=3000 -e DOMAIN=167.172.153.0 -e ROOT_URL=http://167.172.153.0:3000  -v /data:/data -v /data/postgres:/var/lib/postgresql/data http_gitea_all_in_one..
 
 ```
 
