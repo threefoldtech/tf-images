@@ -27,6 +27,8 @@ fi
 sleep 10
 done
 
+cat /var/log/letsencrypt/letsencrypt.log
+
 service nginx stop
 nginx -g 'daemon off;'
 
