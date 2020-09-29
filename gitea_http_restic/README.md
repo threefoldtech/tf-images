@@ -2,7 +2,7 @@
 
 in the gitea directory
 
-`docker build -t http_gitea_all_in_one .`
+`docker build -t http_gitea_restic_all_in_one .`
 
 
 # Running
