@@ -46,7 +46,7 @@ envsubst < /etc/templates/backup-template >  /data/git/backup.sh
 chmod +x /data/git/backup.sh
 
 cat << EOF > /.mycron
-00 05 * * * /data/git/backup.sh >> /var/log/cron/backup.log 2>&1
+00 05 * * * /data/git/backup.sh >> /data/git/backup.log 2>&1
 EOF
 
 /usr/sbin/crond -b -l 8

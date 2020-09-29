@@ -2,13 +2,19 @@
 
 in the gitea directory
 
-`docker build -t http_gitea_restic_all_in_one .`
+`docker build -t threefolddev.http_gitea_restic_all_in_one .`
 
 
 # Running
 
 ```
-docker run -it --name gitea -p 222:22 -p80:80 -e pub_key="ssh-rsa AAAAB3" -e POSTGRES_USER=root  -e POSTGRES_PASSWORD=pass  -e POSTGRES_DB=gitea -e DB_TYPE=postgres -e DB_HOST=localhost:5432  -e APP_NAME=myrepos -e HTTP_PORT=3000 -e DOMAIN=167.172.153.0 -e ROOT_URL=http://167.172.153.0:3000  -v /data:/data -v /data/postgres:/var/lib/postgresql/data http_gitea_all_in_one..
+docker run -it --name gitea -p 222:22 -p80:80 -e pub_key="ssh-rsa AAAAB3" \ 
+-e POSTGRES_USER=root  -e POSTGRES_PASSWORD=pass  -e POSTGRES_DB=gitea -e DB_TYPE=postgres \
+ -e DB_HOST=localhost:5432  -e APP_NAME=myrepos -e HTTP_PORT=3000 \ 
+-e DOMAIN=167.172.153.0 -e ROOT_URL=http://167.172.153.0:3000   \ 
+-e AWS_ACCESS_KEY_ID= -e AWS_SECRET_ACCESS_KEY= -e RESTIC_PASSWORD= \
+-e RESTIC_REPOSITORY=s3:https://s3.grid.tf/giteatest
+-v /data:/data -v /data/postgres:/var/lib/postgresql/data threefolddev.http_gitea_restic_all_in_one
 
 ```
 

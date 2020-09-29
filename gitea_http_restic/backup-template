@@ -6,7 +6,7 @@ RESTIC_REPOSITORY=$RESTIC_REPOSITORY
 RESTIC_PASSWORD=$RESTIC_PASSWORD
 
 cd /data/git
-/app/gitea/gitea dump -c /data/gitea/conf/app.ini
+su - git -c "/app/gitea/gitea dump -c /data/gitea/conf/app.ini"
 if [ $? -ne 0 ] ; then
     touch WARNING_DUMP_FAILED
     exit 1
