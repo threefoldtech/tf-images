@@ -179,6 +179,7 @@ EXPOSE 5432
 
 #nginx 
 COPY root/opt/bin /opt/bin
+COPY backup-template /etc/templates/backup-template
 RUN mkdir -p /etc/s6/postgres
 COPY root/opt/postgres_s6 /etc/s6/postgres
 EXPOSE 5432
