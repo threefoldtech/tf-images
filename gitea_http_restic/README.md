@@ -14,7 +14,7 @@ docker run -it --name gitea -p 222:22 -p80:80 -e pub_key="ssh-rsa AAAAB3" \
 -e DOMAIN=167.172.153.0 -e ROOT_URL=http://167.172.153.0:3000   \ 
 -e AWS_ACCESS_KEY_ID= -e AWS_SECRET_ACCESS_KEY= -e RESTIC_PASSWORD= \
 -e RESTIC_REPOSITORY=s3:https://s3.grid.tf/giteatest
--v /data:/data -v /data/postgres:/var/lib/postgresql/data threefolddev.http_gitea_restic_all_in_one
+-v /data:/data -v /data/postgres:/var/lib/postgresql/data threefolddev/http_gitea_restic_all_in_one
 
 ```
 
@@ -25,9 +25,7 @@ docker run -it --name gitea -p 222:22 -p80:80 -e pub_key="ssh-rsa AAAAB3" \
     ```
     ssh git@167.172.153.0 -p222
     ``` 
-## missing
-
-- itsyou.online (low prio)
+ - not that key should not used on gitea account as an sshkey in ur profile, will got conflict   
 
 ## flist 
 
