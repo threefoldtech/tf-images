@@ -1,7 +1,7 @@
 #!/bin/bash
 set -xe
 
-cat > /data/git/backup.sh << EOF
+cat << EOF > /data/git/backup.sh
 
 export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
 export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
