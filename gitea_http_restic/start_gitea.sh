@@ -1,22 +1,5 @@
 #!/bin/bash
 set -xe
-
-# Substitude the environment variables in backup template
-AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID:-""} \
-AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY:-""} \
-RESTIC_REPOSITORY=${RESTIC_REPOSITORY:-""}
-RESTIC_PASSWORD=${RESTIC_PASSWORD:-""} \
-envsubst < /etc/templates/backup-template >  /data/git/backup.sh
-
-chmod +x /data/git/backup.sh
-
-cat << EOF > /.mycron
-00 05 * * * /data/git/backup.sh >> /var/log/cron/backup.log 2>&1
-EOF
-
-/usr/sbin/crond -b -l 8
-crontab /.mycron
-
 # fix /etc/hosts
 if ! grep -q "localhost" /etc/hosts; then
 	touch /etc/hosts
@@ -52,6 +35,22 @@ fi
 for FOLDER in /data/gitea/conf /data/gitea/log /data/git /data/ssh; do
     mkdir -p ${FOLDER}
 done
+
+# Substitude the environment variables in backup template
+AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID:-""} \
+AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY:-""} \
+RESTIC_REPOSITORY=${RESTIC_REPOSITORY:-""}
+RESTIC_PASSWORD=${RESTIC_PASSWORD:-""} \
+envsubst < /etc/templates/backup-template >  /data/git/backup.sh
+
+chmod +x /data/git/backup.sh
+
+cat << EOF > /.mycron
+00 05 * * * /data/git/backup.sh >> /var/log/cron/backup.log 2>&1
+EOF
+
+/usr/sbin/crond -b -l 8
+crontab /.mycron
 
 if [ -z ${pub_key+x} ]; then
 
