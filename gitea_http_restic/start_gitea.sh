@@ -70,7 +70,7 @@ else
 
 fi
 
-chown -R git:git /data/gitea
+chown -R git:git /data/gitea /data/git
 
 if [ $# -gt 0 ]; then
     exec "$@"
