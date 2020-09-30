@@ -13,7 +13,7 @@ if [ $? -ne 0 ] ; then
 fi
 unset HISTFILE
 if ! restic snapshots ;then echo restic repo does not initalized yet; restic init ; fi > /dev/null
-for i in `find . -type f -mtime -1 -name "gitea-dump*"` ; do restic backup --cleanup-cache $i ; done
+for i in `find /data/git -type f -mtime -1 -name "gitea-dump*"` ; do restic backup --cleanup-cache \$i ; done
 if [ $? -eq 0 ] ; then
     find . -type f -mtime -1 -name "gitea-dump*" -mtime +7 -exec rm {} \;
 else
