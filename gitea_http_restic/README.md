@@ -21,9 +21,9 @@ docker run -it --name gitea -p 222:22 -p80:80 -e pub_key="ssh-rsa AAAAB3" \
 ## ssh 
  - to ssh echo your public key in /data/git/.ssh/authorized_keys
 
- - ssh container using user `git` not root as home dir is /data/git 
+ - ssh container using user `root` not root as home dir is /data/git 
     ```
-    ssh git@167.172.153.0 -p222
+    ssh root@167.172.153.0 -p222
     ``` 
  - not that key should not used on gitea account as an sshkey in ur profile, will got conflict   
 

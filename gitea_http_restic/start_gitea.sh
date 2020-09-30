@@ -53,8 +53,10 @@ EOF
 crontab /.mycron
 
 # enable ssh login on gitea, i just set root pass but you still can not ssh with this password as per ssh config
-rootpass=`dd if=/dev/urandom bs=16 count=1 2>/dev/null | uuencode - | head -n 2 | grep -v begin | cut -b 2-40`
-echo -e "$rootpass\n$rootpass" | passwd  root
+#rootpass=`dd if=/dev/urandom bs=16 count=1 2>/dev/null | uuencode - | head -n 2 | grep -v begin | cut -b 2-40`
+#echo -e "$rootpass\n$rootpass" | passwd  root
+
+passwd -u root
 
 # add ssh key to root
 
