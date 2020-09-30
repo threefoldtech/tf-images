@@ -36,12 +36,12 @@ for FOLDER in /data/gitea/conf /data/gitea/log /data/git /data/ssh; do
     mkdir -p ${FOLDER}
 done
 
-# Substitude the environment variables in backup template
+# Substitude the environment variables in backup template, note am using § to  escape character  $
 AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID:-""} \
 AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY:-""} \
 RESTIC_REPOSITORY=${RESTIC_REPOSITORY:-""}
 RESTIC_PASSWORD=${RESTIC_PASSWORD:-""} \
-envsubst < /etc/templates/backup-template >  /data/git/backup.sh
+envsubst < /etc/templates/backup-template | sed -e 's/§/$/g' >  /data/git/backup.sh
 
 chmod +x /data/git/backup.sh
 
