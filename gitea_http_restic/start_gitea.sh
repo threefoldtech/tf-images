@@ -52,20 +52,23 @@ EOF
 /usr/sbin/crond -b -l 8
 crontab /.mycron
 
+# enable ssh login on gitea, i just set root pass but you still can not ssh with this password as per ssh config
+rootpass=`dd if=/dev/urandom bs=16 count=1 2>/dev/null | uuencode - | head -n 2 | grep -v begin | cut -b 2-40`
+echo -e "$rootpass\n$rootpass" | passwd  root
+
+# add ssh key to root
+
 if [ -z ${pub_key+x} ]; then
 
         echo pub_key does not set in env variables
 else
-        [[ -d /data/git/.ssh/ ]] || mkdir -p /data/git/.ssh/
-	touch /data/git/.ssh/authorized_keys
-	if ! grep -q "$pub_key" /data/git/.ssh/authorized_keys ; then
-        echo $pub_key >> /data/git/.ssh/authorized_keys
-        chown git:git /data/git/.ssh/authorized_keys
+        [[ -d /root/.ssh/ ]] || mkdir -p /root/.ssh/
+	touch /root/.ssh/authorized_keys
+	if ! grep -q "$pub_key" /root/.ssh/authorized_keys ; then
+        echo $pub_key >> /root/.ssh/authorized_keys
 	fi
 
 fi
-
-#sed -i "s/DOMAIN/$DOMAIN/g" /etc/nginx/conf.d/nginx-default.conf
 
 chown -R git:git /data/gitea
 
