@@ -3,10 +3,10 @@
 # clean
 rm -rf /restic.*
 
-echo "export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID" > restic.env
-echo "export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY" >> restic.env
-echo "export RESTIC_PASSWORD=$RESTIC_PASSWORD" >> restic.env
-echo "export RESTIC_REPOSITORY=$RESTIC_REPOSITORY" >> restic.env
+echo "export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID" > /restic.env
+echo "export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY" >> /restic.env
+echo "export RESTIC_PASSWORD=$RESTIC_PASSWORD" >> /restic.env
+echo "export RESTIC_REPOSITORY=$RESTIC_REPOSITORY" >> /restic.env
 
 # Sanitation check for vars
 for var in  AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY RESTIC_PASSWORD RESTIC_REPOSITORY BACKUP_PATHS
@@ -17,11 +17,11 @@ for var in  AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY RESTIC_PASSWORD RESTIC_REPOS
       fi
   done
 
-chmod +x restic.env
+chmod +x /restic.env
 paths=$(echo $BACKUP_PATHS | tr ";" "\n")
 for i in $paths
 do
-	echo $i >> restic.files
+	echo $i >> /restic.files
 done
 
 if restic list snapshots; then
