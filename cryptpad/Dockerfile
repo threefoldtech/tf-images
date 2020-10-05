@@ -2,7 +2,7 @@ FROM promasu/cryptpad
 
 USER root
 RUN apt-get update
-RUN apt-get install -y openssh-client openssh-server restic cron;
+RUN apt-get install -y openssh-client openssh-server restic cron openssl curl;
 
 # Volume for data persistence
 VOLUME /persistent-data
