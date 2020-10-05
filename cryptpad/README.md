@@ -12,6 +12,16 @@ docker run -dti -e pub_key="ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDL/IvQhp..." -
 
 env var size = amount of data storage in MBs
 
+## To use backups - pass these env variables
+
+"AWS_ACCESS_KEY_ID": "<s3 access key>",
+"AWS_SECRET_ACCESS_KEY": "<s3 secret>",
+"RESTIC_PASSWORD": "<backup password>",
+"RESTIC_REPOSITORY": "<repo url example: `s3:s3backup.tfgw-testnet-01.gateway.tf/hamada`>",
+"BACKUP_PATHS": "/persistent_data",
+"CRON_FREQUENCY": "* * * * *",  # example every 1 min
+
+
 ## Access using ssh
 ```bash
 ssh roo@{CONTAINER_IP}
