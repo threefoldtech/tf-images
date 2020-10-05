@@ -238,7 +238,7 @@ module.exports = {
      *  Specify a directory where files should be stored.
      *  It will be created automatically if it does not already exist.
      */
-    filePath: './datastore/',
+    filePath: '/persistent-data/datastore/',
 
     /*  CryptPad offers the ability to archive data for a configurable period
      *  before deleting it, allowing a means of recovering data in the event
@@ -247,39 +247,39 @@ module.exports = {
      *  To set the location of this archive directory to a custom value, change
      *  the path below:
      */
-    archivePath: './data/archive',
+    archivePath: '/persistent-data/archive',
 
     /*  CryptPad allows logged in users to request that particular documents be
      *  stored by the server indefinitely. This is called 'pinning'.
      *  Pin requests are stored in a pin-store. The location of this store is
      *  defined here.
      */
-    pinPath: './data/pins',
+    pinPath: '/persistent-data/data/pins',
 
     /*  if you would like the list of scheduled tasks to be stored in
         a custom location, change the path below:
     */
-    taskPath: './data/tasks',
+    taskPath: '/persistent-data/data/tasks',
 
     /*  if you would like users' authenticated blocks to be stored in
         a custom location, change the path below:
     */
-    blockPath: './block',
+    blockPath: '/persistent-data/block',
 
     /*  CryptPad allows logged in users to upload encrypted files. Files/blobs
      *  are stored in a 'blob-store'. Set its location here.
      */
-    blobPath: './blob',
+    blobPath: '/persistent-data/blob',
 
     /*  CryptPad stores incomplete blobs in a 'staging' area until they are
      *  fully uploaded. Set its location here.
      */
-    blobStagingPath: './data/blobstage',
+    blobStagingPath: '/persistent-data/data/blobstage',
 
     /* CryptPad supports logging events directly to the disk in a 'logs' directory
      * Set its location here, or set it to false (or nothing) if you'd rather not log
      */
-    logPath: './data/logs',
+    logPath: '/persistent-data/data/logs',
 
     /* =====================
      *       Debugging

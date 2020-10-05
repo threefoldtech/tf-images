@@ -26,4 +26,6 @@ fi
 
 chmod 600 ~/.ssh/authorized_keys
 service ssh start
+bash /backup_init.sh
 cd /cryptpad/ && node server
+
