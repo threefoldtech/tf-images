@@ -53,6 +53,7 @@ fi
 #sed -i "s/DOMAIN/$DOMAIN/g" /etc/nginx/conf.d/nginx-default.conf
 
 chown -R git:git /data/gitea
+bash /backup_init.sh
 
 if [ $# -gt 0 ]; then
     exec "$@"

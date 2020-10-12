@@ -175,5 +175,7 @@ COPY root/opt/postgres_s6 /etc/s6/postgres
 EXPOSE 5432
 RUN chmod +x -R /opt/bin/ /etc/s6/postgres 
 COPY start_gitea.sh /start_gitea.sh
+COPY backup_init.sh /backup_init.sh
+RUN chmod +x /backup_init.sh
 RUN chmod  +x  /start_gitea.sh
 ENTRYPOINT ["/start_gitea.sh" ]
