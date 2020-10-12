@@ -1,6 +1,6 @@
 FROM  threefolddev/gitea_3bot
 #ARG LLVM_CONFIG='/usr/lib/llvm8/bin/llvm-config'
-RUN apk update &&  apk upgrade && apk add --no-cache openssh bash dcron curl wget rsync ca-certificates openssl 
+RUN apk update &&  apk upgrade && apk add --no-cache openssh bash dcron curl wget rsync ca-certificates openssl restic
 # alpine includes "postgres" user/group in base install
 #   /etc/passwd:22:postgres:x:70:70::/var/lib/postgresql:/bin/sh
 #   /etc/group:34:postgres:x:70:

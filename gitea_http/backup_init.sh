@@ -42,6 +42,7 @@ then
     CRON_FREQUENCY="0 0 * * *"
 fi
 
+mkdir -p /etc/cron.d
 line="source /restic.env ; export TAG=\$(date +%Y%m%d-%H%M%S);  restic backup --files-from=/restic.files --tag \$TAG 2> /restic.err > /restic.log"
 echo $line > /root/backup.sh
 echo "$CRON_FREQUENCY root bash /root/backup.sh" > /etc/cron.d/backup
