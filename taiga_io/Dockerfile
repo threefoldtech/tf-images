@@ -8,10 +8,10 @@ RUN apt-get update ; \
     apt-get install -y automake libtool curl git tmux gettext ; \
     apt-get install -y nginx postgresql ; \
     apt-get install -y rabbitmq-server redis-server ; \
-    apt-get install -y python3 python3-pip python3-dev virtualenvwrapper; \
+    apt-get install -y python3 python3-pip python3-dev python3-venv virtualenvwrapper; \
     apt-get install -y libxml2-dev libxslt-dev; \
     apt-get install -y libssl-dev libffi-dev; \
-    apt-get install -y sudo openssh-server virtualenv python-pip vim zip nodejs npm restic cron; \
+    apt-get install -y sudo openssh-server vim zip nodejs npm restic cron; \
     pip3 install supervisor
 
 # install nodejs and npm
