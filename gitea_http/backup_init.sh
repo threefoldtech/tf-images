@@ -13,7 +13,7 @@ for var in  AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY RESTIC_PASSWORD RESTIC_REPOS
   do
     if [ -z "${!var}" ]
       then
-          exit 1
+          exit 0
       fi
   done
 
