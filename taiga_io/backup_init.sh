@@ -1,12 +1,12 @@
 #!/bin/bash
 
 # clean
-rm -rf /data/git/restic.*
+rm -rf /home/taiga/restic.*
 
-echo "export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID" > /data/git/restic.env
-echo "export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY" >> /data/git/restic.env
-echo "export RESTIC_PASSWORD=$RESTIC_PASSWORD" >> /data/git/restic.env
-echo "export RESTIC_REPOSITORY=$RESTIC_REPOSITORY" >> /data/git/restic.env
+echo "export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID" > /home/taiga/restic.env
+echo "export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY" >> /home/taiga/restic.env
+echo "export RESTIC_PASSWORD=$RESTIC_PASSWORD" >> /home/taiga/restic.env
+echo "export RESTIC_REPOSITORY=$RESTIC_REPOSITORY" >> /home/taiga/restic.env
 
 # Sanitation check for vars
 for var in  AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY RESTIC_PASSWORD RESTIC_REPOSITORY
@@ -18,27 +18,18 @@ for var in  AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY RESTIC_PASSWORD RESTIC_REPOS
   done
 
 
-echo "/data/git/gitea_dump.zip" >> /data/git/restic.files
+echo "/home/taiga/taiga-back/media" > /home/taiga/restic.files
+echo "/home/taiga/db_dump.sql" >> /home/taiga/restic.files
 
-mkdir -p /data/git /data/gitea
 if restic list snapshots; then
   if [ -z `restic snapshots --json` ]; then
     restic init; 
   else 
-      restic restore --target /tmp latest
-      cd /tmp/data/git
-      unzip gitea_dump.zip
-      mv app.ini /data/gitea/conf/app.ini
-      mv repos/* /data/gitea/repositories/
-      chown -R gitea:gitea /data/gitea/conf/app.ini /data/gitea/repositories/
-      echo "cd /tmp/data/git;export PGPASSWORD=$POSTGRES_PASSWORD" > restore_dump.sh
-      echo "while ! nc -z localhost 5432; do" >> restore_dump.sh
-      echo "echo \"waiting for postgres\" >> /tmp/data/git/wait.log" >> restore_dump.sh
-      echo  "sleep 0.1" >> restore_dump.sh
-      echo "done" >> restore_dump.sh
-      echo "psql -U $POSTGRES_USER -d $POSTGRES_DB --no-password < gitea-db.sql" >> restore_dump.sh
-      chmod +x restore_dump.sh
-      bash restore_dump.sh &
+      restic restore --target /tmp/taiga_data latest
+      mv /tmp/taiga_data/media/* /home/taiga/taiga-back/media/
+      chown taiga:taiga /home/taiga/taiga-back/media -R
+      chown taiga:taiga /tmp/taiga_data -R
+      su taiga -c "psql < /tmp/taiga_data/db_dump.sql"
     fi
 else
     restic init;
@@ -48,15 +39,13 @@ if [ -z "$CRON_FREQUENCY" ]
 then
     CRON_FREQUENCY="0 0 * * *"
 fi
-chown -R git:git /data/git /data/gitea
 
 mkdir -p /etc/cron.d
-line="gitea dump -c /data/gitea/conf/app.ini -f /data/git/gitea_dump.zip; source /data/git/restic.env ; export TAG=\$(date +%Y%m%d-%H%M%S);  restic backup --files-from=/data/git/restic.files --tag \$TAG 2> /data/git/restic.err > /data/git/restic.log"
-echo $line > /data/git/backup.sh
-echo "$CRON_FREQUENCY bash /data/git/backup.sh" > /etc/cron.d/backup
+line="pg_dump taiga -f /home/taiga/db_dump.sql;source /home/taiga/restic.env; export TAG=\$(date +%Y%m%d-%H%M%S);  restic backup --files-from=/home/taiga/restic.files --tag \$TAG 2> /home/taiga/restic.err > /home/taiga/restic.log"
+echo $line > /home/taiga/backup.sh
+echo "$CRON_FREQUENCY bash /home/taiga/backup.sh" > /etc/cron.d/backup
 
-chown git:git /data/git/restic.env /data/git/restic.files /etc/cron.d/backup
+chown taiga:taiga /home/taiga/restic.env /home/taiga/restic.files /etc/cron.d/backup
 
-/usr/sbin/crond -b -l 8
-crontab -u git /etc/cron.d/backup
-
+crontab -u taiga /etc/cron.d/backup
+service cron restart
