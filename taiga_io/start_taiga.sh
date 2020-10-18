@@ -23,6 +23,7 @@ mkdir -p /run/sshd
 # fix /etc/hosts
 if ! grep -q "localhost" /etc/hosts; then
 	echo "127.0.0.1 localhost" >> /etc/hosts
+    echo "127.0.0.1 `hostname`" >> /etc/hosts
 fi
 
 echo "preparing postgresql environment"
