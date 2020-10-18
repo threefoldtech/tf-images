@@ -72,8 +72,9 @@ su taiga -c 'bash /.prepare_taiga.sh'
 echo "Run supervisord"
 supervisord -c /etc/supervisor/supervisord.conf
 
-echo "wait 10 seconds for rabbitmq starting"
-sleep 10
+echo "wait 5 seconds for rabbitmq starting"
+sleep 5
+supervisorctl restart rabbitmq
 rabbitmqctl add_user taiga $SECRET_KEY
 rabbitmqctl add_vhost taiga
 rabbitmqctl set_permissions -p taiga taiga '.*' '.*' '.*'
