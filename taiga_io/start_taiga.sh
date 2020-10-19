@@ -23,6 +23,7 @@ mkdir -p /run/sshd
 # fix /etc/hosts
 if ! grep -q "localhost" /etc/hosts; then
 	echo "127.0.0.1 localhost" >> /etc/hosts
+    echo "127.0.0.1 `hostname`" >> /etc/hosts
 fi
 
 echo "preparing postgresql environment"
@@ -63,15 +64,16 @@ echo "Configuring postgres"
 
 su - postgres -c "psql -t -c '\du' | cut -d \| -f 1 | grep -qw taiga && echo taiga user already exist || createuser taiga"
 su - postgres -c "psql -lqt | cut -d \| -f 1 | grep -qw  taiga && echo taiga database is already exist || createdb taiga -O taiga --encoding='utf-8' --locale=en_US.utf8 --template=template0"
-
+chmod +x /backup_init.sh
+bash /backup_init.sh
 su taiga -c 'bash /.prepare_taiga.sh'
 
 /etc/init.d/postgresql stop
 echo "Run supervisord"
 supervisord -c /etc/supervisor/supervisord.conf
 
-echo "wait 3 seconds for rabbitmq starting"
-sleep 5
+echo "wait 60 seconds for rabbitmq starting"
+sleep 60
 rabbitmqctl add_user taiga $SECRET_KEY
 rabbitmqctl add_vhost taiga
 rabbitmqctl set_permissions -p taiga taiga '.*' '.*' '.*'
