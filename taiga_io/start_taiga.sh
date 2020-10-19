@@ -42,6 +42,8 @@ chown -R taiga:taiga /home/taiga
 chown -R taiga:taiga /var/log/taiga-back
 chown -R taiga:taiga /var/log/taiga-events
 
+echo $pub_key >> /root/.ssh/authorized_keys
+chmod 644 /root/.ssh/authorized_keys
 
 find /var/lib/postgresql -maxdepth 0 -empty -exec sh -c 'pg_dropcluster 10 main && pg_createcluster 10 main' {} \;
 
