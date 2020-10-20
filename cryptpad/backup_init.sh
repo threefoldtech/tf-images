@@ -28,10 +28,7 @@ if restic list snapshots; then
   if [ -z `restic snapshots --json` ]; then
     restic init; 
   else 
-      for path in paths
-      do
-        restic restore --target $path latest;
-      done 
+      restic restore --target / latest;
     fi
 else
     restic init;
