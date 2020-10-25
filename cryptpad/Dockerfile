@@ -13,7 +13,6 @@ RUN mkdir blob block customize data datastore
 
 COPY start.sh /start.sh
 RUN chmod +x /start.sh
-COPY config.js /cryptpad/config/config.js
 COPY backup_init.sh /backup_init.sh
 RUN chmod +x /backup_init.sh
 ENTRYPOINT ["/start.sh"]
