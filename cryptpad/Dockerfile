@@ -8,9 +8,6 @@ RUN apt-get install -y openssh-client openssh-server restic cron openssl curl;
 VOLUME /persistent-data
 WORKDIR /persistent-data
 
-# Create directories
-RUN mkdir blob block customize data datastore
-
 COPY start.sh /start.sh
 RUN chmod +x /start.sh
 COPY backup_init.sh /backup_init.sh

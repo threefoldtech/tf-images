@@ -24,6 +24,8 @@ else
 				fi
 fi
 
+mkdir blob block customize data datastore;
+
 chown -R 4001:4001 /persistent-data;
 rm -rf /cryptpad/datastore /cryptpad/archive /cryptpad/data /cryptpad/block /cryptpad/blob;
 ln -sf /persistent-data/datastore/ /cryptpad/datastore;
@@ -33,6 +35,7 @@ ln -sf /persistent-data/block/ /cryptpad/block;
 ln -sf /persistent-data/blob/ /cryptpad/blob;
 
 chown -R 4001:4001 /cryptpad/datastore /cryptpad/archive /cryptpad/data /cryptpad/block /cryptpad/blob  /persistent-data/*;
+cp /cryptpad/config/config.example.js /cryptpad/config/config.js
 
 chmod 600 ~/.ssh/authorized_keys
 service ssh start
