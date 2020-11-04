@@ -1,0 +1,4 @@
+#!/bin/bash
+set -x
+mkdir -p /var/log/postgres
+/bin/bash /opt/bin/postgres_entry.sh postgres

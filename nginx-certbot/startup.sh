@@ -1,3 +1,5 @@
+#!/bin/bash
+
 chmod 600 /etc/ssh/*_key
 echo $PUBKEY > ~/.ssh/authorized_keys
 service ssh start
@@ -24,6 +26,8 @@ if $cmd ; then
 fi
 sleep 10
 done
+
+cat /var/log/letsencrypt/letsencrypt.log
 
 service nginx stop
 nginx -g 'daemon off;'

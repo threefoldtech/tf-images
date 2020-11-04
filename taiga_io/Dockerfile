@@ -8,10 +8,10 @@ RUN apt-get update ; \
     apt-get install -y automake libtool curl git tmux gettext ; \
     apt-get install -y nginx postgresql ; \
     apt-get install -y rabbitmq-server redis-server ; \
-    apt-get install -y python3 python3-pip python3-dev virtualenvwrapper; \
+    apt-get install -y python3 python3-pip python3-dev python3-venv virtualenvwrapper; \
     apt-get install -y libxml2-dev libxslt-dev; \
     apt-get install -y libssl-dev libffi-dev; \
-    apt-get install -y sudo openssh-server virtualenv python-pip vim zip nodejs npm; \
+    apt-get install -y sudo openssh-server vim zip nodejs npm restic cron; \
     pip3 install supervisor
 
 # install nodejs and npm
@@ -43,6 +43,10 @@ COPY supervisor.conf /etc/supervisor/supervisord.conf
 COPY postgres_entry.sh /.postgres_entry.sh
 COPY rabbitmq.sh  /.rabbitmq.sh 
 RUN chmod +x /.*
+
+COPY backup_init.sh /backup_init.sh
+RUN chmod +x /backup_init.sh
+
 COPY start_taiga.sh /start_taiga.sh
 RUN chmod +x /start_taiga.sh
 ENTRYPOINT ["/start_taiga.sh"]

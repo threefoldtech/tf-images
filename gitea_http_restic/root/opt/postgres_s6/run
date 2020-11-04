@@ -1,0 +1,3 @@
+#!/bin/bash
+set -x
+[[ -f ./setup ]] && source ./setup
