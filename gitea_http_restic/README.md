@@ -19,7 +19,7 @@ docker run -it --name gitea -p 222:22 -p80:80 -e pub_key="ssh-rsa AAAAB3" \
 ```
 
 ## ssh 
- - to ssh echo your public key in /data/git/.ssh/authorized_keys
+ - to ssh echo your public key in /root/.ssh/authorized_keys
 
  - ssh container using user `root` not root as home dir is /data/git 
     ```
