@@ -2,7 +2,7 @@
 
 in the gitea directory
 
-`docker build -t threefolddev.http_gitea_restic_all_in_one .`
+`docker build -t threefolddev/http_gitea_restic_all_in_one .`
 
 
 # Running
@@ -19,7 +19,7 @@ docker run -it --name gitea -p 222:22 -p80:80 -e pub_key="ssh-rsa AAAAB3" \
 ```
 
 ## ssh 
- - to ssh echo your public key in /root/.ssh/authorized_keys
+ - to ssh container we put public key in /root/.ssh/authorized_keys by env `pub_key` as above
 
  - ssh container using user `root` not root as home dir is /data/git 
     ```
