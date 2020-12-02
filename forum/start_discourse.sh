@@ -110,14 +110,6 @@ EOF
 mkdir -p /var/nginx/cache
 sed -i "s#pid /run/nginx.pid#daemon off#g" /etc/nginx/nginx.conf
 
-#sed -i "s/DISCOURSE_HOSTNAME/$DISCOURSE_HOSTNAME/g" /etc/nginx/conf.d/discourse.conf
-
-if ! [ -f /etc/nginx/conf.d/cert.pem ] &&  ! [ -f /etc/nginx/conf.d/key.pem ] ;then
-  [ -d /etc/nginx/conf.d ] || mkdir /etc/nginx/conf.d
-  cd /etc/nginx/conf.d
-  openssl req -subj '/CN=localhost' -x509 -newkey rsa:4096 -nodes -keyout key.pem -out cert.pem -days 365	
-  sed -i 's/daemon/# daemon/' /etc/nginx/nginx.conf
-fi
 sudo nginx -t
 
 
