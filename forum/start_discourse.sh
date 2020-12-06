@@ -90,6 +90,8 @@ mkdir -p /var/nginx/cache
 
 env | grep -v "PATH\=" | grep -v "HOME\=" | grep -v "PWD\=" | grep -v "SHLVL\="|grep -v "TERM\=" >> /etc/environment
 
+if [ ! -f /var/www/discourse/config/discourse.conf ]; then 
+mkdir /var/www/discourse/config/ -p
 cat << EOF > /var/www/discourse/config/discourse.conf
 
 hostname = '$DISCOURSE_HOSTNAME'
@@ -105,10 +107,13 @@ smtp_enable_start_tls = '$DISCOURSE_SMTP_ENABLE_START_TLS'
 force_https = 'true'
 
 EOF
+
+fi 
+
 #chown -R discourse:www-data /shared/log/rails /shared/uploads /shared/backups /shared/tmp
 [[ -f /etc/nginx/sites-enabled/default ]] && rm /etc/nginx/sites-enabled/default
 mkdir -p /var/nginx/cache
-sed -i "s#pid /run/nginx.pid#daemon off#g" /etc/nginx/nginx.conf
+#sed -i "s#pid /run/nginx.pid#daemon off#g" /etc/nginx/nginx.conf
 
 sudo nginx -t
 

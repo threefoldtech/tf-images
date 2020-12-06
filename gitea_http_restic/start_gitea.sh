@@ -56,7 +56,8 @@ crontab /.mycron
 #rootpass=`dd if=/dev/urandom bs=16 count=1 2>/dev/null | uuencode - | head -n 2 | grep -v begin | cut -b 2-40`
 #echo -e "$rootpass\n$rootpass" | passwd  root
 
-passwd -u root
+# unlock root to enable ssh with root
+passwd -u root || true
 
 # add ssh key to root
 
