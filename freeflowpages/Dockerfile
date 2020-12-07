@@ -1,19 +1,9 @@
-FROM ubuntu:18.04
-ARG DEBIAN_FRONTEND=noninteractive
-
-RUN apt-get update
-RUN apt-get install lamp-server^ -y
-RUN apt-get install php-curl php-gd php-mbstring -y
-RUN apt-get install php-intl php-zip wget -y
-RUN apt-get install php-ldap php-apcu php-sqlite3 php-imagick imagemagick -y
-RUN apt-get install cron ssh telnet python3-pip -y
-RUN apt-get install net-tools iputils-ping vim curl tmux rsync git -y
-RUN apt-get install redis-server -y
-# install supervisor
-RUN pip3 install supervisor
+FROM ubuntu:18.04 AS builder
 
 ARG GOROOT=/usr/local/go
 ARG PATH=$GOROOT/bin:$PATH
+RUN apt-get update
+RUN apt-get install wget git -y 
 
 # install latest go then restic
 RUN set -ex; \
@@ -25,8 +15,25 @@ RUN set -ex; \
     git clone https://github.com/restic/restic; \
     cd restic; \
     go run build.go; \
-    cp -p restic /usr/bin/restic; \
-    rm -rf restic
+    mv restic /usr/local/bin/restic
+
+FROM ubuntu:18.04 
+
+COPY --from=builder /usr/local/bin/restic /usr/local/bin/restic
+
+ARG DEBIAN_FRONTEND=noninteractive
+ 
+RUN apt-get update
+RUN apt-get install lamp-server^ -y
+RUN apt-get install php-curl php-gd php-mbstring -y
+RUN apt-get install php-intl php-zip wget -y
+RUN apt-get install php-ldap php-apcu php-sqlite3 php-imagick imagemagick -y
+RUN apt-get install cron ssh telnet python3-pip -y
+RUN apt-get install net-tools iputils-ping vim curl tmux rsync git -y
+RUN apt-get install redis-server -y
+
+# install supervisor
+RUN pip3 install supervisor
 
 COPY freeflowpages.com.conf /etc/apache2/sites-available/freeflowpages.com.conf
 
