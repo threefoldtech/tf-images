@@ -2,14 +2,45 @@
 - to build docker image run 
  
  ```
-  docker build -t bishoyabdo/freeflowpages:latest .
-  docker push bishoyabdo/freeflowpages:latest
+docker build -t threefolddev/freeflowpages:latest .
+docker push threefolddev/freeflowpages:latest
+
   ```
 - convert flist using threefold hub ( https://hub.grid.tf/docker-convert) so flist so flist gonna be
-   https://hub.grid.tf/mikhaieb/bishoyabdo-freeflowpages-latest.flist
+	 https://hub.grid.tf/bishoy.3bot/threefolddev-freeflowpages:latest.flist
 
-- to create containers and env got to below repo
-  https://docs.grid.tf/threefold/itenv_threefold_main/src/branch/master/freeflowpages/
+
+## Fresh install on zos v2
+
+1. create docker container 
+```buildoutcfg
+docker run -dit -p2205:22 -p805:80  --name freeflowpages_staging -e CLIENT_ID=freeflowpages -e CLIENT_SECRET=  -e DB_USER=humhub -e DB_PASS= -e AWS_ACCESS_KEY_ID= -e AWS_SECRET_ACCESS_KEY=your_aws_secret -e RESTIC_REPOSITORY=s3:https://s3.grid.tf/freeflowpages-staging -e RESTIC_PASSWORD=  -e SMTP_HOST=smtp.gmail.com -e SMTP_USER=  -e SMTP_PORT=587 -e threebot_stag=True  -e  SMTP_PASS=  -e HUMHUB_INSTALLATION_VERSION=1.5.2 -e THREEBOT_KEY_PAIR='' threefolddev/freeflowpages:latest
+
+```
+
+2. finish setup by access http://ip:port to set admin user, make admin email as your 3bot app email
+
+3. restart docker container after setup to install remain modules and check logs
+```buildoutcfg
+    docker restart freeflowpages_staging
+    docker logs -f freeflowpages_staging  
+```
+4. make sure appid according to your domain, if change applied, restart container then
+```buildoutcfg
+    docker exec -it freeflowpages_staging  bash
+    vim /var/www/html/humhub/protected/modules/threebot_login/authclient/ThreebotAuth.php
+```
+
+```buildoutcfg
+    'appid' => 'staging.freeflowpages.com'
+```
+5. enable Restful module, only Restful module need to enabled manually as below
+    ![enable](rest.png)
+
+
+ 
+## zos v1
+
 
 ## env variables 
 
@@ -39,13 +70,6 @@
 ['/root/.ssh/', '/backup', '/var/www/html/humhub', '/var/mysql/binlog', '/var/lib/mysql/']
 
 ```
-## Fresh install 
-1- you need to access server and setup your settings from http://ip:port to set admin user, make admin email as your 3bot app email
 
-2 - reboot container, will install remain modules like rest, Freeflow, threebot_login and reeflow_extras
-
-3 - after reboot module should be install and enabled, only Restful module need to enabled manually as below
-    ![enable](rest.png)
-
-4 - flist has a crontabs to backup locally and to restic   
-
+- to create containers and env got to below repo
+  https://docs.grid.tf/threefold/itenv_threefold_main/src/branch/master/freeflowpages/

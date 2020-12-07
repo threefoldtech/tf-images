@@ -9,9 +9,6 @@ export LANG=en_US.UTF-8
 export LANGUAGE=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 
-echo 'remove a record was added by zos that make our server slow, below is resolv.conf file contents'
-sed -i '/^nameserver 10./d' /etc/resolv.conf
-
 # prepare redis server
 sed -i 's/^pidfile.*$//g' /etc/redis/redis.conf
 install -d -m 0755 -o redis -g redis /shared/redis_data
@@ -25,7 +22,9 @@ mkdir -p /run/sshd
 [[ -d /root/.ssh/ ]] || mkdir /root/.ssh
 
 # prepare MySQL
-mkdir /var/run/mysqld
+[[ -d /var/run/mysqld ]] || mkdir /var/run/mysqld 
+[[ -d  /var/mysql/binlog  ]] || mkdir -p /var/mysql/binlog
+[[ -d  /var/www/html/humhub ]] || mkdir -p /var/www/html/humhub
 chown -R mysql /var/lib/mysql
 chown -R mysql /var/log/mysql
 chown -R mysql /var/run/mysqld
@@ -69,4 +68,4 @@ fi
 crontab /.all_cron
 
 
-exec "$@"
+tail -f /dev/null
