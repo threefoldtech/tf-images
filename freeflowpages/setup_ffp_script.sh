@@ -9,7 +9,7 @@ modules_themes ()
             chown -R www-data:www-data /var/www/
             chmod -R 775 /var/www/
             sleep 1 ; sync ; sleep 2
-            mysql -uroot -p$ROOT_DB_PASS humhub -e "insert into api_user (client, api_key, active) values ('client1', '$api_key', 1)"
+            mysql -u$DB_USER -p$DB_PASS humhub -e "insert into api_user (client, api_key, active) values ('client1', '$api_key', 1)"
         else
             cd /var/www/html/humhub/protected/modules/rest
             git pull
