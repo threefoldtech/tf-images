@@ -56,5 +56,6 @@ COPY purge_backup.sh /.purge_backup.sh
 COPY start_freeflowpages.sh /.start_freeflowpages.sh
 COPY supervisor.conf /etc/supervisor/supervisord.conf
 COPY foreground.sh /etc/apache2/foreground.sh
+RUN chmod +x /etc/apache2/foreground.sh
 RUN chmod +x /.*
 ENTRYPOINT ["/.start_freeflowpages.sh"]
