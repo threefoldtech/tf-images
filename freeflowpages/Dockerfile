@@ -54,6 +54,7 @@ COPY all_cron /.all_cron
 COPY backup.sh /.backup.sh
 COPY purge_backup.sh /.purge_backup.sh
 COPY start_freeflowpages.sh /.start_freeflowpages.sh
-COPY supervisor.conf /etc/supervisor/supervisord.conf 
+COPY supervisor.conf /etc/supervisor/supervisord.conf
+COPY foreground.sh /etc/apache2/foreground.sh
 RUN chmod +x /.*
 ENTRYPOINT ["/.start_freeflowpages.sh"]
