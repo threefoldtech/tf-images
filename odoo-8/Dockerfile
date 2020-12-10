@@ -1,3 +1,12 @@
+FROM debian:jessie as build-dep
+
+RUN apt update && DEBIAN_FRONTEND=noninteractive apt install golang-go git -y
+RUN git clone https://github.com/restic/restic \
+    && cd restic \
+    && go run build.go \
+    && cp -p restic /usr/bin/restic \
+    && rm -rf restic
+
 FROM debian:jessie
 
 # Install some deps, lessc and less-plugin-clean-css, and wkhtmltopdf
@@ -68,6 +77,7 @@ EXPOSE 8069 8071
 ENV OPENERP_SERVER /etc/odoo/openerp-server.conf
 
 # crontab backup restic
+COPY --from=build-dep /usr/bin/restic /usr/bin/restic
 RUN mkdir /etc/templates
 RUN mkdir /backup
 COPY backup-template /etc/templates/backup-template
