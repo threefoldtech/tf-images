@@ -66,6 +66,13 @@ EXPOSE 8069 8071
 
 # Set the default config file
 ENV OPENERP_SERVER /etc/odoo/openerp-server.conf
+
+# crontab backup restic
+RUN mkdir /etc/templates
+RUN mkdir /backup
+COPY backup-template /etc/templates/backup-template
+COPY DB-backup.py /root/
+
 ENTRYPOINT ["/start_odoo.sh"]
 
 # Set default user when running the container

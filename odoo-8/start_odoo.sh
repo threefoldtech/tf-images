@@ -31,4 +31,17 @@ su - postgres -c "psql -lqt | cut -d \| -f 1 | grep -qw  odoo && echo odoo datab
 # stop postgres as we gonna start it using supervisord
 /etc/init.d/postgresql stop
 
+# Substitude the environment variables in backup template, note am using § to  escape character  $
+AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID:-""} \
+AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY:-""} \
+RESTIC_REPOSITORY=${RESTIC_REPOSITORY:-""}
+RESTIC_PASSWORD=${RESTIC_PASSWORD:-""} \
+envsubst < /etc/templates/backup-template | sed -e 's/§/$/g' >  /root/backup.sh
+
+chmod +x /root/backup.sh
+
+cat << EOF > /.mycron
+0 0 * * * /root/backup.sh >> /root/backup.log 2>&1
+EOF
+
 supervisord -n -c /etc/supervisor/supervisord.conf

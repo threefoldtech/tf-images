@@ -5,7 +5,8 @@ docker run -dit -p8070:8069 --name odoo -v /opt/odoo-staging/addons:/opt/odoo/cu
 
 ```
 
-- you need to move your addons on path /opt/odoo 
+- you need to move your addons on path /opt/odoo-staging/addons
+- default access is admin/admin, you need to change it when login first time
 - our threefold old addons was on paths ```/opt/odoo/odoo-server/addons ``` , ``` /opt/odoo/custom/addons ```
 
 
