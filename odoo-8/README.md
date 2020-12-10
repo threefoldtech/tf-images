@@ -1,7 +1,8 @@
 # odoo-8-docker
 ```buildoutcfg
 docker build -t threefolddev/odoo-8:latest .
-docker run -dit -p8070:8069 --name odoo -v /opt/odoo-staging/addons:/opt/odoo/custom/addons -v /opt/odoo-staging/postgresql:/var/lib/postgresql  threefolddev/odoo-8:latest 
+
+docker run -dit -p8069:8069 -p2209:22 --name odoo -e 'RESTIC_REPOSITORY=s3:https://s3.grid.tf/odoo-codescalers-stag'  -e RESTIC_PASSWORD= -e AWS_ACCESS_KEY_ID=  -e AWS_SECRET_ACCESS_KEY=  -v /opt/odoo-staging/addons:/opt/odoo/custom/addons -v  /opt/odoo-staging/postgresql:/var/lib/postgresql  threefolddev/odoo-8:latest
 
 ```
 
