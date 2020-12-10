@@ -29,7 +29,9 @@ RUN mkdir -p /var/log/odoo
 
 # install postgres
 
-RUN apt-get update && apt-get install -y postgresql
+#RUN apt-get update && apt-get install -y postgresql
+
+RUN apt-get update && apt-get install -y postgresql-common postgresql-9.4 postgresql-client-9.4 postgresql-client-common openssh-server
 
 RUN mkdir -p /var/log/postgresql
 
@@ -45,6 +47,9 @@ RUN set -x; \
         && apt-get update \
         && apt-get -y install -f --no-install-recommends \
         && rm -rf /var/lib/apt/lists/* odoo.deb
+
+# INSTALL ssh server
+RUN  apt install openssh-server -y
 
 # Copy entrypoint script and Odoo configuration file
 COPY ./start_odoo.sh /
@@ -64,5 +69,5 @@ ENV OPENERP_SERVER /etc/odoo/openerp-server.conf
 ENTRYPOINT ["/start_odoo.sh"]
 
 # Set default user when running the container
-USER odoo
+#USER odoo
 
