@@ -40,8 +40,13 @@ envsubst < /etc/templates/backup-template | sed -e 's/§/$/g' >  /root/backup.sh
 
 chmod +x /root/backup.sh
 
-cat << EOF > /.mycron
+cat << EOF > /mycron
 0 0 * * * /root/backup.sh >> /root/backup.log 2>&1
 EOF
+
+crontab /mycron
+
+[[ -d /opt/odoo ]] || mkdir /opt/odoo
+chown -R odoo /opt/odoo
 
 supervisord -n -c /etc/supervisor/supervisord.conf

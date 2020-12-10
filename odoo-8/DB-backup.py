@@ -11,7 +11,7 @@ db = args.dbname
 location = args.location
 
 def DB_Backup():
-        sql = "su - postgres -c 'pg_dump  -U postgres  -b -E UTF-8  {0} -f {1}-{2}.sql'".format(db,location,today)
+        sql = "su - postgres -c 'pg_dump  -U postgres  -b -E UTF-8  {0} -f {1}{0}-{2}.sql'".format(db,location,today)
         os.system(sql)
 
 

@@ -10,7 +10,7 @@ docker run -dit -p8070:8069 --name odoo -v /opt/odoo-staging/addons:/opt/odoo/cu
 - our threefold old addons was on paths ```/opt/odoo/odoo-server/addons ``` , ``` /opt/odoo/custom/addons ```
 
 
-## restore old one
+## Restore old one
 
 1. find  tables to remove
 ```buildoutcfg
@@ -37,7 +37,9 @@ WHERE
 root@ec9762e6511d:~# su - postgres
 psql -d odoo -f .odoo_dump.sql
 ```
-4. restart container or supervisor services
+4. make sure to copy all addons from old one ( paths ```/opt/odoo/odoo-server/addons ``` , ``` /opt/odoo/custom/addons ``` )  to new container on path /opt/odoo/custom/addons
+
+5. restart container or supervisor services
 
 ```
 docker restart odoo

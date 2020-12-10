@@ -1,7 +1,11 @@
 FROM debian:jessie as build-dep
 
-RUN apt update && DEBIAN_FRONTEND=noninteractive apt install golang-go git -y
-RUN git clone https://github.com/restic/restic \
+RUN apt update && apt-get -y upgrade && DEBIAN_FRONTEND=noninteractive \ 
+	apt install git wget -y && wget https://dl.google.com/go/go1.15.2.linux-amd64.tar.gz \
+	&& tar -xvf go1.15.2.linux-amd64.tar.gz &&  mv go /usr/local \
+	&& export GOROOT=/usr/local/go && export GOPATH=$HOME/Proj1 \
+	&& export PATH=$GOPATH/bin:$GOROOT/bin:$PATH && go version && sleep 3\
+	&& git clone https://github.com/restic/restic \
     && cd restic \
     && go run build.go \
     && cp -p restic /usr/bin/restic \
@@ -35,12 +39,13 @@ RUN pip install supervisor
 COPY supervisor.conf /etc/supervisor/supervisord.conf
 RUN mkdir -p /var/log/postgres
 RUN mkdir -p /var/log/odoo
+RUN mkdir -p /var/log/cron
 
 # install postgres
 
 #RUN apt-get update && apt-get install -y postgresql
 
-RUN apt-get update && apt-get install -y postgresql-common postgresql-9.4 postgresql-client-9.4 postgresql-client-common openssh-server
+RUN apt-get update && apt-get install -y postgresql-common postgresql-9.4 postgresql-client-9.4 postgresql-client-common openssh-server gettext-base
 
 RUN mkdir -p /var/log/postgresql
 
@@ -57,9 +62,6 @@ RUN set -x; \
         && apt-get -y install -f --no-install-recommends \
         && rm -rf /var/lib/apt/lists/* odoo.deb
 
-# INSTALL ssh server
-RUN  apt install openssh-server -y
-
 # Copy entrypoint script and Odoo configuration file
 COPY ./start_odoo.sh /
 COPY ./openerp-server.conf /etc/odoo/
@@ -67,7 +69,7 @@ RUN chown odoo /etc/odoo/openerp-server.conf
 
 # Mount /var/lib/odoo to allow restoring filestore and /mnt/extra-addons for users addons
 RUN mkdir -p /mnt/extra-addons \
-        && chown -R odoo /mnt/extra-addons /opt/odoo
+        && chown -R odoo /mnt/extra-addons 
 VOLUME ["/var/lib/odoo", "/mnt/extra-addons"]
 RUN chmod +x /start_odoo.sh
 # Expose Odoo services
