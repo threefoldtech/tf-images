@@ -1,5 +1,16 @@
 #!/bin/bash
 set -ex
+# add agent
+[[ -d /ssh ]] || mkdir /ssh
+[ -f /ssh/id_rsa ] || echo ssh key file does not mounted, please use -v /ssh:/ssh and put private key there
+chmod 600 /ssh/id_rsa
+eval `ssh-agent -s` && ssh-add /ssh/id_rsa
+ssh-add -l
+[[ -d /root/.ssh ]] || mkdir  /root/.ssh
+if ! grep github.com ~/.ssh/known_hosts >/dev/null 2>&1 ; then
+ssh-keyscan github.com >> /root/.ssh/known_hosts
+fi
+
 # fix /etc/hosts
 if ! grep -q "localhost" /etc/hosts; then
 	touch /etc/hosts
@@ -59,11 +70,10 @@ else
     if [[ "$CONSCIOUS_INTERNET_BRANCH" == "production" ]]; then
 	    DATA_REPO_BRANCH=production
     fi
-    git clone "https://github.com/threefoldfoundation/data_threefold_projects_friends"  -b  ${DATA_REPO_BRANCH} threefold
+    git clone "git@github.com:threefoldfoundation/data_threefold_projects_friends.git"  -b  ${DATA_REPO_BRANCH} threefold
 fi
 cd $DEST/www_conscious_internet/
 bash build.sh
 
 mkdir /var/log/{conscious_internet,ssh}/ -p
-supervisord -c /etc/supervisor/supervisord.conf
-exec "$@"
+supervisord -n -c /etc/supervisor/supervisord.conf

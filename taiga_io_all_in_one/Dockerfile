@@ -11,7 +11,7 @@ RUN apt-get update ; \
     apt-get install -y python3 python3-pip python3-dev python3-venv virtualenvwrapper; \
     apt-get install -y libxml2-dev libxslt-dev; \
     apt-get install -y libssl-dev libffi-dev; \
-    apt-get install -y sudo openssh-server vim zip nodejs npm restic cron; \
+    apt-get install -y sudo openssh-server vim zip nodejs npm restic cron netcat; \
     pip3 install supervisor
 
 # install nodejs and npm

@@ -24,10 +24,17 @@ RUN curl -sL https://deb.nodesource.com/setup_14.x | bash -  ; \
 COPY supervisor.conf /etc/supervisor/supervisord.conf
 COPY start_www_community.sh /start_www_community.sh
 
+# ssh-agnet
+ENV SSH_DIR /.ssh
+ENV SOCKET_DIR /.ssh-agent
+ENV SSH_AUTH_SOCK ${SOCKET_DIR}/socket
+ENV SSH_AUTH_PROXY_SOCK ${SOCKET_DIR}/proxy-socket
+
+VOLUME ${SOCKET_DIR}
+
 RUN chmod  +x  /start_www_community.sh
 ENTRYPOINT ["/start_www_community.sh" ]
 
 # to support zosv1 , can removed later
 COPY startup.toml /.startup.toml
 RUN chmod  +x  /.startup.toml
-

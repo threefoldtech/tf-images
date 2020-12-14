@@ -74,8 +74,22 @@ su taiga -c 'bash /.prepare_taiga.sh'
 echo "Run supervisord"
 supervisord -c /etc/supervisor/supervisord.conf
 
-echo "wait 60 seconds for rabbitmq starting"
-sleep 60
+# wait till rabbitmq get started 
+wait_period=0
+
+while ! nc -z localhost 5672
+do
+    echo "Time Now: `date +%H:%M:%S`"
+    echo "Sleeping for 3 seconds"
+    # Here  is 180 seconds i.e. 3 minutes * 60 = 180 sec
+    wait_period=$(($wait_period+10))
+    if [ $wait_period -gt 180 ];then
+       echo "The script successfully ran for 3 minutes, exiting now.."
+       break
+    else
+       echo wait 3 seconds to start rabbitmq ; sleep 3
+    fi
+done
 
 user=$(rabbitmqctl list_users | grep taiga|awk  '{print $1}')
 echo list current users  ; echo $user
