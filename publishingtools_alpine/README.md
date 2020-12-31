@@ -24,7 +24,7 @@ Supported environment variables:
 * TYPE: site type (www, wiki or blog)
 * TITLE
 * URL: site git url
-* Branch
+* BRANCH
 * DOMAIN
 * SRCDIR: source directory (default is "src")
 
