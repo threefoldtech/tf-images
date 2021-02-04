@@ -36,6 +36,7 @@ ln -sf /persistent-data/blob/ /cryptpad/blob;
 
 chown -R 4001:4001 /cryptpad/datastore /cryptpad/archive /cryptpad/data /cryptpad/block /cryptpad/blob  /persistent-data/*;
 cp /cryptpad/config/config.example.js /cryptpad/config/config.js
+sed -i '/\/\/defaultStorageLimit: 50 * 1024 * 1024,/c\defaultStorageLimit: process.env.size * 1024 * 1024,' /cryptpad/config/config.js
 
 chmod 600 ~/.ssh/authorized_keys
 service ssh start
