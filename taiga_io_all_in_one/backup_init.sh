@@ -21,19 +21,19 @@ for var in  AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY RESTIC_PASSWORD RESTIC_REPOS
 echo "/home/taiga/taiga-back/media" > /home/taiga/restic.files
 echo "/home/taiga/db_dump.sql" >> /home/taiga/restic.files
 
-if restic list snapshots; then
-  if [ -z `restic snapshots --json` ]; then
-    restic init; 
-  else 
-      restic restore --target /tmp/taiga_data latest
-      mv /tmp/taiga_data/media/* /home/taiga/taiga-back/media/
-      chown taiga:taiga /home/taiga/taiga-back/media -R
-      chown taiga:taiga /tmp/taiga_data -R
-      su taiga -c "psql < /tmp/taiga_data/db_dump.sql"
-    fi
-else
-    restic init;
-fi
+#if restic list snapshots; then
+#  if [ -z `restic snapshots --json` ]; then
+#    restic init; 
+#  else 
+#      restic restore --target /tmp/taiga_data latest
+#      mv /tmp/taiga_data/media/* /home/taiga/taiga-back/media/
+#      chown taiga:taiga /home/taiga/taiga-back/media -R
+#      chown taiga:taiga /tmp/taiga_data -R
+#      su taiga -c "psql < /tmp/taiga_data/db_dump.sql"
+#    fi
+#else
+#    restic init;
+#fi
 
 if [ -z "$CRON_FREQUENCY" ]
 then
