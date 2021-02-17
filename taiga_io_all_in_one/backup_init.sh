@@ -41,7 +41,7 @@ then
 fi
 
 mkdir -p /etc/cron.d
-line="pg_dump taiga -f /home/taiga/db_dump.sql;source /home/taiga/restic.env; export TAG=\$(date +%Y%m%d-%H%M%S);  restic backup --files-from=/home/taiga/restic.files --tag \$TAG 2> /home/taiga/restic.err > /home/taiga/restic.log"
+line="pg_dump taiga -f /home/taiga/db_dump.sql;source /home/taiga/restic.env; export TAG=\$(date +%Y%m%d-%H%M%S);  /usr/bin/restic backup --files-from=/home/taiga/restic.files --tag \$TAG 2> /home/taiga/restic.err > /home/taiga/restic.log"
 echo $line > /home/taiga/backup.sh
 echo "$CRON_FREQUENCY bash /home/taiga/backup.sh" > /etc/cron.d/backup
 
