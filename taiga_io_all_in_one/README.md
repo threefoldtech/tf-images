@@ -1,7 +1,7 @@
 ### build image 
 
 ```
-docker build -t threefolddev/taiga_all_in_one .
+docker build -t threefolddev/taiga_io_all_in_one .
 ```
 ### Entrypoint 
 ```
@@ -10,12 +10,13 @@ docker build -t threefolddev/taiga_all_in_one .
 ### start docker container
 
 ```
-docker run -i -p80:80 -p443:443 -p2204:22 --name circles-test -e EMAIL_HOST_USER=no-reply@threefold.tech  -e TAIGA_HOSTNAME=64.227.1.81  -e EMAIL_HOST=smtp.gmail.com -e EMAIL_HOST_USER='no-reply@threefold.tech' -e EMAIL_HOST_PASSWORD=mypass -e HTTP_PORT=80 -e PRIVATE_KEY='GlzXhA='  -e FLASK_SECRET_KEY='flask' -e THREEBOT_URL="https://login.threefold.me" -e OPEN_KYC_URL="https://openkyc.live/verification/verify-sei" -e SECRET_KEY=myscr  threefolddev/taiga_all_in_one  bash
-
+docker run -d -t -p2202:22 -p802:80 -v /opt/circles/postgresdata:/var/lib/postgresql -v /opt/circles/sshkey:/root/.ssh -v /opt/circles/media:/home/taiga/taiga-back/media --name circles --hostname circles.com -e EMAIL_HOST=smtp.gmail.com -e EMAIL_HOST_PASSWORD=mypass -e EMAIL_HOST_USER=no-reply@threefold.tech -e TAIGA_HOSTNAME=circles.threefold.me -e HTTP_PORT=80 -e PRIVATE_KEY="your threeebot private key" -e FLASK_SECRET_KEY="flaskpass" -e THREEBOT_URL=https://login.threefold.me -e OPEN_KYC_URL=https://openkyc.liveverification/verify-sei -e SECRET_KEY="any-secret-key" -e RESTIC_REPOSITORY=s3:https://s3.grid.tf/circles-production -e RESTIC_PASSWORD="" -e AWS_ACCESS_KEY_ID="" -e AWS_SECRET_ACCESS_KEY="" threefolddev/taiga_io_all_in_one
+	
+	
 ```
 ### Threefold-Circles-Flist
 
-	https://hub.grid.tf/bishoy.3bot/threefolddev-taiga_all_in_one-latest.flist
+	https://hub.grid.tf/bishoy.3bot/threefolddev-taiga_io_all_in_one-latest.flist
 
 - note server only work with https due to threebot login require this 
 
@@ -26,7 +27,7 @@ docker run -i -p80:80 -p443:443 -p2204:22 --name circles-test -e EMAIL_HOST_USER
 
 - also you need configure restic env variables : RESTIC_REPOSITORY AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY RESTIC_PASSWORD"
 
-- admin is create by default admin/123123 and to login admin account use https://64.227.1.81/admin/ 
+- admin is create by default admin/123123 and to login admin account use https://circles.threefold.me/admin/ 
 
 
 - you should do all above steps to get a working circles server ,verfiy env varaibles by run command `env` in shell
