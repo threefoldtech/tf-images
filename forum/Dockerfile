@@ -149,7 +149,7 @@ RUN apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get install net-tools iputils-ping -y \
     && apt install -y libsodium-dev python-pip python3-pip tmux openssh-server 
 
-
+RUN apt install -y libcairo-dev
 RUN pip3 install asn1crypto==0.24.0 certifi==2020.11.8 cffi==1.14.4 chardet==3.0.4 click==7.1.2 cryptography==2.6.1 distro-info==0.21 entrypoints==0.3 Flask==1.1.2 Flask-Sessionstore==0.4.5 idna==2.10 itsdangerous==1.1.0 Jinja2==2.11.2 keyring==17.1.1 keyrings.alt==3.1.1 MarkupSafe==1.1.1 pycparser==2.20 pycrypto==2.6.1 pycurl==7.43.0.2 PyGObject==3.30.4 PyNaCl==1.4.0 python-apt==1.8.4.3 pyxdg==0.25 requests==2.25.0 SecretStorage==2.3.1 six==1.12.0 supervisor==4.2.1 unattended-upgrades==0.1 urllib3==1.26.2 uWSGI==2.0.19.1 Werkzeug==0.16.0 
 
 # Discourse specific bits
