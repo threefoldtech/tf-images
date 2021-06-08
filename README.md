@@ -58,7 +58,7 @@
 - Dockerfile info: [peertube](./peertube/README.md)
 - flist: <https://hub.grid.tf/ashraf.3bot/threefoldtech-peertube-latest.flist>
 
-## couchdb
+## couchDB
 
 - Dockerfile info: [couchdb](https://github.com/threefoldtech/tf-images/blob/master/couchdb/README.MD)
 - flist: https://hub.grid.tf/arehman/v2-couchdb-0-2.flist
