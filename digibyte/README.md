@@ -44,7 +44,7 @@ You can then spin the container with your created image. Map host ports as neede
 
 The node displays running services via status page that runs on the HTTP port. It should be accessible by,
 
-http://your_ip_address
+```http://your_ip_address```
 
 Get into the container with,
 
