@@ -1,0 +1,107 @@
+div.dataTables_wrapper div.dataTables_filter {
+	text-align: right;
+	position: static;
+	top: 0;
+	right: 0px;
+}
+div.dataTables_wrapper div.dataTables_filter label {
+	color: #555555 !important;
+}
+.dataTables_info {
+	display: block!important;
+}
+
+.table>thead>tr>th {
+	text-align: auto!important;
+}
+.dataTables_length {
+	display: block!important;
+}
+/* .table {
+	border: 1px solid #ddd;
+} */
+
+
+.noborder .table {
+    border:none !important;
+  }
+  
+  .table-responsive {
+    min-height: .01%;
+    overflow-x: visible !important;
+  }
+
+
+/* .table th {
+	border: 1px solid #ddd!important;
+} */
+
+
+.table>tbody>tr>td {
+    padding: 18px 8px 0px 8px !important;
+    line-height: 1.42857143;
+    vertical-align: top;
+    border-top: 1px solid #ddd;
+}
+
+
+.outbound_queue_fax .table>tbody>tr>td {
+    padding: 18px 8px 12px 8px !important;
+    line-height: 1.42857143;
+    vertical-align: top;
+    border-top: 1px solid #ddd;
+}
+
+
+.table>tbody>tr>th{
+	padding: 18px 8px 0px 8px !important;
+}
+
+
+.table>tbody>tr>th {
+    padding: 18px 8px 13px 8px !important;
+}
+
+.doc_search_documents .table>tbody>tr>th {
+    padding: 18px 8px 13px 8px !important;
+}
+
+
+.btn-rounded {
+    border-radius: 2em;
+    padding: 5px 18px;
+    margin-top: -10px;
+}
+
+.btn-rounded-2 {
+    border-radius: 2em;
+    padding: 5px 18px;
+    margin-top: 3px;
+}
+
+.icon-flat-25 {
+    height: 18px;
+    width: 18px;
+}
+
+.icon-colored-small {
+    height: 22px;
+    width: 22px;
+    margin: 0;
+}
+
+.pr-3 {
+    padding-left: 10%;
+}
+
+.list-group-item-heading {
+    margin-top: 7px !important;
+    margin-bottom: 5px;
+}
+
+.pstyle {
+line-height: 12px;
+margin: 0px;
+padding: 0px;
+color: black;
+}
