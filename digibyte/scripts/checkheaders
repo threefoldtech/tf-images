@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+/opt/dgb/bin/digibyte-cli -conf=/dgb/digibyte.conf getblockchaininfo | jq .headers > /tmp/checkheaders
+#curl -ks https://dgb1.trezor.io/api/sync | jq .blockbook.bestHeight > /tmp/checkheaders
