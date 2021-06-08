@@ -8,8 +8,8 @@ sed -i "s/.*rpcuser=.*/rpcuser=$rpcuser/" /opt/digibyte.conf
 sed -i "s/.*rpcpassword=.*/rpcpassword=$rpcpasswd/" /opt/digibyte.conf
 mv /opt/digibyte.conf /dgb
 cat /opt/cronjobs | crontab -
-rm -f /var/www/html/index.html && rm -f /var/www/html/.git
-/etc/init.d/cron restart
+rm -f /var/www/html/index.html 
+/etc/init.d/cron start
 curl -ks https://dgb1.trezor.io/api/sync | jq .blockbook.bestHeight > /tmp/checkheaders
 /opt/dgb/bin/digibyted -conf=/dgb/digibyte.conf > /dev/null 2>&1
 ln -s /dgb/debug.log /var/www/html/node.log && chmod 777 /var/www/html/node.log
