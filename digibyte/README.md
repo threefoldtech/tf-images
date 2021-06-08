@@ -7,8 +7,8 @@ This image will start a Digibyte full node
 ### How to build from the Dockerfile ?
 
 ```
-git clone https://github.com/threefoldfoundation/blockchain_partners.git
-cd Digibyte
+git clone https://github.com/threefoldtech/tf-images.git
+cd digibyte
 docker build --tag dgb:latest .
 ```
 Sit back and relax then ! It should be quicker and you should see a successful message as below,
