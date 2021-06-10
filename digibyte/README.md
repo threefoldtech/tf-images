@@ -50,16 +50,14 @@ Get into the container with,
 
 ```docker exec -it dgb bash```
 
-Verify the node runnning by checking the harmony process, you could see it running as below
+Verify the node runnning by checking the digibyte process, you could see it running as below
 
 ```
 root@dgb:/opt# netstat -lntpe
 Active Internet connections (only servers)
 Proto Recv-Q Send-Q Local Address           Foreign Address         State       User       Inode      PID/Program name
-tcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN      0          22338958   1/sshd
 tcp        0      0 0.0.0.0:12024           0.0.0.0:*               LISTEN      0          22338214   23/digibyted
 tcp        0      0 0.0.0.0:14022           0.0.0.0:*               LISTEN      0          22338207   23/digibyted
-tcp6       0      0 :::22                   :::*                    LISTEN      0          22338960   1/sshd
 tcp6       0      0 :::12024                :::*                    LISTEN      0          22338213   23/digibyted
 
 ```
@@ -68,7 +66,7 @@ tcp6       0      0 :::12024                :::*                    LISTEN      
 The default data directory for Digibyte is /dgb where you will see all Digibyte data,
 
 ```
-root@dgb:/dgb/.digibytet# tree -dh
+root@dgb:/dgb# tree -dh
 .
 |-- [4.0K]  blocks
 |   `-- [4.0K]  index
