@@ -56,25 +56,10 @@ function readLastLines($filename, $num, $reverse = false)
                     
                   </div>
                </div>
-			   </div>
+	   </div>
 			   
-			   
-                           <div class="row">
-                            <div class="col-lg-12 col-md-4 col-sm-6">
-                  <div class="card-boxbg col-md-12" style="background-color: #E8F5FF;color: black;">
-		       <div class="col-md-14">
- 			
-			<p>NOTE : On ThreeFold's VDC, your blockchain node runs as a Kubernetes pod. Since you have access to your Kubernetes cluster, you can still connect to your node over bash.</p>
-			
-			<p>export KUBECONFIG=/path/to/your/kubeconfig/file</p>
-			<p>kubectl get pods</p>
-			<p>kubectl exec -it dash_pod_name -- bash</p>
-			                        
-                     </div>
 
-                  </div>
-               </div>
-                           </div>
+
 
 			   
                   </div>
