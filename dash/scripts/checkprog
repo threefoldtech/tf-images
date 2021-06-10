@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+tail -n 1 /dash/debug.log | grep "progress" | awk '{print $12}' | cut -d "=" -f2

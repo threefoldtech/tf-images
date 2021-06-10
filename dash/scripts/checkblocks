@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+/opt/dash/bin/dash-cli -conf=/dash/dash.conf getblockcount > /tmp/checkblocks
+#/opt/dash/bin/dash-cli -conf=/opt/dash.conf getblockcount >> /tmp/checkgraph
+blks=`/opt/dash/bin/dash-cli -conf=/dash/dash.conf getblockcount`
+ts=`date "+%Y-%m-%d %H:%M:%S"`
+echo $blks, $ts >> /tmp/checkgraph
