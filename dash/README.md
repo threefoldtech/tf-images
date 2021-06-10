@@ -1,6 +1,7 @@
 # Dash Node
 
 This image will start a Dash full node 
+* DashCore : v0.16.1.1
 
 ### How to build from the Dockerfile ?
 
