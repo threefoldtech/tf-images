@@ -49,7 +49,7 @@
 	<script type="text/javascript">  
    $(window).load(function() {  
       $("#loader").fadeIn(1000);  
-       window.location.href = "http://3.212.227.50:9080";	  
+       window.location.href = "";	  
    });
 </script>
 	<style type="text/css">
@@ -74,18 +74,14 @@
       <!-- Navigation Bar-->
       <header id="topnav">
          <div class="topbar-main">
-            <div class="container">
-               <!-- Logo container-->
-               <div class="logo">
-                  <!-- Text Logo -->
-                  <!--<a href="index.php" class="logo">-->
-                  <!--Zircos-->
-                  <!--</a>-->
-                  <!-- Image Logo -->
+	    <div class="container">
+
+               <!-- Logo container -->
+               <div class="logo" style="float:left; ">
                   <a href="index.php" class="logo">
-                  <img src="assets/images/logo.png" alt="" height="50">
+                  <img src="assets/images/jukebox_log.png" alt="" height="80">
                   </a>
-               </div>
+               </div> 
                
                <div class="logo" style="float:right; ">                
                   <a href="index.php" class="logo">
