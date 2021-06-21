@@ -1,7 +1,7 @@
 # Digibyte
 
 * DigiByte Core v7.17.2 Official Release
-* Docker image for flist = docker pull arrajput/digibyte-flist:1.0
+* Docker image for flist = ```docker pull arrajput/digibyte-flist:1.0```
 
 This image will start a Digibyte full node 
 
