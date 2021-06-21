@@ -37,7 +37,7 @@ These would be required by the user to interact with the node by sending command
 
 You can then spin the container with your created image. Map host ports as needed,
 
-```docker run -dit --name=dash --hostname=dash -p 9999:9999 -p 9998:9998 dgb:latest bash```
+```docker run -dit --name=dash --hostname=dash -p 9999:9999 -p 9998:9998 dash:latest bash```
  
 ### How to verify ?
 
