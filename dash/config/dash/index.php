@@ -58,10 +58,7 @@ function readLastLines($filename, $num, $reverse = false)
                </div>
 	   </div>
 			   
-
-
-
-			   
+				   
                   </div>
                </div>
             </div>

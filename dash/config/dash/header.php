@@ -4,7 +4,7 @@
    <head>
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <meta name="description" content="ThreeFold eVDC">
+      <meta name="description" content="ThreeFold JukeBox">
       <meta name="author" content="ThreeFold">
       <link rel="shortcut icon" type="image/x-icon" href="assets/images/favicon.png">
 	  
@@ -49,7 +49,7 @@
 	<script type="text/javascript">  
    $(window).load(function() {  
       $("#loader").fadeIn(1000);  
-       window.location.href = "http://3.212.227.50:9080";	  
+       window.location.href = "";	  
    });
 </script>
 	<style type="text/css">
@@ -78,7 +78,7 @@
                <!-- Logo container-->
                <div class="logo">
                   <a href="index.php" class="logo">
-                  <img src="assets/images/logo.png" alt="" height="50">
+                  <img src="assets/images/jukebox_log.png" alt="" height="80">
                   </a>
                </div>
                
