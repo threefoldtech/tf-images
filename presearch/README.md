@@ -29,6 +29,10 @@ Removing intermediate container af06c59a8231
 Successfully built c66a20398946
 Successfully tagged presearch:latest
 ```
+### Startup Script / EntryPoint
+
+This should be found here [ENTRYPOINT](scripts/start_presearch.sh)
+
 ### Environment Variables
 
 This is the only variable that needs to be set for now. This is the user's code that binds with the node and serves as node identity
