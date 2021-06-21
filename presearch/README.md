@@ -2,7 +2,7 @@
 
 This image will start a Presearch node 
 
-Docker image for flist = docker pull arrajput/presearch-flist:1.0
+Docker image for flist = ```docker pull arrajput/presearch-flist:1.0```
 
 ### How to build from the Dockerfile ?
 
@@ -29,8 +29,38 @@ Removing intermediate container af06c59a8231
 Successfully built c66a20398946
 Successfully tagged presearch:latest
 ```
+### Environment Variables
 
-### Startup Script / EntryPoint
+This is the only variable that needs to be set for now. This is the user's code that binds with the node and serves as node identity
 
-This should be found here [ENTRYPOINT](scripts/start_dgb.sh)
+* registration_code
+
+### How to run ?
+
+You can then spin the container with your created image. Map host ports as needed,
+
+```docker run -dit --name=ps --hostname=ps -p 80:80 presearch:latest bash```
+ 
+### How to verify ?
+
+The node displays running services via status page that runs on the HTTP port. It should be accessible by,
+
+```http://your_ip_address```
+
+Get into the container with,
+
+```docker exec -it ps bash```
+
+Verify the node runnning by checking the digibyte process, you could see it running as below
+
+```
+root@presearch:/opt# ps -ef
+PID   USER     TIME  COMMAND
+    1 root      0:02 /app/presearch-node
+   16 root      0:00 /usr/sbin/httpd -k start
+   20 apache    0:00 /usr/sbin/httpd -k start
+   21 apache    0:00 /usr/sbin/httpd -k start
+  
+
+```
 
