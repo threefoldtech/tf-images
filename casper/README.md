@@ -1,44 +1,57 @@
-# Digibyte
+# Casper
 
-* DigiByte Core v7.17.2 Official Release
+* Protocol version "1.1.0" 
 
-This image will start a Digibyte full node 
+This image will start a Casper full node 
+
+### Hardware requirements
+
+  * 4 Cores
+  * 32 GB Ram
+  * 1 TB disk
 
 ### How to build from the Dockerfile ?
 
 ```
 git clone https://github.com/threefoldtech/tf-images.git
-cd digibyte
-docker build --tag dgb:latest .
+cd casper
+docker build --tag casper:latest .
 ```
 Sit back and relax then ! It should be quicker and you should see a successful message as below,
 
 ```
- ---> d0de06934f0c
-Step 17/17 : EXPOSE 12024 14022
- ---> Running in 030f3afef72c
-Removing intermediate container 030f3afef72c
- ---> 0781ccba23e2
-Successfully built 0781ccba23e2
-Successfully tagged dgb:1.1
+Step 16/19 : ENTRYPOINT ["/start_casper"]
+ ---> Using cache
+ ---> f5778a4466c5
+Step 17/19 : VOLUME /var/lib/casper
+ ---> Using cache
+ ---> b1d059cf5fd9
+Step 18/19 : WORKDIR /var/lib/casper
+ ---> Using cache
+ ---> d7c23ec991ba
+Step 19/19 : EXPOSE 35000 7777 8888 9999
+ ---> Using cache
+ ---> 0317e53b47a9
+Successfully built 0317e53b47a9
+Successfully tagged casper:latest
+
 ```
 
 ### Startup Script / EntryPoint
 
-This should be found here [ENTRYPOINT](scripts/start_dgb.sh)
-
-### Environment Variables
-
-These would be required by the user to interact with the node by sending commands via rpc
-
-* rpcuser (The node RPC credentials user/pass)
-* rpcpasswd
+This should be found here [ENTRYPOINT](scripts/start_casper)
 
 ### How to run ?
 
 You can then spin the container with your created image. Map host ports as needed,
 
-```docker run -dit --name=dgb --hostname=dgb -p 12024:12024 -p 14022:14022 dgb:latest bash```
+```docker run -dit --name=casper --hostname=casper -p 35000:35000 -p 7777:7777 -p 8888:8888 -p 9999:9999 -p 8080:80 casper:latest bash
+```
+ 
+* 35000 = P2P service
+* 7777 = RPC service
+* 8888 = status endpoint
+
  
 ### How to verify ?
 
@@ -48,32 +61,34 @@ The node displays running services via status page that runs on the HTTP port. I
 
 Get into the container with,
 
-```docker exec -it dgb bash```
+```docker exec -it casper bash```
 
 Verify the node runnning by checking the digibyte process, you could see it running as below
 
 ```
-root@dgb:/opt# netstat -lntpe
+root@casper:/var/lib/casper# netstat -lntupe
 Active Internet connections (only servers)
 Proto Recv-Q Send-Q Local Address           Foreign Address         State       User       Inode      PID/Program name
-tcp        0      0 0.0.0.0:12024           0.0.0.0:*               LISTEN      0          22338214   23/digibyted
-tcp        0      0 0.0.0.0:14022           0.0.0.0:*               LISTEN      0          22338207   23/digibyted
-tcp6       0      0 :::12024                :::*                    LISTEN      0          22338213   23/digibyted
+tcp        0      0 0.0.0.0:8888            0.0.0.0:*               LISTEN      0          7632603    54/casper-node
+tcp        0      0 0.0.0.0:35000           0.0.0.0:*               LISTEN      0          7632602    54/casper-node
+tcp        0      0 0.0.0.0:9999            0.0.0.0:*               LISTEN      0          7632604    54/casper-node
+tcp        0      0 0.0.0.0:80              0.0.0.0:*               LISTEN      0          7633249    31/apache2
 
 ```
 
 
-The default data directory for Digibyte is /dgb where you will see all Digibyte data,
+The default data directory for Casper is /var/lib/casper where you will see all Casper data,
 
 ```
-root@dgb:/dgb# tree -dh
+root@casper:/var/lib/casper# tree -dh
 .
-|-- [4.0K]  blocks
-|   `-- [4.0K]  index
-|-- [4.0K]  chainstate
-`-- [4.0K]  database
+|-- [4.0K]  bin
+|   |-- [4.0K]  1_0_0
+|   |-- [4.0K]  1_1_0
+|   |-- [4.0K]  1_1_2
+|   `-- [4.0K]  1_2_0
+`-- [4.0K]  casper-node
 
-4 directories
 ```
 
 
