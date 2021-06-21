@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+/opt/dgb/bin/digibyte-cli -conf=/dgb/digibyte.conf uptime > /tmp/checkuptime

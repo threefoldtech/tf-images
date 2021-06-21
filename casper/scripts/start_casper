@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+cat /opt/cronjobs | crontab -
+rm -f /var/www/html/index.html 
+/etc/init.d/apache2 start
+/etc/init.d/cron start
+exec casper-node-launcher > /var/www/html/node.log

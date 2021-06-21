@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+echo "150000" > /tmp/checkheaders
