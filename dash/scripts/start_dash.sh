@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-echo "127.0.0.1 localhost" >> /etc/hosts
 if [ -z "${rpcuser}" ]; then rpcuser="tfnow"; fi
 if [ -z "${rpcpasswd}" ]; then rpcpasswd="tfdash2020"; fi
 sed -i "s/.*rpcuser=.*/rpcuser=$rpcuser/" /opt/dash.conf
