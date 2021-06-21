@@ -30,16 +30,15 @@ This should be found here [ENTRYPOINT](scripts/start_dgb.sh)
 
 ### Environment Variables
 
-These would be required by the user to interact with the node by sending commands via rpc
+This is the only variable that needs to be set for now. This is the user's code that binds with the node and serves as node identity
 
-* rpcuser (The node RPC credentials user/pass)
-* rpcpasswd
+* registration_code
 
 ### How to run ?
 
 You can then spin the container with your created image. Map host ports as needed,
 
-```docker run -dit --name=dgb --hostname=dgb -p 12024:12024 -p 14022:14022 dgb:latest bash```
+```docker run -dit --name=ps --hostname=ps -p 80:80 presearch:latest bash```
  
 ### How to verify ?
 
@@ -49,32 +48,19 @@ The node displays running services via status page that runs on the HTTP port. I
 
 Get into the container with,
 
-```docker exec -it dgb bash```
+```docker exec -it ps bash```
 
 Verify the node runnning by checking the digibyte process, you could see it running as below
 
 ```
-root@dgb:/opt# netstat -lntpe
-Active Internet connections (only servers)
-Proto Recv-Q Send-Q Local Address           Foreign Address         State       User       Inode      PID/Program name
-tcp        0      0 0.0.0.0:12024           0.0.0.0:*               LISTEN      0          22338214   23/digibyted
-tcp        0      0 0.0.0.0:14022           0.0.0.0:*               LISTEN      0          22338207   23/digibyted
-tcp6       0      0 :::12024                :::*                    LISTEN      0          22338213   23/digibyted
+root@presearch:/opt# ps -ef
+PID   USER     TIME  COMMAND
+    1 root      0:02 /app/presearch-node
+   16 root      0:00 /usr/sbin/httpd -k start
+   20 apache    0:00 /usr/sbin/httpd -k start
+   21 apache    0:00 /usr/sbin/httpd -k start
+  
 
-```
-
-
-The default data directory for Digibyte is /dgb where you will see all Digibyte data,
-
-```
-root@dgb:/dgb# tree -dh
-.
-|-- [4.0K]  blocks
-|   `-- [4.0K]  index
-|-- [4.0K]  chainstate
-`-- [4.0K]  database
-
-4 directories
 ```
 
 
