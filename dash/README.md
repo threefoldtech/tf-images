@@ -23,6 +23,18 @@ Successfully built 0781ccba23e2
 Successfully tagged dgb:1.1
 ```
 
+### Hardware requirements
+
+  * 4 Cores
+  * 8 GB Ram
+  * 100 GB disk
+
+### Services that need to be exposed
+
+* RPC - 9999 TCP 
+* P2P - 9998 TCP 
+* WEB - 80/443 TCP
+
 ### Startup Script / EntryPoint
 
 This should be found here [ENTRYPOINT](scripts/start_dash.sh)
