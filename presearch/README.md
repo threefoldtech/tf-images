@@ -29,6 +29,16 @@ Removing intermediate container af06c59a8231
 Successfully built c66a20398946
 Successfully tagged presearch:latest
 ```
+### Hardware requirements
+
+  * 1 Cores
+  * 1 GB Ram
+  * 3 GB disk
+
+### Services that need to be exposed
+
+* WEB - 80/443 TCP
+
 ### Startup Script / EntryPoint
 
 This should be found here [ENTRYPOINT](scripts/start_presearch.sh)
