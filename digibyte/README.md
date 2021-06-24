@@ -24,6 +24,12 @@ Successfully built 0781ccba23e2
 Successfully tagged dgb:1.1
 ```
 
+### Hardware requirements
+
+  * 4 Cores
+  * 12 GB Ram
+  * 100 GB disk
+
 ### Startup Script / EntryPoint
 
 This should be found here [ENTRYPOINT](scripts/start_dgb.sh)
