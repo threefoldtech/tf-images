@@ -50,7 +50,8 @@ You can then spin the container with your created image. Map host ports as neede
  
 * 35000 = P2P service
 * 7777 = RPC service
-* 8888 = status endpoint
+* 8888 = HTTP REST endpoint
+* 9999 = HTTP SSE service
 
  
 ### How to verify ?
