@@ -1,13 +1,14 @@
 # Casper
 
 * Protocol version "1.1.0" 
+* Image for flist = ```docker pull arrajput/casper-flist:1.0```
 
 This image will start a Casper full node 
 
 ### Hardware requirements
 
   * 4 Cores
-  * 32 GB Ram
+  * 16 GB Ram
   * 1 TB disk
 
 ### How to build from the Dockerfile ?
