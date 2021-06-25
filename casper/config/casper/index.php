@@ -22,6 +22,10 @@ function readLastLines($filename, $num, $reverse = false)
 				}
 			      else return array("File not Found"); 
 			}
+			
+			
+
+
 ?>
       <!-- End Navigation Bar-->
       <div class="wrapper">
@@ -37,29 +41,26 @@ function readLastLines($filename, $num, $reverse = false)
                         <img class="icon-colored ml-0" src="assets/images/cspr-logo.png" title="" alt="colored-icons">
                         Casper Node Status
                      </h4>
-                     <p>Your Casper  node is now running succesfully on the Three Fold Grid. You can interact with your node by making RPC calls with the RPC credentials provided in the setup. A sample RPC call is below that you can run from your Linux terminal.</p>
+                     <p>Your Casper node is now running succesfully on the ThreeFold Grid. You can interact with your node by using the casper-client. A sample call is below in the red box. The client can be used once the node fully syncs. The ThreeFold Grid creates a peer to peer network that can span across multiple locations, yet only accessible by you.</p>
                      <p>The node statistics may take a few minutes to populate, therefore, please be patient. Alternately, you can click the "Refresh" button to reload statistics.</p>					 
 		 
-		 <div class="row">
-         	<div class="col-lg-12 col-md-12 col-sm-12">
-         		 <button class="btn btn-custom waves-light waves-effect w-md m-b-5 pull-right" onclick="window.location.reload();">Refresh</button>
-         	</div>
-         </div>
+					 <div class="row">
+						<div class="col-lg-12 col-md-12 col-sm-12">
+							 <button class="btn btn-custom waves-light waves-effect w-md m-b-5 pull-right" onclick="window.location.reload();">Refresh</button>
+						</div>
+					 </div>
 		 
-			   <div class="row">
-			    <div class="col-lg-12 col-md-4 col-sm-6">
-                  <div class="card-boxbg col-md-12" style="background-color: #cc2900;color: white; border-color: red;">
-                       <div class="col-md-14">
-                        <p>curl -v --data-binary '{"jsonrpc":"1.0","id":"cmdrpc","method":"getblockchaininfo","params":[]}'-H 'content-type:text/plain;'http://rpcuser:rpcpassword@<span id='getipHtml'></span>:14022/</p>
-                       
-                     </div>
-                    
-                  </div>
-               </div>
-           </div>
-			   
-	
-
+					   <div class="row">
+						<div class="col-lg-12 col-md-4 col-sm-6">
+						  <div class="card-boxbg col-md-12" style="background-color: #cc2900;color: white; border-color: red;">
+							   <div class="col-md-14">
+								<p>casper-client get-block --node-address http://<span id='getipHtml'></span>:7777</p>
+							   
+							 </div>
+							
+							  </div>
+						   </div>
+					   </div>
 			   
                   </div>
                </div>
@@ -84,10 +85,15 @@ function readLastLines($filename, $num, $reverse = false)
                        
                      </div>                    
                   </div>
+				    <div class="card-box col-md-12">
+                       <div class="col-md-12">
+                       <span id="HTTPRestService"></span>
+                       </div>                    
+                  </div>
                   
                    <div class="card-box col-md-12">
                        <div class="col-md-12">
-                        <h4>Casper Daemon Uptime : <span id='NodeUptimeHtml'></span> <img class="icon-flatright" src="assets/images/icons/checkmark.svg" title="checkmark.svg" alt="colored-icons"></h4>
+                        <h4>Node Uptime : <span id='NodeUptimeHtml'></span> <img class="icon-flatright" src="assets/images/icons/checkmark.svg" title="checkmark.svg" alt="colored-icons"></h4>
                        
                      </div>                    
                   </div>
@@ -124,14 +130,62 @@ function readLastLines($filename, $num, $reverse = false)
                        
                      </div>                    
                   </div>
+				  
+                       <div class="card-box col-md-12">
+                       <div class="col-md-12">
+                       <span id="SSEService"></span>
+                       </div>                    
+                  </div>
                   
                    <div class="card-box col-md-12">
-                  <!-- <p style="float:right;">Digibyte daemon uptime for the last 12 hours</p> -->
                   <br><br>
                     <div id="website-stats1" style="height: 320px;" class="flot-chart"></div>             
                     
                   </div>
                </div><!-- right side colum  -->
+			    
+			   
+			   <!-- start tabler listing here -->
+			   <?php			  
+			   $json = file_get_contents('/tmp/checkpeers');
+			   $data = json_decode($json, true);
+               ?>
+			   
+			<div class="col-lg-12 col-md-12 col-sm-12">
+				<div class="card-box col-md-12">
+				<h4>Connected Peers - <?php echo count($data);?></h4>
+				</div>
+			</div>
+
+	          <div class="col-lg-12 col-md-12 col-sm-12">
+                  <div class="card-box col-md-12">
+                  <div class="col-md-12">
+                         <table class="table">
+									<thead>
+									  <tr>
+										<th><h4>PeerID</h4></th>
+										<th><h4>Peer Address</h4></th>
+										<th><h4>Peer Status</h4></th>
+									  </tr>
+									</thead>
+									<tbody>
+									<?php foreach ($data as $key => $value) { ?>
+									  <tr>
+										<td><?php echo $value['node_id'];?></td>
+										<td><?php echo $value['address']  ;?></td>
+										<td><i class="fa fa-circle" aria-hidden="true" style ="color:#4bd396 ;"></i></td>
+									  </tr>								
+									  <?php } ?>									
+									</tbody>
+								  </table>
+					</div>
+                     
+               </div>
+            </div>
+			   
+			    <!-- end tabler listing here -->
+			   
+			   
           
                <div class="col-lg-12 col-md-12 col-sm-12">
                   <div class="card-box col-md-12">
@@ -148,6 +202,8 @@ function readLastLines($filename, $num, $reverse = false)
                      </div>
                </div>
             </div>
+			
+			
             <div class="col-lg-12">
                <div class="portlet">
                   <div class="portlet-heading portlet-default">
@@ -164,16 +220,15 @@ function readLastLines($filename, $num, $reverse = false)
                   <div id="bg-default" class="panel-collapse collapse in" >
                   <div class="card-box">
                      <div class="slimScrollDiv  portlet-body pl-10em bg-dark" style="position: relative; overflow-y: scroll; width: auto; height: 350px !important;">
-                        <?php // use it by
- $lines = readLastLines("/tmp/checklogs", 100); // return string with 100 last lines  
-                      
- if (!empty($lines)){
- foreach ($lines as $k) {
- 	echo $k."<br>";
- 	
- }
- }
-?>
+							<?php // use it by
+							$lines = readLastLines("/tmp/checklogs", 100); // return string with 100 last lines  
+							if (!empty($lines)){
+							foreach ($lines as $k) {
+							echo $k."<br>";
+
+							}
+							}
+							?>
                      </div>
                      </div> <!-- end card-box -->
                   </div>
@@ -318,45 +373,28 @@ function readLastLines($filename, $num, $reverse = false)
     
     <script type="text/javascript">
           
-          function knobfunction(value1){
-            //  alert(value1);
-             // var value1='5.22';
+          function knobfunction(value1){          
         		$('#PercentageHtml')
         	    .val(value1)
         	    .trigger('change');
         	}
 
-        	/* $("#PercentageHtml").knob({
-        		 readOnly: true,   
-        		      		    
-        	    'change' : function (v) { console.log(v); }
-        	});*/
           </script>
     
-    <script id="verificationRPC" language="javascript" type="text/javascript">
+ <script id="verificationRPC" language="javascript" type="text/javascript">
 function CheckRPCService() {
     $.ajax({
-        url: 'CheckRPCService.php', //php          
-      //  data: "", //the data "caller=name1&&callee=name2"
-      //  dataType: 'json', //data format   
-        success: function (data) {
-            //on receive of reply
-           // alert(data);
-            //var foobar = data[2]; //foobar
-            $('#verificationRPC').html(data); //output to html
+        url: 'CheckRPCService.php', //php         
+         success: function (data) {
+         $('#verificationRPC').html(data); //output to html
         }
     });
 }
 function CheckP2PService() {
     $.ajax({
-        url: 'CheckP2PService.php', //php          
-      //  data: "", //the data "caller=name1&&callee=name2"
-      //  dataType: 'json', //data format   
+        url: 'CheckP2PService.php', //php         
         success: function (data) {
-            //on receive of reply
-           // alert(data);
-            //var foobar = data[2]; //foobar
-            $('#verificationP2P').html(data); //output to html
+        $('#verificationP2P').html(data); //output to html
         }
     });
 }
@@ -364,10 +402,34 @@ function CheckP2PService() {
 $(document).ready(CheckRPCService); // Call on page load
 $(document).ready(CheckP2PService); // Call on page load
 //                
-
-
 setInterval(CheckRPCService, 120000); //every 120 secs
 setInterval(CheckP2PService, 120000); //every 120 secs
+// check http rest
+function CheckHTTPRestService() {
+    $.ajax({
+        url: 'CheckHttpRestService.php', //php     
+        success: function (data) {
+           $('#HTTPRestService').html(data); //output to html
+        }
+    });
+}
+
+$(document).ready(CheckHTTPRestService); // Call on page load
+$(document).ready(CheckHTTPRestService); // Call on page load
+
+
+// check SSE Services
+function CheckSSEService() {
+    $.ajax({
+        url: 'CheckSSEService.php', //php     
+        success: function (data) {
+           $('#SSEService').html(data); //output to html
+        }
+    });
+}
+
+$(document).ready(CheckSSEService); // Call on page load
+$(document).ready(CheckSSEService); // Call on page load
 </script>
 <script id="BlockCount" language="javascript" type="text/javascript">
 function BlockCount() {
@@ -382,10 +444,7 @@ function BlockCount() {
            var data_Percentage=fields[0];
             var data_header = fields[1]; //foobar
             
-            $('#BlockCountHtml').html(data_header); //output to html
-          //  $('#PercentageHtm').html(data_Percentage); //output to html
-          //   $('#PercentageHtml').val(data_Percentage).trigger('change');
-            //var randomnumber = Math.round(Math.random() * 100);
+            $('#BlockCountHtml').html(data_header); //output to html       
             knobfunction(data_Percentage);
             $('#PercentageHtml').knob();
             $("#PercentageHtml").val(data_Percentage);

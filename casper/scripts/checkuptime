@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-/opt/dgb/bin/digibyte-cli -conf=/dgb/digibyte.conf uptime > /tmp/checkuptime
+ps -eo pid,comm,etime,args | grep "[c]asper-node-launcher" | awk '{print $3}' > /tmp/checkuptime

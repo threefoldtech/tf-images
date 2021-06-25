@@ -7,8 +7,7 @@ if ( file_exists("/tmp/checkuptime") )
 if(!empty($serviceUptime))
 {
 	
-	echo number_format(($serviceUptime/60),0)." Minutes";
-	
+	echo '<span class="green font-16">'.$serviceUptime.' - HH:MM:SS</span>';	
 }
 else 
 {

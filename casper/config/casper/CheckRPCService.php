@@ -1,9 +1,8 @@
 <?php
-//$serviceRPC=trim(shell_exec('sudo checkdgb'));
-if ( file_exists("/tmp/checkdgb") )
-				{
-$serviceRPC = new SplFileObject("/tmp/checkdgb");
- $serviceRPC= trim($serviceRPC->fgets());
+if ( file_exists("/tmp/checkrpc") )
+{
+$checkserviceRPC = new SplFileObject("/tmp/checkrpc");
+$serviceRPC= trim($checkserviceRPC->fgets());
 				}
 if($serviceRPC=="OK")
 {
@@ -14,7 +13,7 @@ if($serviceRPC=="OK")
 else 
 {
 	
-	echo ' <h4>RPC Service :<span class="text-danger font-16"> Checking </span></h4>';
+	echo ' <h4>RPC Service :<span class="text-danger font-16"> Checking | Waiting for Sync</span></h4>';
 	
 }
 ?>
