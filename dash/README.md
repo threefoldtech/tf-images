@@ -40,6 +40,8 @@ Successfully tagged dgb:1.1
 
 This should be found here [ENTRYPOINT](scripts/start_dash.sh)
 
+```start_dash.sh```
+
 ### Environment Variables
 
 These would be required by the user to interact with the node by sending commands via rpc
