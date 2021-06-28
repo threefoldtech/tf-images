@@ -42,6 +42,7 @@ Successfully tagged casper:latest
 ### Startup Script / EntryPoint
 
 This should be found here [ENTRYPOINT](scripts/start_casper)
+```/start_casper```
 
 ### How to run ?
 
