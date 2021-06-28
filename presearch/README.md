@@ -43,6 +43,8 @@ Successfully tagged presearch:latest
 
 This should be found here [ENTRYPOINT](scripts/start_presearch.sh)
 
+```/start_presearch.sh```
+
 ### Environment Variables
 
 This is the only variable that needs to be set for now. This is the user's code that binds with the node and serves as node identity
