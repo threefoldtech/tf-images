@@ -46,13 +46,21 @@ This should be found here [ENTRYPOINT](scripts/start_casper)
 
 You can then spin the container with your created image. Map host ports as needed,
 
-```docker run -dit --name=casper --hostname=casper -p 35000:35000 -p 7777:7777 -p 8888:8888 -p 9999:9999 -p 8080:80 casper:latest bash
 ```
+docker run -dit --name=casper --hostname=casper -p 35000:35000 -p 7777:7777 -p 8888:8888 -p 9999:9999 -p 8080:80 casper:latest bash
+```
+
+### Services to EXPOSE
  
 * 35000 = P2P service
 * 7777 = RPC service
 * 8888 = HTTP REST endpoint
 * 9999 = HTTP SSE service
+* 80/443 = WEB
+
+Make sure all the above required ports are opened
+
+![image](https://user-images.githubusercontent.com/25789764/123585265-f4432d00-d7f3-11eb-997c-5c3d333f224a.png)
 
  
 ### How to verify ?
