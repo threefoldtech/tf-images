@@ -2,6 +2,7 @@
 
 * Protocol version "1.1.0" 
 * Image for flist = ```docker pull arrajput/casper-flist:1.0```
+* flist = ```https://hub.grid.tf/arehman/arrajput-casper-flist-1.0.flist```
 
 This image will start a Casper full node 
 
