@@ -3,6 +3,7 @@
 This image will start a Dash full node 
 * DashCore : v0.16.1.1
 * Image for flist = ```docker pull arrajput/dash-flist:1.0```
+* flist = ```https://hub.grid.tf/arehman/arrajput-dash-flist-1.0.flist```
 
 ### How to build from the Dockerfile ?
 
