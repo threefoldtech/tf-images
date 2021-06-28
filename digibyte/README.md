@@ -35,6 +35,8 @@ Successfully tagged dgb:1.1
 
 This should be found here [ENTRYPOINT](scripts/start_dgb.sh)
 
+```/start_dgb.sh```
+
 ### Environment Variables
 
 * rpcuser (The node RPC credentials user/pass)
