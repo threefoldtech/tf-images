@@ -40,7 +40,7 @@ Successfully tagged dgb:1.1
 
 This should be found here [ENTRYPOINT](scripts/start_dash.sh)
 
-```start_dash.sh```
+```/start_dash.sh```
 
 ### Environment Variables
 
