@@ -7,13 +7,13 @@ etcd_endpoint=$1
 echo """K3S_TOKEN=djlksjdla2lewqldlks
 K3S_NODE_NAME=master1
 K3S_DATA_DIR=/opt/data
-K3S_DATASTORE_ENDPOINT=etcd_endpoint
+K3S_DATASTORE_ENDPOINT=$etcd_endpoint
 """ >> master1_rootfs/etc/environment
 
 echo """K3S_TOKEN=djlksjdla2lewqldlks
 K3S_NODE_NAME=master2
 K3S_DATA_DIR=/opt/data
-K3S_DATASTORE_ENDPOINT=etcd_endpoint
+K3S_DATASTORE_ENDPOINT=$etcd_endpoint
 """ >> master2_rootfs/etc/environment
 
 echo """K3S_TOKEN=djlksjdla2lewqldlks
