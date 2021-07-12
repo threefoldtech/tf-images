@@ -23,8 +23,11 @@ K3S_DATA_DIR=/opt/data
 """ >> worker_rootfs/etc/environment
 
 truncate --size 5G disk1.img
+truncate --size 5G disk11.img
 truncate --size 5G disk2.img
+truncate --size 5G disk22.img
 truncate --size 5G disk3.img
+truncate --size 5G disk33.img
 mkfs.btrfs disk1.img 
 mkfs.btrfs disk2.img
 mkfs.btrfs disk3.img

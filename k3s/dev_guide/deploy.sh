@@ -2,7 +2,8 @@ root=$1
 index=$2
 host=$3
 disk=$4
-init=$5
+disk2=$5
+init=$6
 
 bridge="docker0"
 tap="cont-${index}"
@@ -21,13 +22,13 @@ if [ -z "${init}" ]; then
 fi
 
 exec sudo cloud-hypervisor \
-    --kernel bin/kernel \
-    --initramfs bin/initramfs-linux.img \
+    --kernel kernel \
+    --initramfs initramfs-linux.img \
     --console off \
     --serial tty \
     --cpus boot=1 \
     --memory size=2G,shared=on \
-    --disk path=$disk \
+    --disk path=$disk path=$disk2\
     --fs tag=/dev/root,socket=${socket}  \
     --net tap=${tap} \
     --cmdline "console=ttyS0 rootfstype=virtiofs vda=/opt/data root=/dev/root host=${host} net_eth0=172.17.0.${index}/24 net_dns=8.8.8.8 net_r4=default,172.17.0.1 rw ${init}" \
