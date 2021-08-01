@@ -43,12 +43,10 @@
       <link href="assets/css/pages.css" rel="stylesheet" type="text/css" />
       <link href="assets/css/menu.css" rel="stylesheet" type="text/css" />
       <link href="assets/css/responsive.css" rel="stylesheet" type="text/css" />
+      <link rel="stylesheet" href="plugins/chartist/css/chartist.min.css">
       <script src="assets/js/modernizr.min.js"></script>
-	 <!--Chartist Chart CSS -->
-    <link rel="stylesheet" href="plugins/chartist/css/chartist.min.css">
-	<script type="text/javascript">  
-</script>
-	<style type="text/css">
+
+<style type="text/css">
 #loader {  
     position: fixed;  
     left: 0px;  
