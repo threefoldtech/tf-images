@@ -47,10 +47,6 @@
 	 <!--Chartist Chart CSS -->
     <link rel="stylesheet" href="plugins/chartist/css/chartist.min.css">
 	<script type="text/javascript">  
-   $(window).load(function() {  
-      $("#loader").fadeIn(1000);  
-       window.location.href = "";	  
-   });
 </script>
 	<style type="text/css">
 #loader {  
