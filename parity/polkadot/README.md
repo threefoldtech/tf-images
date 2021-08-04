@@ -1,17 +1,17 @@
-# Digibyte
+# Parity/PolkaDot Node
 
-* DigiByte Core v7.17.2 Official Release
-* Docker image for flist = ```docker pull arrajput/digibyte-flist:1.0```
-* flist = ```https://hub.grid.tf/arehman/arrajput-digibyte-flist-1.0.flist```
+* Polkadot v0.9.8 Official Release
+* Docker image for flist = ```docker pull arrajput/parity-polkadot-flist:v1```
+* flist = ```https://hub.grid.tf/arehman/arrajput-parity-polkadot-flist-v1.flist```
 
-This image will start a Digibyte full node 
+This image will start a Polkadot full node 
 
 ### How to build from the Dockerfile ?
 
 ```
 git clone https://github.com/threefoldtech/tf-images.git
-cd digibyte
-docker build --tag dgb:latest .
+cd parity/polkadot
+docker build --tag polkadot:latest .
 ```
 Sit back and relax then ! It should be quicker and you should see a successful message as below,
 
@@ -22,37 +22,37 @@ Step 17/17 : EXPOSE 12024 14022
 Removing intermediate container 030f3afef72c
  ---> 0781ccba23e2
 Successfully built 0781ccba23e2
-Successfully tagged dgb:1.1
+Successfully tagged polkadot:latest
 ```
 
-### Hardware requirements
+### Minimal Hardware requirements
 
   * 4 Cores
   * 12 GB Ram
-  * 100 GB disk
+  * 500 GB disk
 
 ### Startup Script / EntryPoint
 
-This should be found here [ENTRYPOINT](scripts/start_dgb.sh)
+This should be found here [ENTRYPOINT](scripts/start_polkadot)
 
-```/start_dgb.sh```
+```/start_polkadot```
 
 ### Environment Variables
 
-* rpcuser (The node RPC credentials user/pass)
-* rpcpasswd
+* node_name = Name for the node provided by the user
 
 ### Services that need to be exposed
 
-* RPC - 14022 TCP 
-* P2P - 12024 TCP 
+* RPC - 30333 TCP 
+* P2P - 9933 TCP 
+* WS  - 9944 TCP
 * WEB - 80/443 TCP
 
 ### How to run ?
 
 You can then spin the container with your created image. Map host ports as needed,
 
-```docker run -dit --name=dgb --hostname=dgb -p 80:80 -p 14022:14022 -p 12024:12024 dgb:latest bash```
+```docker run -dit --name=polkadot --hostname=polkadot -p 30333:30333 -p 9933:9933 -p 9944:9944 -p 80:80 arrajput/parity-polkadot-flist:v1 bash```
  
 ### How to verify ?
 
@@ -62,38 +62,43 @@ The node displays running services via status page that runs on the HTTP port. I
 
 Get into the container with,
 
-```docker exec -it dgb bash```
+```docker exec -it polkadot bash```
 
 ### How to verify ?
-
-Get into the container with,
-
-```docker exec -it dgb bash```
 
 Verify the node runnning by checking the harmony process, you could see it running as below
 
 ```
-root@dgb:/opt# netstat -lntpe
+:/polkadot# netstat -lntupe
 Active Internet connections (only servers)
 Proto Recv-Q Send-Q Local Address           Foreign Address         State       User       Inode      PID/Program name
-tcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN      0          22338958   1/sshd
-tcp        0      0 0.0.0.0:12024           0.0.0.0:*               LISTEN      0          22338214   23/digibyted
-tcp        0      0 0.0.0.0:14022           0.0.0.0:*               LISTEN      0          22338207   23/digibyted
-tcp6       0      0 :::22                   :::*                    LISTEN      0          22338960   1/sshd
-tcp6       0      0 :::12024                :::*                    LISTEN      0          22338213   23/digibyted
+tcp        0      0 0.0.0.0:30333           0.0.0.0:*               LISTEN      0          65134343   30/polkadot
+tcp        0      0 0.0.0.0:9933            0.0.0.0:*               LISTEN      0          65134359   30/polkadot
+tcp        0      0 0.0.0.0:9933            0.0.0.0:*               LISTEN      0          65134356   30/polkadot
+tcp        0      0 0.0.0.0:9933            0.0.0.0:*               LISTEN      0          65134353   30/polkadot
+tcp        0      0 0.0.0.0:9933            0.0.0.0:*               LISTEN      0          65134350   30/polkadot
+tcp        0      0 127.0.0.1:9615          0.0.0.0:*               LISTEN      0          65134685   30/polkadot
+tcp        0      0 0.0.0.0:80              0.0.0.0:*               LISTEN      0          65134137   33/apache2
+tcp        0      0 0.0.0.0:9944            0.0.0.0:*               LISTEN      0          65134363   30/polkadot
+tcp6       0      0 :::30333                :::*                    LISTEN      0          65134342   30/polkadot
+udp        0      0 0.0.0.0:49552           0.0.0.0:*                           0          65134690   30/polkadot
+udp        0      0 0.0.0.0:5353            0.0.0.0:*                           0          65134689   30/polkadot
+
 
 ```
 
-
-The default data directory for Digibyte is /dgb where you will see all Digibyte data,
+The default data directory for PolkaDot is /polkadot where you will see all PolkaDot data,
 
 ```
-root@dgb:/dgb/.digibytet# tree -dh
+:/polkadot# tree -dh
 .
-|-- [4.0K]  blocks
-|   `-- [4.0K]  index
-|-- [4.0K]  chainstate
-`-- [4.0K]  database
+`-- [4.0K]  chains
+    `-- [4.0K]  polkadot
+        |-- [388K]  db
+        |   `-- [4.0K]  parachains
+        |       `-- [4.0K]  db
+        |-- [4.0K]  keystore
+        `-- [4.0K]  network
 
-4 directories
+7 directories
 ```
