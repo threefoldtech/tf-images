@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+curl -s localhost:9615/metrics | grep -i "finalized" | awk '{print $2}' > /tmp/checkblocks
+blks=`curl -s localhost:9615/metrics | grep -i "finalized" | awk '{print $2}'`
+ts=`date "+%Y-%m-%d %H:%M:%S"`
+echo $blks, $ts >> /tmp/checkgraph
