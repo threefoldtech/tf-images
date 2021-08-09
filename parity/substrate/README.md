@@ -1,58 +1,71 @@
-# Digibyte
+# Parity/PolkaDot Node
 
-* DigiByte Core v7.17.2 Official Release
-* Docker image for flist = ```docker pull arrajput/digibyte-flist:1.0```
-* flist = ```https://hub.grid.tf/arehman/arrajput-digibyte-flist-1.0.flist```
+* Version = substrate 3.0.0-3a1acf
+* Docker image for flist = ```docker pull arrajput/parity-substrate-flist:v1```
+* flist = ```https://hub.grid.tf/arehman/arrajput-parity-substrate-flist-v1.flist```
 
-This image will start a Digibyte full node 
+This image will start a substrate node template
 
 ### How to build from the Dockerfile ?
 
 ```
 git clone https://github.com/threefoldtech/tf-images.git
-cd digibyte
-docker build --tag dgb:latest .
+cd parity/substrate
+docker build --tag substrate:latest .
 ```
 Sit back and relax then ! It should be quicker and you should see a successful message as below,
 
 ```
- ---> d0de06934f0c
-Step 17/17 : EXPOSE 12024 14022
- ---> Running in 030f3afef72c
-Removing intermediate container 030f3afef72c
- ---> 0781ccba23e2
-Successfully built 0781ccba23e2
-Successfully tagged dgb:1.1
+Step 17/21 : COPY scripts/substrate .
+ ---> Using cache
+ ---> c4a37e5cd3e4
+Step 18/21 : ENTRYPOINT ["/start_substrate"]
+ ---> Using cache
+ ---> 03129aa830e6
+Step 19/21 : VOLUME /substrate
+ ---> Using cache
+ ---> c51cf8bb6c37
+Step 20/21 : WORKDIR /substrate
+ ---> Using cache
+ ---> 56dc4f015617
+Step 21/21 : EXPOSE 30333 9933 9944
+ ---> Using cache
+ ---> 8320beaedf02
+Successfully built 8320beaedf02
+Successfully tagged substrate:latest
+
 ```
 
-### Hardware requirements
+### Minimal Hardware requirements
 
-  * 4 Cores
-  * 12 GB Ram
+  * 2 Cores
+  * 4 GB Ram
   * 100 GB disk
 
 ### Startup Script / EntryPoint
 
-This should be found here [ENTRYPOINT](scripts/start_dgb.sh)
+This should be found here [ENTRYPOINT](scripts/start_substrate)
 
-```/start_dgb.sh```
+```/start_substrate```
 
 ### Environment Variables
 
-* rpcuser (The node RPC credentials user/pass)
-* rpcpasswd
+* node_name = Name for the node provided by the user
 
 ### Services that need to be exposed
 
-* RPC - 14022 TCP 
-* P2P - 12024 TCP 
+* RPC - 30333 TCP 
+* P2P - 9933 TCP 
+* WS  - 9944 TCP
 * WEB - 80/443 TCP
+* MGMT - 8000 TCP
 
 ### How to run ?
 
 You can then spin the container with your created image. Map host ports as needed,
 
-```docker run -dit --name=dgb --hostname=dgb -p 80:80 -p 14022:14022 -p 12024:12024 dgb:latest bash```
+```docker run -dit --name=substrate --hostname=substrate -p 30333:30333 -p 9933:9933 -p 9944:9944 -p 80:80 -p 8000:8000 -p 9922:22 arrajput/parity-substrate-flist:v1 bash
+```
  
 ### How to verify ?
 
@@ -62,38 +75,42 @@ The node displays running services via status page that runs on the HTTP port. I
 
 Get into the container with,
 
-```docker exec -it dgb bash```
+```docker exec -it substrate bash```
 
 ### How to verify ?
-
-Get into the container with,
-
-```docker exec -it dgb bash```
 
 Verify the node runnning by checking the harmony process, you could see it running as below
 
 ```
-root@dgb:/opt# netstat -lntpe
+/substrate# netstat -lntupe
 Active Internet connections (only servers)
 Proto Recv-Q Send-Q Local Address           Foreign Address         State       User       Inode      PID/Program name
-tcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN      0          22338958   1/sshd
-tcp        0      0 0.0.0.0:12024           0.0.0.0:*               LISTEN      0          22338214   23/digibyted
-tcp        0      0 0.0.0.0:14022           0.0.0.0:*               LISTEN      0          22338207   23/digibyted
-tcp6       0      0 :::22                   :::*                    LISTEN      0          22338960   1/sshd
-tcp6       0      0 :::12024                :::*                    LISTEN      0          22338213   23/digibyted
+tcp        0      0 0.0.0.0:9944            0.0.0.0:*               LISTEN      0          71732940   37/substrate
+tcp        0      0 0.0.0.0:30333           0.0.0.0:*               LISTEN      0          71732922   37/substrate
+tcp        0      0 0.0.0.0:8000            0.0.0.0:*               LISTEN      0          71733352   128/node
+tcp        0      0 0.0.0.0:9933            0.0.0.0:*               LISTEN      0          71732936   37/substrate
+tcp        0      0 0.0.0.0:9933            0.0.0.0:*               LISTEN      0          71732933   37/substrate
+tcp        0      0 0.0.0.0:9933            0.0.0.0:*               LISTEN      0          71732930   37/substrate
+tcp        0      0 0.0.0.0:9933            0.0.0.0:*               LISTEN      0          71732927   37/substrate
+tcp        0      0 127.0.0.1:9615          0.0.0.0:*               LISTEN      0          71732923   37/substrate
+tcp        0      0 0.0.0.0:80              0.0.0.0:*               LISTEN      0          71732901   46/apache2
+tcp6       0      0 :::30333                :::*                    LISTEN      0          71732921   37/substrate
 
 ```
 
-
-The default data directory for Digibyte is /dgb where you will see all Digibyte data,
+The default data directory for Substrate is /substrate where you will see all Substrate data,
 
 ```
-root@dgb:/dgb/.digibytet# tree -dh
+:/substrate# tree -dh
+
+@sb:/substrate# tree -dh
 .
-|-- [4.0K]  blocks
-|   `-- [4.0K]  index
-|-- [4.0K]  chainstate
-`-- [4.0K]  database
+`-- [4.0K]  chains
+    `-- [4.0K]  dev
+        |-- [ 68K]  db
+        |-- [4.0K]  keystore
+        `-- [4.0K]  network
 
-4 directories
+5 directories
+
 ```
