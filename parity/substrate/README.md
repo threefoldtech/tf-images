@@ -115,3 +115,6 @@ The default data directory for Substrate is /substrate where you will see all Su
 5 directories
 
 ```
+
+![image](https://user-images.githubusercontent.com/25789764/128677706-31b5e95d-ab92-48b3-ae3c-cf90218e98c5.png)
+
