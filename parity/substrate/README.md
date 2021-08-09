@@ -1,4 +1,4 @@
-# Parity/PolkaDot Node
+# Parity/Substrate Node
 
 * Version = substrate 3.0.0-3a1acf
 * Docker image for flist = ```docker pull arrajput/parity-substrate-flist:v1```
