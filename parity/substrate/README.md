@@ -64,7 +64,8 @@ This should be found here [ENTRYPOINT](scripts/start_substrate)
 
 You can then spin the container with your created image. Map host ports as needed,
 
-```docker run -dit --name=substrate --hostname=substrate -p 30333:30333 -p 9933:9933 -p 9944:9944 -p 80:80 -p 8000:8000 -p 9922:22 arrajput/parity-substrate-flist:v1 bash
+```
+docker run -dit --name=substrate --hostname=substrate -p 30333:30333 -p 9933:9933 -p 9944:9944 -p 80:80 -p 8000:8000 arrajput/parity-substrate-flist:v1 bash
 ```
  
 ### How to verify ?
