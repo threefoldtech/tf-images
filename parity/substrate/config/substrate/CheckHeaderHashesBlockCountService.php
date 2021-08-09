@@ -21,7 +21,7 @@ $checkblockes= trim($file_checkblocks->fgets());
  //echo "-->".number_format((($checkblockes / $checkheaders)*100),2);
 if(!empty($checkblockes)){
 	$Percentage = number_format((($checkblockes / $checkheaders)*100),2);
-	$retrun_data= '<ul class="list-inline chart-detail-list"><p class="font-14"><b>Block Count : '.$checkblockes.'     -      Best Block Height : '.$checkheaders.'</b></p>
+	$retrun_data= '<ul class="list-inline chart-detail-list"><p class="font-14"><b>Blocks Produced/Count : '.$checkblockes.'     -      Best Block Height : '.$checkheaders.'</b></p>
                                 <p>Connected Peers : '.number_format($checknethash,0).'</p></ul>';
 }
 else {

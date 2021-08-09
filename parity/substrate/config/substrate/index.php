@@ -71,7 +71,7 @@ function readLastLines($filename, $num, $reverse = false)
                <div class="col-lg-6 col-md-4 col-sm-6">
                   <div class="card-box col-md-12">
                        <div class="col-md-12">
-                        <h4>Node Type: Full Node <img class="icon-flatright" src="assets/images/icons/checkmark.svg" title="checkmark.svg" alt="colored-icons"></h4>
+                        <h4>Node Type : Template, Development <img class="icon-flatright" src="assets/images/icons/checkmark.svg" title="checkmark.svg" alt="colored-icons"></h4>
                        
                      </div>
                     
@@ -111,7 +111,7 @@ function readLastLines($filename, $num, $reverse = false)
                <div class="col-lg-6 col-md-4 col-sm-6">
                 <div class="card-box col-md-12">
                        <div class="col-md-12">
-                        <h4>Network : Mainnet  <img class="icon-flatright" src="assets/images/icons/checkmark.svg" title="checkmark.svg" alt="colored-icons"></h4>
+                        <h4>Network : Local Testnet <img class="icon-flatright" src="assets/images/icons/checkmark.svg" title="checkmark.svg" alt="colored-icons"></h4>
                        
                      </div>                    
                   </div>

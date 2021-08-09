@@ -102,8 +102,3 @@ The default data directory for PolkaDot is /polkadot where you will see all Polk
 
 7 directories
 ```
-
-![image](https://user-images.githubusercontent.com/25789764/128147874-8dfce2f5-1a68-4ceb-8ca0-269847b8413b.png)
-![image](https://user-images.githubusercontent.com/25789764/128147996-56ad5f4a-3b66-4428-83fd-e649489770d7.png)
-
-

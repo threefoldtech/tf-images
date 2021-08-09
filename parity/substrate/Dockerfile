@@ -20,13 +20,18 @@ RUN set -ex; \
         iproute2 \
         dnsutils \
         tree \
+        git \
+        npm \
 	apache2 \
 	php \
         ;
 
-# Optionally set timezone
+# Optionally set timezone / dependencies
 RUN ln -fs /usr/share/zoneinfo/Asia/Dubai /etc/localtime && dpkg-reconfigure -f noninteractive tzdata
 RUN mkdir -pv /substrate
+RUN npm install -g yarn
+RUN git clone https://github.com/substrate-developer-hub/substrate-front-end-template.git
+RUN cd substrate-front-end-template* && yarn install 
 
 # Set Polka/Substrate Configuration
 COPY config/cronjobs /opt
