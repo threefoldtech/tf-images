@@ -1,3 +1,5 @@
+mkdir -p /root/.ssh/
+echo $SSH_KEY > /root/.ssh/authorized_keys
 service ssh start
 if [ -z "${K3S_DATA_DIR}" ]; then
     K3S_DATA_DIR=""
