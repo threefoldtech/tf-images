@@ -1,8 +1,0 @@
-#!/usr/bin/env bash
-if pgrep -x "dashd" > /dev/null
-then
-    echo "OK" > /tmp/checkdash
-else
-    echo "NO" > /tmp/checkdash
-    /opt/dash/bin/dashd -conf=/dash/dash.conf > /dev/null 2>&1
-fi

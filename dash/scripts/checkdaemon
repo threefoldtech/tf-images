@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-if pgrep -x "dashd" > /dev/null
-then
-    echo "OK"
-else
-    echo "NO"
-fi

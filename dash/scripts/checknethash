@@ -1,2 +1,0 @@
-#!/usr/bin/env bash
-/opt/dash/bin/dash-cli -conf=/dash/dash.conf getnetworkhashps > /tmp/checknethash
