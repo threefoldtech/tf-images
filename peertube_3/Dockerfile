@@ -8,21 +8,13 @@ ARG NPM_RUN_BUILD_OPTS
 
 # Install dependencies
 RUN apt update \
-    && apt install -y --no-install-recommends openssl ffmpeg python ca-certificates gnupg gosu build-essential \
-    && gosu nobody true \
+    && apt install -y --no-install-recommends openssl ffmpeg python ca-certificates gnupg gosu build-essential postgresql postgresql-contrib redis-server openssh-server sudo\
     && rm /var/lib/apt/lists/* -fR
 
-# Add peertube user
-RUN groupadd -r peertube \
-    && useradd -r -g peertube -m peertube
-
-# Install PeerTube
-# change from where you copy the app
-COPY --chown=peertube:peertube ./app /app 
+COPY ./app /app 
 
 WORKDIR /app
 
-#USER peertube
 
 RUN yarn install --pure-lockfile \
     && npm run build -- $NPM_RUN_BUILD_OPTS \
@@ -30,10 +22,8 @@ RUN yarn install --pure-lockfile \
     && yarn install --pure-lockfile --production \
     && yarn cache clean
 
-USER root
 
 RUN mkdir /data /config
-RUN chown -R peertube:peertube /data /config
 
 ENV NODE_ENV production
 ENV NODE_CONFIG_DIR /config
@@ -43,11 +33,6 @@ VOLUME /config
 
 
 # # Custome config for redis & postgres & ssh
-
-RUN apt-get update &&\
-    apt-get install postgresql postgresql-contrib redis-server openssh-server sudo -y
-
-
 RUN mkdir -p /root/.ssh/ &&\
     chmod 700 /root/.ssh &&\
     touch /root/.ssh/authorized_keys &&\
@@ -66,16 +51,6 @@ RUN service postgresql start &&\
 COPY ./entrypoint.sh /usr/local/bin/entrypoint.sh
 
 
-ENV PEERTUBE_DB_SUFFIX=_prod
-ENV PEERTUBE_DB_USERNAME=peertube
-ENV PEERTUBE_DB_PASSWORD=peertube
-ENV PEERTUBE_DB_HOSTNAME=localhost
-ENV PEERTUBE_REDIS_HOSTNAME=localhost
-ENV PEERTUBE_WEBSERVER_HOSTNAME=0.0.0.0
-ENV PEERTUBE_WEBSERVER_PORT=9000
-ENV PEERTUBE_ADMIN_EMAIL=abdulazizo@incubaid.com
-ENV PEERTUBE_SIGNUP_ENABLED=true
-ENV PATH=$PATH:/usr/local/bin
 
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
