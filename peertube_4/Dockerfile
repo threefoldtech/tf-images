@@ -21,8 +21,6 @@ RUN mkdir /data /config
 ENV NODE_ENV production
 ENV NODE_CONFIG_DIR /config
 
-COPY ./setup_postgres.sql /tmp/setup_postgres.sql
-
 COPY ./entrypoint.sh /usr/local/bin/entrypoint.sh
 
 VOLUME /data /config
