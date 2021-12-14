@@ -58,6 +58,9 @@ cp /app/support/docker/production/config/production.yaml /config
 # schema to overriden by environment variables
 cp /app/support/docker/production/config/custom-environment-variables.yaml /config
 
+# allow peertube to run on IPv4 or IPv6 interface according to BIND var
+sed -i "0,/hostname: '0.0.0.0'/ s//hostname: '$PEERTUBE_BIND_ADDRESS'/" /config/production.yaml
+
 # Start peertube server
 cd /app
 NODE_CONFIG_DIR=/config NODE_ENV=production npm start

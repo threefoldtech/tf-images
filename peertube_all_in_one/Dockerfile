@@ -1,10 +1,10 @@
 FROM node:12-buster-slim
 
 RUN apt update &&\
-    apt install -y --no-install-recommends sudo postgresql postgresql-contrib redis-server openssh-server openssl ffmpeg python ca-certificates gnupg gosu build-essential &&\
+    apt install -y --no-install-recommends sudo git postgresql postgresql-contrib redis-server openssh-server openssl ffmpeg python ca-certificates gnupg gosu build-essential &&\
     rm /var/lib/apt/lists/* -fR
 
-COPY ./app /app 
+RUN git clone https://github.com/freeflowuniverse/tf-peertube /app
 
 WORKDIR /app
 
