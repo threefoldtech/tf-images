@@ -9,7 +9,7 @@ RUN apt update &&\
 RUN git clone https://github.com/freeflowuniverse/tf-peertube /app
 
 RUN apt update &&\
-    apt -y install curl gnupg &&\
+    apt -y install curl ufw gnupg &&\
     curl -sL https://deb.nodesource.com/setup_14.x  | bash - &&\
     apt -y install nodejs
 

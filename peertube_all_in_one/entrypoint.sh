@@ -47,6 +47,13 @@ EOF
 
 su postgres -c "psql --file=/tmp/init_postgres.sql"
 
+## UFW
+ufw default allow outgoing
+ufw default deny incoming
+ufw allow ssh
+ufw allow 9000
+ufw enable
+
 # Peertube server
 
 # default configs
