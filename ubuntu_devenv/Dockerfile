@@ -22,6 +22,24 @@ RUN apt install openssh-server -y &&\
     touch /root/.ssh/authorized_keys &&\
     chmod 600 /root/.ssh/authorized_keys 
 
+RUN curl -LO https://dl.google.com/go/go1.17.6.linux-amd64.tar.gz &&\
+    rm -rf /usr/local/go && tar -C /usr/local -xzf go1.17.6.linux-amd64.tar.gz &&\
+    mkdir -p $HOME/go/{bin,src} 
+
+RUN git clone https://github.com/vlang/v &&\
+    cd v &&\
+    make 
+
+RUN curl -sL https://deb.nodesource.com/setup_14.x  | bash - &&\
+    apt -y install nodejs &&\
+    npm install -g yarn
+
+RUN sudo apt install -y debian-keyring debian-archive-keyring apt-transport-https &&\
+    curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/gpg.key' | sudo tee /etc/apt/trusted.gpg.d/caddy-stable.asc &&\
+    curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt' | sudo tee /etc/apt/sources.list.d/caddy-stable.list &&\
+    sudo apt update &&\
+    sudo apt install caddy
+
 COPY ./start.sh /start.sh
 RUN chmod +x /start.sh
 
