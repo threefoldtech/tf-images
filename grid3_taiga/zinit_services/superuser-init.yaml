@@ -1,0 +1,5 @@
+exec: /scripts/create_superuser.sh
+after:
+  - dockerd
+  - taiga
+oneshot: true
