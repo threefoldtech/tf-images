@@ -21,7 +21,7 @@ RUN apt install openssh-server -y &&\
     mkdir -p /root/.ssh/ &&\
     chmod 700 /root/.ssh &&\
     touch /root/.ssh/authorized_keys &&\
-    chmod 600 /root/.ssh/authorized_keys 
+    chmod 600 /root/.ssh/authorized_keys     
 
 RUN curl -LO https://dl.google.com/go/go1.17.6.linux-amd64.tar.gz &&\
     rm -rf /usr/local/go && tar -C /usr/local -xzf go1.17.6.linux-amd64.tar.gz &&\
@@ -39,7 +39,7 @@ RUN sudo apt install -y debian-keyring debian-archive-keyring apt-transport-http
 
 RUN apt-get autoremove && apt-get clean
 
-COPY ./start.sh /start.sh
-RUN chmod +x /start.sh
+COPY ./init.sh /init.sh
+RUN chmod +x /init.sh
 
-ENTRYPOINT ["/start.sh"]
+ENTRYPOINT ["/init.sh"]

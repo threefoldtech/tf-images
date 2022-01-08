@@ -1,10 +1,10 @@
 
 docker login -u despiegk
-docker build -t threefoldtech/grid3_ubuntu_dev:20.04 .
-docker push threefoldtech/grid3_ubuntu_dev:20.04
+docker build -t threefoldtech/grid3_docker_host:3.0 .
+docker push threefoldtech/grid3_docker_host:3.0
 
 
-curl -X POST -F 'image=threefoldtech/grid3_ubuntu_dev:20.04' -H "Authorization: bearer $TFHUBKEY" https://hub.grid.tf/api/flist/me/docker
+curl -X POST -F 'image=threefoldtech/grid3_docker_host:3.0' -H "Authorization: bearer $TFHUBKEY" https://hub.grid.tf/api/flist/me/docker
 
 ##info see https://github.com/threefoldtech/0-hub#getting-information-through-api
 
