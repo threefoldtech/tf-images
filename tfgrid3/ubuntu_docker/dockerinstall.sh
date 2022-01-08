@@ -11,6 +11,4 @@ $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev
 apt-get update
 apt-get install docker-ce docker-ce-cli containerd.io -y
 
-mkdir -p /etc/docker/
-cp /tmp/scripts/docker_daemon.json /etc/docker/daemon.json
 
