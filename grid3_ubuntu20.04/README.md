@@ -10,6 +10,8 @@ in the grid3_ubuntu20.04_debug directory
 
 `docker build -t {user|org}/grid3_ubuntu:20.04 .`
 
+
+
 ## Testing
 ### Running
 
