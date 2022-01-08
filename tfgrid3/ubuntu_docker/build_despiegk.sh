@@ -3,7 +3,7 @@ docker login -u despiegk
 docker build -t threefoldtech/grid3_docker_host:3.0 .
 docker push threefoldtech/grid3_docker_host:3.0
 
-
+echo " - CALL FLIST SERVER TO MAKE AN FLIST, CAN TAKE A WHILE..."
 curl -X POST -F 'image=threefoldtech/grid3_docker_host:3.0' -H "Authorization: bearer $TFHUBKEY" https://hub.grid.tf/api/flist/me/docker
 
 ##info see https://github.com/threefoldtech/0-hub#getting-information-through-api
