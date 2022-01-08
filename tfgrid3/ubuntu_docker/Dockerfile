@@ -11,9 +11,9 @@ RUN apt install openssh-server -y &&\
     touch /root/.ssh/authorized_keys &&\
     chmod 600 /root/.ssh/authorized_keys 
 
-RUN echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+ADD dockerinstall.sh /tmp/dockerinstall.sh
 
-RUN apt-get update && apt-get install docker-ce docker-ce-cli containerd.io -y    
+RUN bash /tmp/dockerinstall.sh
 
 RUN apt-get autoremove && apt-get clean
 

@@ -1,3 +1,4 @@
+set -ex
 
 docker login -u despiegk
 docker build -t threefoldtech/grid3_docker_host:3.0 .
