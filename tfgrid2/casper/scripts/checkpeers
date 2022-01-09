@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+curl -s http://localhost:8888/status | jq .peers > /tmp/checkpeers

@@ -1,6 +1,0 @@
-*/3 * * * * checkdgb
-*/2 * * * * checkblocks
-*/6 * * * * checkheaders
-*/3 * * * * checkuptime
-*/4 * * * * checknethash
-*/5 * * * * checklogs

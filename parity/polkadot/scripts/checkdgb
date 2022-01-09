@@ -1,8 +1,0 @@
-#!/usr/bin/env bash
-if pgrep -x "polkadot" > /dev/null
-then
-    echo "OK" > /tmp/checkdgb
-else
-    echo "NO" > /tmp/checkdgb
-    /opt/polkadot --ws-external --rpc-external --rpc-cors all --name "$node_name" --base-path /polkadot > /var/www/html/node.log 2>&1 &
-fi

@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+rm -f /var/www/html/index.html 
+cat /opt/cronjobs | crontab - 
+rm -f /opt/cronjobs
+/usr/bin/checkip
+/etc/init.d/cron start
+chmod 777 /opt/polkadot
+/opt/polkadot --ws-external --rpc-external --rpc-cors all --name "$node_name" --base-path /polkadot > /var/www/html/node.log 2>&1 &
+chmod 777 /var/www/html/node.log
+exec apache2ctl -D "FOREGROUND"

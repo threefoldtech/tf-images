@@ -1,0 +1,23 @@
+#! /bin/bash
+
+AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
+AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
+RESTIC_REPOSITORY=$RESTIC_REPOSITORY
+RESTIC_PASSWORD=$RESTIC_PASSWORD
+
+cd /data/git
+su - git -c "/app/gitea/gitea dump -c /data/gitea/conf/app.ini"
+if [ $? -ne 0 ] ; then
+    touch WARNING_DUMP_FAILED
+    exit 1
+fi
+unset HISTFILE
+if ! restic snapshots ;then echo restic repo does not initalized yet; restic init ; fi > /dev/null
+for i in `find /data/git -type f -mtime -1 -name "gitea-dump*"` ; do restic backup --cleanup-cache §i ; done
+restic forget -q --prune --keep-within 3m
+if [ $? -eq 0 ] ; then
+    find . -type f -mtime -1 -name "gitea-dump*" -mtime +7 -exec rm {} \;
+else
+    echo 'dump done locally only at /data/git/'
+fi
+

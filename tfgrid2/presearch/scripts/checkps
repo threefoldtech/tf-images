@@ -1,0 +1,9 @@
+#!/bin/bash
+if pgrep "presearch-node" > /dev/null 2>&1
+then
+    echo "OK" > /tmp/checkps
+else
+    echo "NO" > /tmp/checkps
+    /app/presearch-node >> /tmp/checklogs
+fi
+

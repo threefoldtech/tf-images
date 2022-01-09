@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+curl -s http://localhost:8888/status | jq .last_added_block_info.era_id > /tmp/checknethash

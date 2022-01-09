@@ -1,3 +1,0 @@
-*/45 * * * * checkps
-*/1 * * * * checkver
-15 2 * * * checkupg

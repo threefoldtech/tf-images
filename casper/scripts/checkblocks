@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-curl -s http://localhost:8888/status | jq .last_added_block_info.height > /tmp/checkblocks
-blks=`curl -s http://localhost:8888/status | jq .last_added_block_info.height`
-ts=`date "+%Y-%m-%d %H:%M:%S"`
-echo $blks, $ts >> /tmp/checkgraph

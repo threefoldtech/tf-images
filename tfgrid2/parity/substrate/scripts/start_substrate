@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+rm -f /var/www/html/index.html 
+cat /opt/cronjobs | crontab - 
+rm -f /opt/cronjobs
+/usr/bin/checkip
+/etc/init.d/cron start
+chmod 777 /opt/substrate
+ip=`curl -s ipinfo.io | jq .ip | tr -d '"'`
+sed -i "s/127.0.0.1/$ip/g" /opt/substrate-front-end-template/src/config/development.json
+cd /opt/substrate-front-end-template* && yarn start  2>&1 &
+/opt/substrate --dev --ws-external --rpc-external --rpc-cors all --name "$node_name" --base-path /substrate > /var/www/html/node.log 2>&1 &
+chmod 777 /var/www/html/node.log
+exec apache2ctl -D "FOREGROUND"

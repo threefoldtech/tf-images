@@ -1,6 +1,0 @@
-#!/usr/bin/env bash
-/opt/dgb/bin/digibyte-cli -conf=/dgb/digibyte.conf getblockcount > /tmp/checkblocks
-#/opt/dgb/bin/digibyte-cli -conf=/opt/digibyte.conf getblockcount >> /tmp/checkgraph
-blks=`/opt/dgb/bin/digibyte-cli -conf=/dgb/digibyte.conf getblockcount`
-ts=`date "+%Y-%m-%d %H:%M:%S"`
-echo $blks, $ts >> /tmp/checkgraph

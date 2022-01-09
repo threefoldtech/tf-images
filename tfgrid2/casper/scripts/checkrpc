@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+port=`netstat -lntpe | grep -w "7777" | awk '{print $4}' | cut -d ":" -f 2`
+
+if [ -z $port ]; then echo "Service not running . . "; exit 1;fi
+
+if [ $port -eq 7777 ]
+then
+    echo "OK" > /tmp/checkrpc
+else
+    echo "NO" > /tmp/checkrpc
+fi
