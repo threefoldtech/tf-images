@@ -4,6 +4,7 @@
 generate_salt() {
   tr -dc 'a-zA-Z0-9' < /dev/urandom | fold -w 48 | head -n 1
 }
+set_url(){ echo $SITE_URL ; }
 echo "127.0.0.1 localhost" >> /etc/hosts
 chmod 0640 /etc/ssl/private/ssl-cert-snakeoil.key
 export PATH=$PATH:/mattermost/bin
@@ -67,6 +68,7 @@ if [ "$1" = 'mattermost' ]; then
     cp /config.json.save $MM_CONFIG
     # Substitue some parameters with jq
     jq '.ServiceSettings.ListenAddress = ":8000"' $MM_CONFIG > $MM_CONFIG.tmp && mv $MM_CONFIG.tmp $MM_CONFIG
+    jq '.ServiceSettings.SiteURL = "'$(set_url)'"' $MM_CONFIG > $MM_CONFIG.tmp && mv $MM_CONFIG.tmp $MM_CONFIG
     jq '.ServiceSettings.EnableUserAccessTokens = true' $MM_CONFIG > $MM_CONFIG.tmp && mv $MM_CONFIG.tmp $MM_CONFIG
     jq '.LogSettings.EnableConsole = true' $MM_CONFIG > $MM_CONFIG.tmp && mv $MM_CONFIG.tmp $MM_CONFIG
     jq '.LogSettings.ConsoleLevel = "ERROR"' $MM_CONFIG > $MM_CONFIG.tmp && mv $MM_CONFIG.tmp $MM_CONFIG
