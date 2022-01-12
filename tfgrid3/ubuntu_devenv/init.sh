@@ -20,10 +20,8 @@ pushd /root/weblets_pocs/poc2/VWeblet
 npm run vtwin &>> /var/log/vtwin &
 popd
 
-if [[-z "$TWIN_ID" ]] ;
+if [[ !-z "$TWIN_ID" ]] ;
 then
-# "Can't run msgbusd, you can run it manaully later."
-else
     echo "Run msgbusd with twinId $TWIN_ID on devnet"
     msgbusd --twin $TWIN_ID &>> /var/log/msgbusd &
 fi
