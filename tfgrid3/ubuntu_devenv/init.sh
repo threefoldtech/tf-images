@@ -10,7 +10,7 @@ chmod 600 ~/.ssh/authorized_keys
 
 # service ssh start
 
-# service redis-server start
+service redis-server start
 
 echo '
 export GOPATH=$HOME/go
