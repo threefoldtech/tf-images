@@ -41,7 +41,7 @@ RUN curl -sL https://deb.nodesource.com/setup_16.x  | bash - &&\
 # Clone weblets_pocs, install packages and Build vserver
 RUN cd && git clone -b development_poc2 https://github.com/threefoldtech/weblets_pocs.git &&\
     cd weblets_pocs/poc2/VServer && sh build_vserver.sh &&\
-    cd ../VWeblet && npm install
+    cd ../VWeblet && npm install && npm run build
 
 # Download msgbus, extract it and move it to /usr/local/bin -- Using Go version for now
 RUN curl -L https://github.com/threefoldtech/go-rmb/releases/download/v0.1.7/msgbusd.zip --output /tmp/msgbusd.zip &&\
