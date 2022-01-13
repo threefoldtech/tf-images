@@ -44,8 +44,8 @@ RUN cd && git clone -b development_poc2 https://github.com/threefoldtech/weblets
     cd ../VWeblet && npm install && npm run build
 
 RUN cd /root/ &&\
-    git clone -b development https://github.com/threefoldtech/weblets_pocs.git &&\
-    cd weblets_pocs/poc1 && yarn install
+    git clone -b development https://github.com/threefoldtech/weblets_pocs.git pocs &&\
+    cd pocs/poc1 && yarn install
 
 # Download msgbus, extract it and move it to /usr/local/bin -- Using Go version for now
 RUN curl -L https://github.com/threefoldtech/go-rmb/releases/download/v0.1.7/msgbusd.zip --output /tmp/msgbusd.zip &&\
