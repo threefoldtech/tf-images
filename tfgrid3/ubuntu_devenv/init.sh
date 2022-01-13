@@ -32,6 +32,7 @@ export PATH=$PATH:$GOPATH/bin
 export PATH=$PATH:$GOPATH/bin:/usr/local/go/bin
 ' >> ~/.profile
 
-exec /usr/sbin/sshd -D
+cd /root/weblets_pocs/poc1/ && yarn dev
 
+exec /usr/sbin/sshd -D
 # sleep infinity
