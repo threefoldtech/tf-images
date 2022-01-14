@@ -10,7 +10,7 @@ get Taiga up and running in on grid3 VM
 
 ## Building
 
-in the grid3_ubuntu20.04_debug directory
+in the grid3_taiga directory
 
 `docker build -t {user|org}/grid3_taiga_docker:latest .`
 
