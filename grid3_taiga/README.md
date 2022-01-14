@@ -21,7 +21,10 @@ Easiest way to convert the docker image to Flist is using [Docker Hub Converter 
 
 ### Deploying
 Easiest way to deploy a VM using the flist is to head to to our [playground](https://play.grid.tf) and deploy a Virtual Machine by providing this flist URL.
-make sure to provide the correct entrypoint.
+* make sure to provide the correct entrypoint, and required env vars.
+* another important perquisite is to have a disk mounted on `/var/lib/docker`. make sure its size is big enough to fit both the images for taiga, and the volumes which will store all the db and the media files, etc.
+
+or use the dedicated Taiga weblet if available, which will deploy an instance that satisfies the above perquisites.
 
 another way you could use is using our terraform plugin [docs](https://github.com/threefoldtech/terraform-provider-grid)
 
