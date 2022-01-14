@@ -6,7 +6,15 @@ get Taiga up and running in on grid3 VM
 - [Taiga](https://www.taiga.io/) on Ubuntu 20.04
 - include preinstalled openssh-client, openssh-server, curl, docker and docker-compose.
 - ufw with restricted rules applied.
-- zinit process manager
+- zinit process manager which is configured with these services:
+     - sshd: starting OpenSSH server daemon 
+     - contained: starting containerd daemon, which manages the complete docker containers lifecycle.
+     - dockerd: starting the Docker daemon.
+     - taiga: Define different taiga services/containers, and spin everything up. 
+     - sshd-init: Add the user SSH key to authorized_keys, so he can log in remotely to the host which running this image.
+     - ufw-init: define restricted firewall/iptables rules.
+     - ufw: apply the pre-defined firewall rules
+     - superuser-init: create the superuser based on en vars as soon as the taiga is up and running
 
 ## Building
 
