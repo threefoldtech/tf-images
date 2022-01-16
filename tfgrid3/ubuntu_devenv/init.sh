@@ -17,8 +17,12 @@ vserver &>> /var/log/vserver &
 
 # "Run Weblets"
 pushd /root/weblets_pocs
-cd /poc1 && yarn dev &>> /var/log/pkid &
-cd ../poc2/VWeblet && npm run vtwin &>> /var/log/vtwin &
+pushd poc1
+yarn dev &>> /var/log/pkid &
+popd
+pushd poc2/VWeblet
+npm run vtwin &>> /var/log/vtwin &
+popd
 popd
 
 if [[ ! -z "$TWIN_ID" ]] ;
