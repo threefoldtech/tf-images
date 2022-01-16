@@ -2,11 +2,11 @@
 
 ## what in this image
 - based on official docker ubuntu 20.04
-- include preinstalled openssh-client, openssh-server, git, mc, mcedit curl, wget, dnsutils, iproute2, and vim packages.
+- include preinstalled openssh-client and openssh-server packages.
 
 ## Building
 
-in the grid3_ubuntu20.04_debug directory
+in the grid3_ubuntu20.04 directory
 
 `docker build -t {user|org}/grid3_ubuntu:20.04 .`
 
@@ -40,7 +40,7 @@ another way you could use is using our terraform plugin [docs](https://github.co
 ### URL:
 TODO: should be updated to official repo.
 ```
-https://hub.grid.tf/samehabouelsaad.3bot/abouelsaad-grid3_ubuntu20.04_debug-latest.flist
+https://hub.grid.tf/samehabouelsaad.3bot/abouelsaad-grid3_ubuntu20.04-latest.flist
 ```
 
 ### Entrypoint
