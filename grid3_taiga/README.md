@@ -36,7 +36,7 @@ or use the dedicated Taiga weblet if available, which will deploy an instance th
 
 another way you could use is using our terraform plugin [docs](https://github.com/threefoldtech/terraform-provider-grid)
 
-here you can find a full terraform file example to deploy this flist on grid3 [link](https://github.com/threefoldtech/terraform-provider-grid/tree/development/examples/resources) 
+here you can find a full terraform file example to deploy this flist on grid3 [link](https://github.com/threefoldtech/terraform-provider-grid/blob/development/examples/resources/taiga/main.tf) 
 
 ## Flist
 ### URL:
@@ -61,6 +61,10 @@ https://hub.grid.tf/samehabouelsaad.3bot/abouelsaad-grid3_taiga_docker-latest.fl
 - `ADMIN_EMAIL`: email address for admin user.
 
 #### smtp server settings
+
+caution: configure smtp settings bellow **only If** you have an working smtp service and you know what you’re doing.
+otherwise don't set thoses or leave these settings empty. set wrong smtp settings will cause **issues/server errors in taiga**.
+
 - `DEFAULT_FROM_EMAIL`: the from email shown when sent emails to taiga members.
 - `EMAIL_USE_TLS`: either "True" or "False".
 - `EMAIL_USE_SSL`: either "True" or "False".
