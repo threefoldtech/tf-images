@@ -1,0 +1,3 @@
+exec: /scripts/taiga.sh
+after:
+  - dockerd

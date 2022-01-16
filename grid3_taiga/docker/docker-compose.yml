@@ -1,0 +1,163 @@
+version: "3.5"
+
+x-environment:
+  &default-back-environment
+  # Database settings
+  POSTGRES_DB: taiga
+  POSTGRES_USER: taiga
+  POSTGRES_PASSWORD: taiga
+  POSTGRES_HOST: taiga-db
+  # Taiga settings
+  TAIGA_SECRET_KEY: "taiga-back-secret-key"
+  TAIGA_SITES_SCHEME: "https"
+  TAIGA_SITES_DOMAIN: ${DOMAIN_NAME}
+  TAIGA_SUBPATH: "" # or "/subpath"
+  # Email settings. Uncomment following lines and configure your SMTP server
+  # EMAIL_BACKEND: "django.core.mail.backends.smtp.EmailBackend"
+  # DEFAULT_FROM_EMAIL: "no-reply@example.com"
+  # EMAIL_USE_TLS: "False"
+  # EMAIL_USE_SSL: "False"
+  # EMAIL_HOST: "smtp.host.example.com"
+  # EMAIL_PORT: 587
+  # EMAIL_HOST_USER: "user"
+  # EMAIL_HOST_PASSWORD: "password"
+  # Rabbitmq settings
+  # Should be the same as in taiga-async-rabbitmq and taiga-events-rabbitmq
+  RABBITMQ_USER: taiga
+  RABBITMQ_PASS: taiga
+  # RabbitMQ Fixes
+  CELERY_BROKER_URL: "amqp://taiga:taiga@taiga-async-rabbitmq:5672/taiga"
+  EVENTS_PUSH_BACKEND: "taiga.events.backends.rabbitmq.EventsPushBackend"
+  EVENTS_PUSH_BACKEND_URL: "amqp://taiga:taiga@taiga-events-rabbitmq:5672/taiga"
+  # Telemetry settings
+  ENABLE_TELEMETRY: "True"
+  # TF Connect settings
+  ENABLE_THREEFOLD: "True"
+  THREEFOLD_API_APP_SECRET : "2W/qhWFeMF6XawIPuEnJ3dWge49bYZNhSsELF64daus="
+  THREEFOLD_URL : "https://login.threefold.me"
+  THREEFOLD_OPENKYC_URL: "https://openkyc.live/verification/verify-sei"
+
+x-volumes:
+  &default-back-volumes
+  - taiga-static-data:/taiga-back/static
+  - taiga-media-data:/taiga-back/media
+  # - ./config.py:/taiga-back/settings/config.py
+
+
+services:
+  taiga-db:
+    image: postgres:12.3
+    environment:
+      POSTGRES_DB: taiga
+      POSTGRES_USER: taiga
+      POSTGRES_PASSWORD: taiga
+    volumes:
+      - taiga-db-data:/var/lib/postgresql/data
+    networks:
+      - taiga
+
+  taiga-back:
+    image: threefolddev/taiga-back-threefold:latest
+    environment: *default-back-environment
+    volumes: *default-back-volumes
+    networks:
+      - taiga
+    depends_on:
+      - taiga-db
+      - taiga-events-rabbitmq
+      - taiga-async-rabbitmq
+
+  taiga-async:
+    image: taigaio/taiga-back:latest
+    entrypoint: ["/taiga-back/docker/async_entrypoint.sh"]
+    environment: *default-back-environment
+    volumes: *default-back-volumes
+    networks:
+      - taiga
+    depends_on:
+      - taiga-db
+      - taiga-back
+      - taiga-async-rabbitmq
+
+  taiga-async-rabbitmq:
+    image: rabbitmq:3.8-management-alpine
+    environment:
+      RABBITMQ_ERLANG_COOKIE: secret-erlang-cookie
+      RABBITMQ_DEFAULT_USER: taiga
+      RABBITMQ_DEFAULT_PASS: taiga
+      RABBITMQ_DEFAULT_VHOST: taiga
+    volumes:
+      - taiga-async-rabbitmq-data:/var/lib/rabbitmq
+    networks:
+      - taiga
+
+  taiga-front:
+    image: threefolddev/taiga-front-threefold:latest
+    environment:
+      TAIGA_URL: "https://${DOMAIN_NAME}"
+      TAIGA_WEBSOCKETS_URL: "wss://${DOMAIN_NAME}"
+      TAIGA_SUBPATH: ""
+      ENABLE_THREEFOLD: "true"
+      THREEFOLD_URL : "https://login.threefold.me"
+      THREEFOLD_APP_ID: ""
+      THREEFOLD_API_APP_PUBLIC_KEY : "K4nQYVJJrcV0Y/6QuqeM3FKPGffdKC5/3HpOa/BmewY="
+    networks:
+      - taiga
+    # volumes:
+    #   - ./conf.json:/usr/share/nginx/html/conf.json
+
+  taiga-events:
+    image: taigaio/taiga-events:latest
+    environment:
+      RABBITMQ_USER: taiga
+      RABBITMQ_PASS: taiga
+      TAIGA_SECRET_KEY: "taiga-back-secret-key"
+    networks:
+      - taiga
+    depends_on:
+      - taiga-events-rabbitmq
+
+  taiga-events-rabbitmq:
+    image: rabbitmq:3.8-management-alpine
+    environment:
+      RABBITMQ_ERLANG_COOKIE: secret-erlang-cookie
+      RABBITMQ_DEFAULT_USER: taiga
+      RABBITMQ_DEFAULT_PASS: taiga
+      RABBITMQ_DEFAULT_VHOST: taiga
+    volumes:
+      - taiga-events-rabbitmq-data:/var/lib/rabbitmq
+    networks:
+      - taiga
+
+  taiga-protected:
+    image: taigaio/taiga-protected:latest
+    environment:
+      MAX_AGE: 360
+      SECRET_KEY: "taiga-back-secret-key"
+    networks:
+      - taiga
+
+  taiga-gateway:
+    image: nginx:1.19-alpine
+    ports:
+      - "9000:80"
+    volumes:
+      - ./taiga-gateway/taiga.conf:/etc/nginx/conf.d/default.conf
+      - taiga-static-data:/taiga/static
+      - taiga-media-data:/taiga/media
+    networks:
+      - taiga
+    depends_on:
+      - taiga-front
+      - taiga-back
+      - taiga-events
+
+volumes:
+  taiga-static-data:
+  taiga-media-data:
+  taiga-db-data:
+  taiga-async-rabbitmq-data:
+  taiga-events-rabbitmq-data:
+
+networks:
+  taiga:
