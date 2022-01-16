@@ -15,9 +15,10 @@ service redis-server start
 # "Run vserver, logs located in: /var/log/vserver"
 vserver &>> /var/log/vserver &
 
-# "Run VWeblet"
-pushd /root/weblets_pocs/poc2/VWeblet
-npm run vtwin &>> /var/log/vtwin &
+# "Run Weblets"
+pushd /root/weblets_pocs
+cd /poc1 && yarn dev &>> /var/log/pkid &
+cd ../poc2/VWeblet && npm run vtwin &>> /var/log/vtwin &
 popd
 
 if [[ ! -z "$TWIN_ID" ]] ;
@@ -31,8 +32,6 @@ export GOPATH=$HOME/go
 export PATH=$PATH:$GOPATH/bin
 export PATH=$PATH:$GOPATH/bin:/usr/local/go/bin
 ' >> ~/.profile
-
-cd /root/pocs/poc1/ && yarn dev
 
 exec /usr/sbin/sshd -D
 # sleep infinity
