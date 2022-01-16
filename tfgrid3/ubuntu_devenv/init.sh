@@ -56,7 +56,7 @@ fi
 code-server &>> /var/log/code-server &
 
 pushd /etc/caddy
-caddy fmt --overwirte
+caddy fmt --overwrite
 caddy run --config Caddyfile &>> /var/log/caddy/caddylogs &
 popd
 
