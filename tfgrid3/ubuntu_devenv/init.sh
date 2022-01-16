@@ -37,5 +37,28 @@ export PATH=$PATH:$GOPATH/bin
 export PATH=$PATH:$GOPATH/bin:/usr/local/go/bin
 ' >> ~/.profile
 
+echo ":2020 {
+        route /* {
+                uri strip_prefix /*
+                reverse_proxy http://127.0.0.1:8080
+        }
+}
+" >> /etc/caddy/Caddyfile
+
+# Codeserver password
+if [[ ! -z "$CODESERVER_PASSWORD" ]] ;
+then
+export PASSWORD=$CODESERVER_PASSWORD
+else
+export PASSWORD=tfdev001
+fi
+
+code-server &>> /var/log/code-server &
+
+pushd /etc/caddy
+caddy fmt --overwirte
+caddy run --config Caddyfile &>> /var/log/caddy/caddylogs &
+popd
+
 exec /usr/sbin/sshd -D
 # sleep infinity
