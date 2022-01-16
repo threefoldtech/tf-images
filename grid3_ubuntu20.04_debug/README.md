@@ -38,7 +38,7 @@ another way you could use is using our terraform plugin [docs](https://github.co
 ### URL:
 TODO: should be updated to official repo.
 ```
-https://hub.grid.tf/samehabouelsaad.3bot/abouelsaad-grid3_ubuntu20.04-latest.flist
+https://hub.grid.tf/samehabouelsaad.3bot/abouelsaad-grid3_ubuntu20.04_debug-latest.flist
 ```
 
 ### Entrypoint
