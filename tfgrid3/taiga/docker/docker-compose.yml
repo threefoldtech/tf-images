@@ -9,8 +9,8 @@ x-environment:
   POSTGRES_HOST: taiga-db
   # Taiga settings
   TAIGA_SECRET_KEY: "taiga-back-secret-key"
-  TAIGA_SITES_SCHEME: "http"
-  TAIGA_SITES_DOMAIN: taiga-gateway:9000
+  TAIGA_SITES_SCHEME: "https"
+  TAIGA_SITES_DOMAIN: ${DOMAIN_NAME}
   TAIGA_SUBPATH: "" # or "/subpath"
   # Email settings. Uncomment following lines and configure your SMTP server
   # EMAIL_BACKEND: "django.core.mail.backends.smtp.EmailBackend"
