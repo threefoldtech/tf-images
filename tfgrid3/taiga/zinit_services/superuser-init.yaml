@@ -1,0 +1,2 @@
+exec: /scripts/superuser_init.sh
+oneshot: true
