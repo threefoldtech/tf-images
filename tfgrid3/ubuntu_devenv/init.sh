@@ -24,7 +24,7 @@ pushd poc2/VWeblet
 npm run vtwin &>> /var/log/vtwin &
 popd
 pushd poc4
-npm run example &
+npm run example &>> /var/log/example &
 popd
 popd
 
