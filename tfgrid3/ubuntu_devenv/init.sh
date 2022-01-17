@@ -23,6 +23,9 @@ popd
 pushd poc2/VWeblet
 npm run vtwin &>> /var/log/vtwin &
 popd
+pushd poc4
+npm run example &
+popd
 popd
 
 if [[ ! -z "$TWIN_ID" ]] ;
@@ -37,7 +40,7 @@ export PATH=$PATH:$GOPATH/bin
 export PATH=$PATH:$GOPATH/bin:/usr/local/go/bin
 ' >> ~/.profile
 
-echo ":2020 {
+echo ":8886 {
         route /* {
                 uri strip_prefix /*
                 reverse_proxy http://127.0.0.1:8080
