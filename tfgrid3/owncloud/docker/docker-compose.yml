@@ -10,7 +10,7 @@ services:
     volumes:
       - 'mariadb_data:/bitnami/mariadb'
   owncloud:
-    image: threefolddev/tf-owncloud:v10.8.0.tf
+    image: threefolddev/tf-owncloud:latest
     ports:
       - '80:8080'
       - '443:8443'
@@ -24,7 +24,15 @@ services:
       # Host for accessing ownCloud
       # note: this setting will only be applied on the first run
       # ref: https://github.com/bitnami/bitnami-docker-owncloud#configuration
-      - OWNCLOUD_HOST=localhost
+      - OWNCLOUD_HOST=${OWNCLOUD_HOST}
+      - OWNCLOUD_USERNAME=${OWNCLOUD_USERNAME}
+      - OWNCLOUD_PASSWORD=${OWNCLOUD_PASSWORD}
+      - OWNCLOUD_EMAIL=${OWNCLOUD_EMAIL}
+      - OWNCLOUD_SMTP_HOST=${OWNCLOUD_SMTP_HOST}
+      - OWNCLOUD_SMTP_PORT_NUMBER=${OWNCLOUD_SMTP_PORT_NUMBER}
+      - OWNCLOUD_SMTP_USER=${OWNCLOUD_SMTP_USER}
+      - OWNCLOUD_SMTP_PASSWORD=${OWNCLOUD_SMTP_PASSWORD}
+      - SUITECRM_SMTP_PROTOCOL=${SUITECRM_SMTP_PROTOCOL}
     volumes:
       - 'owncloud_data:/bitnami/owncloud'
     depends_on:

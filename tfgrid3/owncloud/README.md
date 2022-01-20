@@ -36,6 +36,9 @@ or use the dedicated owncloud weblet if available, which will deploy an instance
 
 another way you could use is using our terraform plugin [docs](https://github.com/threefoldtech/terraform-provider-grid)
 
+### Flist
+
+- https://hub.grid.tf/waleedhammam.3bot/waleedhammam-owncloud-latest.flist
 
 ### Entrypoint
 - `/sbin/zinit init`
