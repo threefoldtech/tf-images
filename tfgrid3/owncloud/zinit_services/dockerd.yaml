@@ -1,0 +1,4 @@
+exec: /scripts/docker.sh
+log: stdout
+after:
+  - containerd

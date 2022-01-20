@@ -1,0 +1,3 @@
+exec: /scripts/owncloud.sh
+after:
+  - dockerd
