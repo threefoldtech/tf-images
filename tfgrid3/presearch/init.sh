@@ -13,10 +13,11 @@ if [ -z $PRESEARCH_REGISTRATION_CODE ]; then
 fi
 
 # check for restore key
-if [ ! -z $PRESEARCH_BACKUP_PRI_KEY ]; then
+if [ ! -z "$PRESEARCH_BACKUP_PRI_KEY" ] && [ ! -z "$PRESEARCH_BACKUP_PUB_KEY" ] ; then
     mkdir presearch-node-keys/
-    echo PRESEARCH_BACKUP_PRI_KEY >> presearch-node-keys/id_rsa
-    chmod 644 presearch-node-keys/id_rsa
+    echo -e "-----BEGIN PRIVATE KEY-----\n$PRESEARCH_BACKUP_PRI_KEY\n-----END PRIVATE KEY-----" > presearch-node-keys/id_rsa
+    echo -e "-----BEGIN PUBLIC KEY-----\n$PRESEARCH_BACKUP_PUB_KEY\n-----END PUBLIC KEY-----" > presearch-node-keys/id_rsa.pub
+    chmod -R 644 presearch-node-keys/id_rsa
 
     docker run -dt --rm -v presearch-node-storage:/app/node --name presearch-restore presearch/node
     docker cp presearch-node-keys/. presearch-restore:/app/node/.keys/
