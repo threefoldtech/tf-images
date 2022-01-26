@@ -17,3 +17,9 @@ For restoring old node: `PRESEARCH_BACKUP_PRI_KEY`, `PRESEARCH_BACKUP_PUB_KEY`
 
 For ssh: `SSH_KEY`
 
+## Minimum Hardware requirments
+- 1 CPU
+- 1 GB RAM 
+- 10 GB storage
+
+as [official docs](https://docs.presearch.org/nodes/setup#hardware-specification) suggested.
