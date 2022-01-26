@@ -1,1 +1,2 @@
-exec: bash -c "dockerd"
+exec: bash -c "dockerd -D"
+test: docker ps
