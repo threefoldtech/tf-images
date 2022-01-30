@@ -1,44 +1,89 @@
-version: '2'
+version: "3"
+
+volumes:
+  files:
+    driver: local
+  mysql:
+    driver: local
+  redis:
+    driver: local
+
 services:
-  mariadb:
-    image: docker.io/bitnami/mariadb:10.3
-    environment:
-      # ALLOW_EMPTY_PASSWORD is recommended only for development.
-      - ALLOW_EMPTY_PASSWORD=yes
-      - MARIADB_USER=bn_owncloud
-      - MARIADB_DATABASE=bitnami_owncloud
-    volumes:
-      - 'mariadb_data:/bitnami/mariadb'
   owncloud:
-    image: threefolddev/tf-owncloud:latest
+    image: threefolddev/tf-owncloud:v10.9.1.tf
+    container_name: owncloud_server
+    restart: always
     ports:
-      - '80:8080'
-      - '443:8443'
-    environment:
-      - OWNCLOUD_DATABASE_HOST=mariadb
-      - OWNCLOUD_DATABASE_PORT_NUMBER=3306
-      - OWNCLOUD_DATABASE_USER=bn_owncloud
-      - OWNCLOUD_DATABASE_NAME=bitnami_owncloud
-      # ALLOW_EMPTY_PASSWORD is recommended only for development.
-      - ALLOW_EMPTY_PASSWORD=yes
-      # Host for accessing ownCloud
-      # note: this setting will only be applied on the first run
-      # ref: https://github.com/bitnami/bitnami-docker-owncloud#configuration
-      - OWNCLOUD_HOST=${OWNCLOUD_HOST}
-      - OWNCLOUD_USERNAME=${OWNCLOUD_USERNAME}
-      - OWNCLOUD_PASSWORD=${OWNCLOUD_PASSWORD}
-      - OWNCLOUD_EMAIL=${OWNCLOUD_EMAIL}
-      - OWNCLOUD_SMTP_HOST=${OWNCLOUD_SMTP_HOST}
-      - OWNCLOUD_SMTP_PORT_NUMBER=${OWNCLOUD_SMTP_PORT_NUMBER}
-      - OWNCLOUD_SMTP_USER=${OWNCLOUD_SMTP_USER}
-      - OWNCLOUD_SMTP_PASSWORD=${OWNCLOUD_SMTP_PASSWORD}
-      - SUITECRM_SMTP_PROTOCOL=${SUITECRM_SMTP_PROTOCOL}
-    volumes:
-      - 'owncloud_data:/bitnami/owncloud'
+      - 80:8080 
     depends_on:
       - mariadb
-volumes:
-  mariadb_data:
-    driver: local
-  owncloud_data:
-    driver: local
+      - redis
+    environment:
+      - OWNCLOUD_DOMAIN=${OWNCLOUD_HOST}
+      # ------------------------------------------------------------------------
+      # DB settings
+      - OWNCLOUD_DB_TYPE=mysql
+      - OWNCLOUD_DB_NAME=owncloud
+      - OWNCLOUD_DB_USERNAME=owncloud
+      - OWNCLOUD_DB_PASSWORD=owncloud
+      - OWNCLOUD_DB_HOST=mariadb
+      - OWNCLOUD_MYSQL_UTF8MB4=true
+      # ------------------------------------------------------------------------
+      # Admin account settings
+      - OWNCLOUD_ADMIN_USERNAME=${OWNCLOUD_ADMIN_USERNAME}
+      - OWNCLOUD_ADMIN_PASSWORD=${OWNCLOUD_ADMIN_PASSWORD}
+      # ------------------------------------------------------------------------
+      # cache backend settings
+      - OWNCLOUD_REDIS_ENABLED=true
+      - OWNCLOUD_REDIS_HOST=redis
+      # ------------------------------------------------------------------------
+      # mail server settings
+      - OWNCLOUD_MAIL_SMTP_AUTH=true # enable SMTP authentication
+      - OWNCLOUD_MAIL_SMTP_AUTH_TYPE=LOGIN # LOGIN or PLAIN
+      - OWNCLOUD_MAIL_SMTP_MODE=smtp # smtp or php
+      - OWNCLOUD_MAIL_SMTP_SECURE=${OWNCLOUD_MAIL_SMTP_SECURE} # tls, ssl, or none
+      - OWNCLOUD_MAIL_SMTP_HOST=${OWNCLOUD_MAIL_SMTP_HOST}
+      - OWNCLOUD_MAIL_SMTP_NAME=${OWNCLOUD_MAIL_SMTP_NAME}
+      - OWNCLOUD_MAIL_SMTP_PASSWORD=${OWNCLOUD_MAIL_SMTP_PASSWORD}
+      - OWNCLOUD_MAIL_SMTP_PORT=${OWNCLOUD_MAIL_SMTP_PORT}
+      - OWNCLOUD_MAIL_DOMAIN=${OWNCLOUD_MAIL_DOMAIN}
+      - OWNCLOUD_MAIL_FROM_ADDRESS=${OWNCLOUD_MAIL_FROM_ADDRESS}
+      #- OWNCLOUD_MAIL_SMTP_TIMEOUT
+    healthcheck:
+      test: ["CMD", "/usr/bin/healthcheck"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    volumes:
+      - files:/mnt/data
+
+  mariadb:
+    image: mariadb:10.5
+    container_name: owncloud_mariadb
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=owncloud
+      - MYSQL_USER=owncloud
+      - MYSQL_PASSWORD=owncloud
+      - MYSQL_DATABASE=owncloud
+    command: ["--max-allowed-packet=128M", "--innodb-log-file-size=64M"]
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-u", "root", "--password=owncloud"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - mysql:/var/lib/mysql
+
+  redis:
+    image: redis:6
+    container_name: owncloud_redis
+    restart: always
+    command: ["--databases", "1"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - redis:/data
