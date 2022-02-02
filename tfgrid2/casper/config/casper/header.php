@@ -4,7 +4,7 @@
    <head>
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <meta name="description" content="ThreeFold JukeBox">
+      <meta name="description" content="ThreeFold">
       <meta name="author" content="ThreeFold">
       <link rel="shortcut icon" type="image/x-icon" href="assets/images/favicon.png">
 	  
@@ -71,11 +71,7 @@
 	    <div class="container">
 
                <!-- Logo container -->
-               <div class="logo" style="float:left; ">
-                  <a href="index.php" class="logo">
-                  <img src="assets/images/jukebox_log.png" alt="" height="80">
-                  </a>
-               </div> 
+
                
                <div class="logo" style="float:right; ">                
                   <a href="index.php" class="logo">

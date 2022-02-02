@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 cat /opt/cronjobs | crontab -
 rm -f /var/www/html/index.html
+mkdir /run/lock
 /usr/bin/checkheaders
 /usr/bin/checkip
 /etc/init.d/apache2 start
