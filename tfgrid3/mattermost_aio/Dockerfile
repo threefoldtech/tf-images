@@ -13,7 +13,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 # Install some needed packages
 RUN apt-get update \
-    && apt-get install -y curl jq sudo libffi-dev netcat-openbsd tzdata libcap2-bin postgresql postgresql postgresql-contrib openssh-server\
+    && apt-get install -y curl jq sudo libffi-dev netcat-openbsd tzdata libcap2-bin postgresql postgresql postgresql-contrib openssh-server ufw\
 	&& rm -rf /tmp/*
 # Get Mattermost
 COPY mattermost-team-linux-amd64.tar.gz /

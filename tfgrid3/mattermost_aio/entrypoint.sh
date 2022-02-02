@@ -49,6 +49,13 @@ if [ " -${1#?}" = " $1" ]; then
     set -- mattermost "$@"
 fi
 	
+ufw default deny incoming
+ufw default allow outgoing
+ufw allow ssh
+ufw allow 8000
+ufw limit ssh
+
+ufw --force enable
 if [ "$1" = 'mattermost' ]; then
   # Check CLI args for a -config option
   for ARG in $@;
@@ -77,8 +84,10 @@ if [ "$1" = 'mattermost' ]; then
     jq '.FileSettings.PublicLinkSalt = "'$(generate_salt)'"' $MM_CONFIG > $MM_CONFIG.tmp && mv $MM_CONFIG.tmp $MM_CONFIG
     jq '.EmailSettings.SendEmailNotifications = false' $MM_CONFIG > $MM_CONFIG.tmp && mv $MM_CONFIG.tmp $MM_CONFIG
     jq '.EmailSettings.FeedbackEmail = ""' $MM_CONFIG > $MM_CONFIG.tmp && mv $MM_CONFIG.tmp $MM_CONFIG
-    jq '.EmailSettings.SMTPServer = ""' $MM_CONFIG > $MM_CONFIG.tmp && mv $MM_CONFIG.tmp $MM_CONFIG
-    jq '.EmailSettings.SMTPPort = ""' $MM_CONFIG > $MM_CONFIG.tmp && mv $MM_CONFIG.tmp $MM_CONFIG
+    jq '.EmailSettings.SMTPUsername = "'$SMTPUSERNAME'"' $MM_CONFIG > $MM_CONFIG.tmp && mv $MM_CONFIG.tmp $MM_CONFIG
+    jq '.EmailSettings.SMTPPassword = "'$SMTPPASSWORD'"' $MM_CONFIG > $MM_CONFIG.tmp && mv $MM_CONFIG.tmp $MM_CONFIG
+    jq '.EmailSettings.SMTPServer = "'$SMTPSERVER'"' $MM_CONFIG > $MM_CONFIG.tmp && mv $MM_CONFIG.tmp $MM_CONFIG
+    jq '.EmailSettings.SMTPPort = "'$SMTPPORT'"' $MM_CONFIG > $MM_CONFIG.tmp && mv $MM_CONFIG.tmp $MM_CONFIG
     jq '.EmailSettings.InviteSalt = "'$(generate_salt)'"' $MM_CONFIG > $MM_CONFIG.tmp && mv $MM_CONFIG.tmp $MM_CONFIG
     jq '.EmailSettings.PasswordResetSalt = "'$(generate_salt)'"' $MM_CONFIG > $MM_CONFIG.tmp && mv $MM_CONFIG.tmp $MM_CONFIG
     jq '.EmailSettings.EnableSignUpWithEmail = false' $MM_CONFIG > $MM_CONFIG.tmp && mv $MM_CONFIG.tmp $MM_CONFIG
