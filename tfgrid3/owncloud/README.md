@@ -60,7 +60,6 @@ otherwise don't set thoses or leave these settings empty. set wrong smtp setting
 - `OWNCLOUD_MAIL_DOMAIN`: the from email domain name shown when sent emails to owncloud users.
 - `OWNCLOUD_MAIL_FROM_ADDRESS`: the from email username shown when sent emails to owncloud users.
 - `OWNCLOUD_MAIL_SMTP_SECURE`: tls, ssl, or none.
-- `EMAIL_USE_SSL`: either "True" or "False".
 - `OWNCLOUD_MAIL_SMTP_HOST`: eg, "smtp.gmail.com".
 - `OWNCLOUD_MAIL_SMTP_PORT`: smtp server port.
 - `OWNCLOUD_MAIL_SMTP_NAME`: the account address to sent the emails from.
