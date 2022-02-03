@@ -3,6 +3,8 @@ FROM ubuntu:18.04
 LABEL maintainer="abdul@incubaid.com"
 WORKDIR /opt
 
+ENV KNOWN_VALIDATOR_IP "3.14.161.135"
+
 # The version of current official release of Digibyte binary
 ENV DEBIAN_FRONTEND noninteractive
 ENV DEBCONF_NONINTERACTIVE_SEEN true
