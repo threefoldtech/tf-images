@@ -5,24 +5,7 @@ generate_salt() {
   tr -dc 'a-zA-Z0-9' < /dev/urandom | fold -w 48 | head -n 1
 }
 set_url(){ echo $SITE_URL ; }
-echo "127.0.0.1 localhost" >> /etc/hosts
-chmod 0640 /etc/ssl/private/ssl-cert-snakeoil.key
 export PATH=$PATH:/mattermost/bin
-
-# SSH server
-if [ ! -f "/root/.ssh/authorized_keys" ]; then
-    mkdir -p /root/.ssh/
-    chmod 700 /root/.ssh
-    touch /root/.ssh/authorized_keys
-    chmod 600 /root/.ssh/authorized_keys
-fi
-
-if ! grep -q "$SSH_KEY" /root/.ssh/authorized_keys; then
-    echo $SSH_KEY >> /root/.ssh/authorized_keys
-fi
-
-service ssh start
-service postgresql start
 
 touch /tmp/init_postgres.sql
 MM_USERNAME="mattermost"
@@ -49,13 +32,6 @@ if [ " -${1#?}" = " $1" ]; then
     set -- mattermost "$@"
 fi
 	
-ufw default deny incoming
-ufw default allow outgoing
-ufw allow ssh
-ufw allow 8000
-ufw limit ssh
-
-ufw --force enable
 if [ "$1" = 'mattermost' ]; then
   # Check CLI args for a -config option
   for ARG in $@;
