@@ -1,0 +1,9 @@
+exec: |
+  bash -c '
+    echo "127.0.0.1 localhost" >> /etc/hosts
+    chmod 0640 /etc/ssl/private/ssl-cert-snakeoil.key
+    service postgresql start 
+    service postgresql stop
+    runuser -u postgres -- /usr/lib/postgresql/12/bin/postgres -D /var/lib/postgresql/12/main -c config_file=/etc/postgresql/12/main/postgresql.conf
+  '
+test: pg_isready -d mattermost

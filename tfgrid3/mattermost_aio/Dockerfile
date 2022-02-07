@@ -14,7 +14,11 @@ ENV DEBIAN_FRONTEND=noninteractive
 # Install some needed packages
 RUN apt-get update \
     && apt-get install -y curl jq sudo libffi-dev netcat-openbsd tzdata libcap2-bin postgresql postgresql postgresql-contrib openssh-server ufw\
-	&& rm -rf /tmp/*
+    && rm -rf /tmp/* \
+    && wget -O /sbin/zinit https://github.com/threefoldtech/zinit/releases/download/v0.2.5/zinit \
+    && chmod +x /sbin/zinit \
+    && mkdir -p /etc/zinit
+COPY scripts /etc/zinit
 # Get Mattermost
 COPY mattermost-team-linux-amd64.tar.gz /
 RUN mkdir -p /mattermost/data /mattermost/plugins /mattermost/client/plugins \
@@ -25,7 +29,8 @@ RUN mkdir -p /mattermost/data /mattermost/plugins /mattermost/client/plugins \
     && useradd -p mattermost -d  /mattermost -u 2000 -m -g mattermost mattermost \
     && usermod -G sudo mattermost \
     && chown -R mattermost:mattermost /mattermost /config.json.save /mattermost/plugins /mattermost/client/plugins \
-    && setcap cap_net_bind_service=+ep /mattermost/bin/mattermost
+    && setcap cap_net_bind_service=+ep /mattermost/bin/mattermost \
+    && chmod 0600 /etc/ssl/private/ssl-cert-snakeoil.key
 
 USER root
 
@@ -33,8 +38,8 @@ USER root
 HEALTHCHECK CMD curl --fail http://localhost:8000 || exit 1
 
 # Configure entrypoint and command
-COPY entrypoint.sh /
-ENTRYPOINT ["/entrypoint.sh"]
+#COPY entrypoint.sh /
+ENTRYPOINT ["/sbin/zinit", "init"]
 WORKDIR /mattermost
 CMD ["mattermost"]
 
