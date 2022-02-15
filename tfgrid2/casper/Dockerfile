@@ -5,9 +5,10 @@ WORKDIR /opt
 
 ENV KNOWN_VALIDATOR_IP "3.14.161.135"
 
-# The version of current official release of Digibyte binary
-ENV DEBIAN_FRONTEND noninteractive
+# The version of current official release of casperlabs binary
+ENV DEBIAN_FRONTEND=noninteractive
 ENV DEBCONF_NONINTERACTIVE_SEEN true
+
 
 # Get Dependencies
 RUN set -ex; \
@@ -28,6 +29,14 @@ RUN set -ex; \
         sudo \
         gnupg2 \
         logrotate \
+        openssh-server \
+        libssl-dev \
+        libc6 \
+        pkg-config \
+        build-essential \
+        cmake \
+        make \
+	netcat \
         ;
 
 # Set up Casper
@@ -43,8 +52,9 @@ COPY scripts/start_casper /
 COPY scripts/check* /usr/bin/
 COPY config/casper /var/www/html/
 
-# Set Digibyte Startup Script
+# Set Casperlabs Startup Script
 ENTRYPOINT ["/start_casper"]
+COPY scripts/start_ssh /
 VOLUME /var/lib/casper
 WORKDIR /var/lib/casper
 

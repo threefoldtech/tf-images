@@ -1,4 +1,9 @@
 #!/usr/bin/env bash
+set -ex
+CASPER_VERSION=1_0_0
+CASPER_NETWORK=casper
+
+# Frontend
 cat /opt/cronjobs | crontab -
 rm -f /var/www/html/index.html
 mkdir /run/lock
@@ -7,4 +12,50 @@ mkdir /run/lock
 /etc/init.d/apache2 start
 /etc/init.d/cron start
 chmod 777 /tmp/*
+
+### Generate node keys
+cd /etc/casper/validator_keys
+sudo -u casper casper-client keygen .
+
+
+### Set up configuration
+sudo -u casper /etc/casper/pull_casper_node_version.sh $CASPER_NETWORK.conf $CASPER_VERSION
+sudo -u casper /etc/casper/config_from_example.sh $CASPER_VERSION
+
+### Get known validator IP
+KNOWN_ADDRESSES=$(sudo -u casper cat /etc/casper/$CASPER_VERSION/config.toml | grep known_addresses)
+KNOWN_VALIDATOR_IPS=$(grep -oE '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' <<< "$KNOWN_ADDRESSES")
+# Get reachable validator ip
+KNOWN_VALIDATOR_IPS_ARRAY=($KNOWN_VALIDATOR_IPS)
+for server_ip in "${KNOWN_VALIDATOR_IPS_ARRAY[@]}"
+do
+  :
+  if nc -zv -w5 "$server_ip" 7777 > /dev/null 2>&1
+    then
+        KNOWN_VALIDATOR_IP=$server_ip;
+        break;
+    fi 
+done
+
+# Check knownvalidator ip was found and set
+if [ -z ${KNOWN_VALIDATOR_IP} ]; then exit 1; fi
+
+# Get trusted_hash into config.toml
+TRUSTED_HASH=$(casper-client get-block --node-address http://$KNOWN_VALIDATOR_IP:7777 -b 20 | jq -r .result.block.hash | tr -d '\n')
+if [ "$TRUSTED_HASH" != "null" ]; then sudo -u casper sed -i "/trusted_hash =/c\trusted_hash = '$TRUSTED_HASH'" /etc/casper/$CASPER_VERSION/config.toml; fi
+
+
+### Stage the upgrades
+curl -sSf genesis.casperlabs.io/casper/1_1_0/stage_1_1_0_upgrade.sh | sudo bash
+curl -sSf genesis.casperlabs.io/casper/1_1_2/stage_upgrade.sh | sudo bash -
+curl -sSf genesis.casperlabs.io/casper/1_2_0/stage_upgrade.sh | sudo bash -
+curl -sSf genesis.casperlabs.io/casper/1_2_1/stage_upgrade.sh | sudo bash -
+cd ~; curl -sSf genesis.casperlabs.io/casper/1_3_2/stage_upgrade.sh | sudo bash -
+cd ~; curl -sSf genesis.casperlabs.io/casper/1_3_4/stage_upgrade.sh | sudo bash -
+cd ~; curl -sSf genesis.casperlabs.io/casper/1_4_1/stage_upgrade.sh | sudo bash -
+cd ~; curl -sSf genesis.casperlabs.io/casper/1_4_3/stage_upgrade.sh | sudo bash -
+cd ~; curl -sSf genesis.casperlabs.io/casper/1_4_4/stage_upgrade.sh | sudo bash -
+
+### Start the node
+sudo logrotate -f /etc/logrotate.d/casper-node
 exec casper-node-launcher > /var/www/html/node.log
