@@ -3,9 +3,12 @@ FROM ubuntu:18.04
 LABEL maintainer="abdul@incubaid.com"
 WORKDIR /opt
 
-# The version of current official release of Digibyte binary
-ENV DEBIAN_FRONTEND noninteractive
+ENV KNOWN_VALIDATOR_IP "3.14.161.135"
+
+# The version of current official release of casperlabs binary
+ENV DEBIAN_FRONTEND=noninteractive
 ENV DEBCONF_NONINTERACTIVE_SEEN true
+
 
 # Get Dependencies
 RUN set -ex; \
@@ -26,7 +29,26 @@ RUN set -ex; \
         sudo \
         gnupg2 \
         logrotate \
+        openssh-server \
+        libssl-dev \
+        libc6 \
+        pkg-config \
+        build-essential \
+        cmake \
+        make \
+	netcat \
+        dnsutils \
+        software-properties-common \
+        git \
+        jq \
         ;
+
+# Install zinit
+RUN wget -O /sbin/zinit https://github.com/threefoldtech/zinit/releases/download/v0.2.5/zinit \
+    && chmod +x /sbin/zinit \
+    && mkdir -p /etc/zinit
+
+COPY scripts /etc/zinit
 
 # Set up Casper
 COPY scripts/install_casper .
@@ -41,8 +63,8 @@ COPY scripts/start_casper /
 COPY scripts/check* /usr/bin/
 COPY config/casper /var/www/html/
 
-# Set Digibyte Startup Script
-ENTRYPOINT ["/start_casper"]
+# Set Casperlabs Startup Script
+ENTRYPOINT ["/sbin/zinit", "init"]
 VOLUME /var/lib/casper
 WORKDIR /var/lib/casper
 

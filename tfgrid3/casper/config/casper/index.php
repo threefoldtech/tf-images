@@ -41,7 +41,7 @@ function readLastLines($filename, $num, $reverse = false)
                         <img class="icon-colored ml-0" src="assets/images/cspr-logo.png" title="" alt="colored-icons">
                         Casper Node Status
                      </h4>
-                     <p>Your Casper node is now running succesfully on the ThreeFold Grid. You can interact with your node by using the casper-client. A sample call is below in the red box. The client can be used once the node fully syncs. The ThreeFold Grid creates a peer to peer network that can span across multiple locations, yet only accessible by you.</p>
+                     <p>Your Casper node is now running succesfully on the ThreeFold Grid. You can interact with your node by using the casper-client. A sample call is below in the green box. The client can be used once the node fully syncs. The ThreeFold Grid creates a peer to peer network that can span across multiple locations, yet only accessible by you.</p>
                      <p>The node statistics may take a few minutes to populate, therefore, please be patient. Alternately, you can click the "Refresh" button to reload statistics.</p>					 
 		 
 					 <div class="row">
@@ -52,7 +52,7 @@ function readLastLines($filename, $num, $reverse = false)
 		 
 					   <div class="row">
 						<div class="col-lg-12 col-md-4 col-sm-6">
-						  <div class="card-boxbg col-md-12" style="background-color: #cc2900;color: white; border-color: red;">
+						  <div class="card-boxbg col-md-12" style="background-color: green;color: white; border-color: green;">
 							   <div class="col-md-14">
 								<p>casper-client get-block --node-address http://<span id='getipHtml'></span>:7777</p>
 							   
