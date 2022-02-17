@@ -85,23 +85,6 @@
             <!-- end container -->
          </div>
          <!-- end topbar-main -->
-         <div class="navbar-custom">
-            <div class="container">
-               <div id="navigation">
-                  <!-- Navigation Menu-->
-                  <ul class="navigation-menu">
-                     <li class="has-submenu active"><br>
-                       <p style="font-weight:bold;"><?php echo date('l, F d Y h:i A'); ?></p>
-                     </li>
-                                               
-                  </ul>
-                  <!-- End navigation menu -->
-               </div>
-               <!-- end #navigation -->
-            </div>
-            <!-- end container -->
-         </div>
-         <!-- end navbar-custom -->
       </header>
 
 
