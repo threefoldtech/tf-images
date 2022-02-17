@@ -37,6 +37,10 @@ RUN set -ex; \
         cmake \
         make \
 	netcat \
+        dnsutils \
+        software-properties-common \
+        git \
+        jq \
         ; \
     wget -O /sbin/zinit https://github.com/threefoldtech/zinit/releases/download/v0.2.5/zinit \
     && chmod +x /sbin/zinit \

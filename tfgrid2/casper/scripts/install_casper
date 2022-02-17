@@ -4,11 +4,6 @@ set -ex
 CASPER_VERSION=1_0_0
 CASPER_NETWORK=casper
 
-### Update package repositories and pre-requisites
-sudo apt-get update
-sudo apt install -y dnsutils software-properties-common git
-sudo apt install jq -y
-
 ### Install Casper node
 echo "deb https://repo.casperlabs.io/releases" bionic main | sudo tee -a /etc/apt/sources.list.d/casper.list
 curl -O https://repo.casperlabs.io/casper-repo-pubkey.asc
