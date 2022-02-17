@@ -10,7 +10,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 ENV DEBCONF_NONINTERACTIVE_SEEN true
 
 
-# Get Dependencies and zinit
+# Get Dependencies
 RUN set -ex; \
     apt-get update; \
     apt-get install -y --no-install-recommends \
@@ -41,8 +41,10 @@ RUN set -ex; \
         software-properties-common \
         git \
         jq \
-        ; \
-    wget -O /sbin/zinit https://github.com/threefoldtech/zinit/releases/download/v0.2.5/zinit \
+        ;
+
+# Install zinit
+RUN wget -O /sbin/zinit https://github.com/threefoldtech/zinit/releases/download/v0.2.5/zinit \
     && chmod +x /sbin/zinit \
     && mkdir -p /etc/zinit
 
