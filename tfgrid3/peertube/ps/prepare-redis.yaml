@@ -1,0 +1,2 @@
+exec: /scripts/prepare-redis.sh
+oneshot: true

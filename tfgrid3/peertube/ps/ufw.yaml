@@ -1,0 +1,4 @@
+exec: bash -c 'ufw enable'
+oneshot: true
+after: 
+  - prepare-ufw

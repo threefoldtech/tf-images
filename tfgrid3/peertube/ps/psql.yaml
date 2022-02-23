@@ -1,0 +1,5 @@
+exec: bash -c 'service postgresql start'
+oneshot: true
+after: 
+  - prepare-psql
+  - redis

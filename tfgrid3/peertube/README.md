@@ -54,10 +54,10 @@ convert to flist using the [tf-docker-converter](https://hub.grid.tf)
 - Rus as a contianer
 
 ```
-docker run -p <host-port>:9000 -v <host-volume>:/data --env-file ./.env <docker-username>/peertube:<version>
+docker run -d -p <host-port>:9000 -v <host-volume>:/data --env-file ./.env <docker-username>/peertube:<version>
 ```
 
 - Run as flist
   - use the flist link
-  - set the entrypoint to `/usr/local/bin/entrypoint.sh`
+  - set the entrypoint to `/sbin/zinit init`
   - provide the env variables you need

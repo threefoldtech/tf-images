@@ -1,0 +1,3 @@
+exec: bash -c 'redis-server /etc/redis/redis.conf'
+after:
+  - prepare-redis

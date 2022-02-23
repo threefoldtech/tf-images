@@ -1,0 +1,2 @@
+exec: /scripts/prepare-ssh.sh
+oneshot: true

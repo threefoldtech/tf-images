@@ -1,0 +1,4 @@
+exec: /scripts/prepare-pt.sh
+oneshot: true
+after:
+  - prepare-db
