@@ -1,0 +1,20 @@
+version: "3.5"
+
+x-environment:
+  &smtp-back-environment
+  # Email settings. 
+  EMAIL_BACKEND: "django.core.mail.backends.smtp.EmailBackend"
+  DEFAULT_FROM_EMAIL: "${DEFAULT_FROM_EMAIL}"
+  EMAIL_USE_TLS: "${EMAIL_USE_TLS}"
+  EMAIL_USE_SSL: "${EMAIL_USE_SSL}"
+  EMAIL_HOST: "${EMAIL_HOST}"
+  EMAIL_PORT: "${EMAIL_PORT}"
+  EMAIL_HOST_USER: "${EMAIL_HOST_USER}"
+  EMAIL_HOST_PASSWORD: "${EMAIL_HOST_PASSWORD}"
+
+services:
+  taiga-back:
+    environment: *smtp-back-environment
+  
+  taiga-async:
+    environment: *smtp-back-environment
