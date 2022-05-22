@@ -18,6 +18,10 @@ services:
     depends_on:
       - mariadb
       - redis
+    ulimits:
+      nofile:
+        soft: 65536
+        hard: 65536
     environment:
       - OWNCLOUD_DOMAIN=${OWNCLOUD_HOST}
       # ------------------------------------------------------------------------
@@ -61,6 +65,10 @@ services:
     image: mariadb:10.5
     container_name: owncloud_mariadb
     restart: always
+    ulimits:
+      nofile:
+        soft: 65536
+        hard: 65536
     environment:
       - MYSQL_ROOT_PASSWORD=owncloud
       - MYSQL_USER=owncloud
@@ -79,6 +87,10 @@ services:
     image: redis:6
     container_name: owncloud_redis
     restart: always
+    ulimits:
+      nofile:
+        soft: 65536
+        hard: 65536
     command: ["--databases", "1"]
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
