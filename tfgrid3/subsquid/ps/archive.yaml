@@ -1,0 +1,8 @@
+# exec: |
+#   bash -c '
+#     docker-compose up
+#   '
+# oneshot: true
+# after: 
+#   - dockerd
+#   - endpoint
