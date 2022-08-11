@@ -20,6 +20,3 @@ COPY ps /etc/zinit
 COPY docker-compose.yml /docker-compose.yml
 
 ENTRYPOINT [ "/sbin/zinit", "init" ]
-
-
-# sudo apt-get install --reinstall linux-modules-5.4.0-42-generic

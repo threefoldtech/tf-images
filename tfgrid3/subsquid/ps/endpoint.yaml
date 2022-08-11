@@ -1,7 +1,3 @@
-# exec: |
-#   bash -c '
-#     if [ ! -z "$CHAIN_ENDPOINT" ]; then
-#       sed -i "0,/testnet.io/ s//$CHAIN_ENDPOINT/" /docker-compose.yml 
-#     fi
-#   '
-# oneshot: true
+exec: bash -c "sed -i 's|wss://testnet.io|'"$CHAIN_ENDPOINT"'|g' /docker-compose.yml"
+
+oneshot: true
