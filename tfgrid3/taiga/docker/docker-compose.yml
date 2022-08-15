@@ -60,6 +60,7 @@ services:
     image: threefolddev/taiga-back-threefold:latest
     environment: *default-back-environment
     volumes: *default-back-volumes
+    restart: on-failure:10
     networks:
       - taiga
     depends_on:
