@@ -1,0 +1,31 @@
+exec: | 
+  bash -c '
+  set -x
+  if [  "$PARTICIPANT" = 'participant' ]; then
+
+    export WALLET_NAME="my_wallet"
+    export WALLET_PASS=""
+    
+    expect /wallet_new.exp
+    account_import_response=$(expect /account_import.exp) 
+    export ACCOUNT_ADDRESS=${account_import_response:9}
+
+    goal node status
+    node_status_response=$(goal node status)
+    
+    export CATCHUP=$(curl https://algorand-catchpoints.s3.us-east-2.amazonaws.com/channel/$NETWORK/latest.catchpoint)
+    goal node catchup $CATCHUP
+ 
+    goal account addpartkey --address $ACCOUNT_ADDRESS --roundFirstValid=20000000 --roundLastValid=30000000
+    
+    expect /account_changeonlinestatus.exp
+
+    expect /account_sign_changeonlinestatus_transaction.exp
+
+    goal clerk rawsend -f online.stxn
+  fi
+  '
+after:
+  - algorand
+
+oneshot: true

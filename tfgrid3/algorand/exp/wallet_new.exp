@@ -1,0 +1,14 @@
+#!/usr/bin/expect
+
+spawn goal wallet new $env(WALLET_NAME)
+
+expect "Please choose a password for wallet '$env(WALLET_NAME)': "
+send -- "$env(WALLET_PASS)\r"
+
+expect "Please confirm the password: "
+send -- "$env(WALLET_PASS)\r"
+
+expect "Would you like to see it now? (Y/n): "
+send -- "Y\r"
+
+expect eof

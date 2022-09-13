@@ -1,0 +1,9 @@
+#!/usr/bin/expect
+
+spawn goal clerk sign --infile="online.txn" --outfile="online.stxn"
+
+expect "Please enter the password for wallet 'my_wallet':"
+send -- "$env(WALLET_PASS)\r"
+
+
+expect eof
