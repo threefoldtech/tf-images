@@ -23,10 +23,12 @@ RUN curl -O https://releases.algorand.com/key.pub &&\
 RUN apt update && \
     apt -y install expect 
 
-COPY exp /exp
-RUN chmod -R +x /exp
+COPY scripts /scripts
+RUN chmod -R +x /scripts
 
 RUN mkdir -p /etc/zinit
 COPY ps /etc/zinit
 
 ENTRYPOINT [ "/sbin/zinit", "init" ]
+
+ENV IMAGE_TAG=threefolddev/algorand:v1.0-rel

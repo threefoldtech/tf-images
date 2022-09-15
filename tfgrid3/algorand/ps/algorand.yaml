@@ -1,3 +1,4 @@
 exec: bash -c "/usr/bin/algod"
 after: 
   - network
+  - relay
