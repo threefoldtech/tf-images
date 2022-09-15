@@ -1,8 +1,0 @@
-#!/usr/bin/expect
-
-spawn goal account import -m "$env(ACCOUNT_MNEMONICS)"
-expect "Please enter the password for wallet 'my_wallet':"
-send -- "$env(WALLET_PASS)\r"
-
-
-expect eof

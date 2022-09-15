@@ -12,10 +12,9 @@ RUN wget -O /sbin/zinit https://github.com/threefoldtech/zinit/releases/download
 ENV ALGORAND_DATA=/var/lib/algorand
 RUN echo export ALGORAND_DATA=/var/lib/algorand >> ~/.bashrc
 
-
 RUN curl -O https://releases.algorand.com/key.pub &&\
     apt-get update &&\
-    apt-get install -y gnupg2 curl software-properties-common &&\
+    apt-get install -y gnupg2 software-properties-common &&\
     apt-key add key.pub &&\
     add-apt-repository "deb [arch=amd64] https://releases.algorand.com/deb/ stable main" &&\
     apt-get update &&\
@@ -24,10 +23,8 @@ RUN curl -O https://releases.algorand.com/key.pub &&\
 RUN apt update && \
     apt -y install expect 
 
-COPY exp/* ./
-RUN chmod +x /wallet_new.exp /account_changeonlinestatus.exp /account_import.exp /account_sign_changeonlinestatus_transaction.exp
-
-COPY config.json /var/lib/algorand/config.json
+COPY exp /exp
+RUN chmod -R +x /exp
 
 RUN mkdir -p /etc/zinit
 COPY ps /etc/zinit

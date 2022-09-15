@@ -1,9 +1,0 @@
-#!/usr/bin/expect
-
-spawn goal account changeonlinestatus --address $env(ACCOUNT_ADDRESS) --online=true --txfile=online.txn
-
-expect "Please enter the password for wallet 'my_wallet':"
-send -- "$WALLET_PASS\r"
-
-
-expect eof
