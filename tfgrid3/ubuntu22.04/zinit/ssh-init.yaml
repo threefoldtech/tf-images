@@ -1,0 +1,2 @@
+exec: sh -c "/bin/bash /start.sh"
+log: stdout
