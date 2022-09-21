@@ -1,7 +1,7 @@
 FROM ubuntu:22.04
-RUN echo deb http://be.archive.ubuntu.com/ubuntu/ jammy main restricted universe multiverse > /etc/apt/sources.list
+
 RUN apt update && \
-  apt -y install wget openssh-client openssh-server
+  apt -y install wget openssh-server
 
 RUN wget -O /sbin/zinit https://github.com/threefoldtech/zinit/releases/download/v0.2.5/zinit && \
   chmod +x /sbin/zinit
