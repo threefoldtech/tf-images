@@ -2,7 +2,7 @@
 
 set -x
 
-if [ $RELAY_NODE ]; then
+if [ $NODE_TYPE == "relay" ]; then
     cp /var/lib/algorand/config.json.example /var/lib/algorand/config.json
     
     if [ $NETWORK == "testnet" ]; then 

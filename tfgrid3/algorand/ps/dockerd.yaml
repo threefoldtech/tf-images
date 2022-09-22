@@ -1,0 +1,7 @@
+exec: |
+  bash -c '
+    set -x
+    if [ $NODE_TYPE == 'indexer' ]; then
+      dockerd -D
+    fi
+  '

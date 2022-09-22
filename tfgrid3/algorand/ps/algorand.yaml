@@ -1,4 +1,10 @@
-exec: bash -c "/usr/bin/algod"
+exec: |
+  bash -c '
+    set -x
+    if [ $NODE_TYPE != "indexer" ]; then
+      /usr/bin/algod
+    fi
+  ' 
 after: 
   - network
   - relay

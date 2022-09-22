@@ -2,7 +2,7 @@
 
 set -x
     
-if [  "$PARTICIPANT" = 'participant' ]; then
+if [  $NODE_TYPE = 'participant' ]; then
     export WALLET_NAME="my_wallet"
     export WALLET_PASS=""
     expect /scripts/wallet_new.exp

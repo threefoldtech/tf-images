@@ -1,0 +1,47 @@
+version: "2.4"
+services:
+  # Algorand node.  Can't use catchup mode, so takes a long time to get to current block.
+  algorand-node:
+
+    # Use Algorand tesnet.  To use mainnet, change to algorand/stable.
+    image: algorand/testnet
+    command: /bin/sh -c "./goal node start -l 0.0.0.0:8080 -d /var/algorand/data && sleep infinity"
+    ports:
+      - 8080:8080
+    volumes:
+      # Mount data directory on host so block data survives container.
+      - /var/algorand/data:/var/algorand/data:rw
+      # Mount config so it can be changed outside image
+      - /var/algorand/config.json:/var/algorand/config.json:ro
+
+  # Postgres database where indexer stores data
+  indexer-db:
+    image: "postgres"
+    ports:
+      - 5433:5432
+    expose:
+      - 5432
+    environment:
+      POSTGRES_USER: algorand
+      POSTGRES_PASSWORD: indexer34u
+      POSTGRES_DB: pgdb
+    volumes:
+      - /var/lib/postgresql/data/:/var/lib/postgresql/data/:rw
+
+  # Algorand indexer which reads from algorand-node, and writes to indexer-db
+  indexer:
+    image: "rcodesmith/algorand-indexer:2.6.4"
+    ports:
+      - 8980:8980
+    restart: unless-stopped
+    environment:
+      DATABASE_NAME: pgdb
+      DATABASE_USER: algorand
+      DATABASE_PASSWORD: indexer34u
+      ALGORAND_HOST: algorand-node
+    depends_on: 
+      - indexer-db
+      - algorand-node
+    volumes:
+      # Mount Algorand node data, to get token
+      - /var/algorand/data:/var/algorand/data:rw
