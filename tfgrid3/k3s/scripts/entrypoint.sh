@@ -4,7 +4,7 @@ if [ -z "${K3S_DATA_DIR}" ]; then
     K3S_DATA_DIR=""
 else
     cp -r /var/lib/rancher/k3s/* $K3S_DATA_DIR
-    K3S_DATA_DIR="--data-dir $K3S_DATA_DIR"
+    K3S_DATA_DIR="--data-dir $K3S_DATA_DIR --kubelet-arg=root-dir=$K3S_DATA_DIR/kubelet"
 fi
 
 if [ -z "${K3S_FLANNEL_IFACE}" ]; then
