@@ -1,0 +1,3 @@
+exec: dockerd -D
+
+test: docker ps
