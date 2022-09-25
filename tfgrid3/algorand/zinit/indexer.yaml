@@ -1,0 +1,5 @@
+exec: bash /scripts/configure_indexer.sh
+after:
+  - dockerd
+
+oneshot: true

@@ -1,0 +1,5 @@
+exec: bash /scripts/configure_participant.sh
+after:
+  - algorand
+
+oneshot: true
