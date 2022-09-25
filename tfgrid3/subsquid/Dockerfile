@@ -15,7 +15,7 @@ RUN wget -O /sbin/zinit https://github.com/threefoldtech/zinit/releases/download
     chmod +x /sbin/zinit
 
 RUN mkdir -p /etc/zinit
-COPY ps /etc/zinit
+COPY zinit /etc/zinit
 
 COPY docker-compose.yml /docker-compose.yml
 
