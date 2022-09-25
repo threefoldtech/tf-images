@@ -49,8 +49,8 @@ COPY scripts /scripts
 RUN chmod -R +x /scripts
 
 RUN mkdir -p /etc/zinit
-COPY ps /etc/zinit
+COPY zinit /etc/zinit
 
 ENTRYPOINT [ "/sbin/zinit", "init" ]
 
-ENV IMAGE_TAG=threefolddev/algorand:v1.0-all
+# IMAGE_TAG: threefolddev/algorand:v1.0-all
