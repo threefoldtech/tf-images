@@ -1,0 +1,3 @@
+exec: bash -c "sed -i 's|wss://testnet.io|'"$CHAIN_ENDPOINT"'|g' /docker-compose.yml"
+
+oneshot: true
