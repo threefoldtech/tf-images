@@ -55,6 +55,11 @@ services:
       - taiga-db-data:/var/lib/postgresql/data
     networks:
       - taiga
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   taiga-back:
     image: threefolddev/taiga-back-threefold:latest
@@ -63,9 +68,12 @@ services:
     networks:
       - taiga
     depends_on:
-      - taiga-db
-      - taiga-events-rabbitmq
-      - taiga-async-rabbitmq
+      taiga-db:
+        condition: service_healthy
+      taiga-events-rabbitmq:
+        condition: service_started
+      taiga-async-rabbitmq:
+        condition: service_started
 
   taiga-async:
     image: taigaio/taiga-back:latest
@@ -75,9 +83,12 @@ services:
     networks:
       - taiga
     depends_on:
-      - taiga-db
-      - taiga-back
-      - taiga-async-rabbitmq
+      taiga-db:
+        condition: service_healthy
+      taiga-back:
+        condition: service_started
+      taiga-async-rabbitmq:
+        condition: service_started
 
   taiga-async-rabbitmq:
     image: rabbitmq:3.8-management-alpine
