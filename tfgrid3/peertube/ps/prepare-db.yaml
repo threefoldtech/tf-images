@@ -1,0 +1,4 @@
+exec: /scripts/prepare-db.sh
+after: 
+  - psql
+oneshot: true

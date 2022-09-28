@@ -29,9 +29,16 @@ RUN mkdir /data /config
 ENV NODE_ENV production
 ENV NODE_CONFIG_DIR /config
 
-COPY ./entrypoint.sh /usr/local/bin/entrypoint.sh
-
 VOLUME /data /config
 EXPOSE 9000 1935
 
-ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+RUN apt -y install wget vim net-tools && \
+    wget -O /sbin/zinit https://github.com/threefoldtech/zinit/releases/download/v0.2.5/zinit && \
+    chmod +x /sbin/zinit
+
+RUN mkdir -p /etc/zinit
+COPY ps /etc/zinit
+COPY scripts /scripts
+RUN chmod -R +x /scripts
+
+ENTRYPOINT [ "/sbin/zinit", "init" ]
