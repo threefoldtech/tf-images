@@ -4,7 +4,6 @@ FROM ubuntu:20.04
 ENV DEBIAN_FRONTEND=noninteractive
 ENV MULTIADDRESS=""
 
-
 RUN apt update && \
     apt -y install wget curl vim net-tools iputils-ping openssh-server tmux nano
 
