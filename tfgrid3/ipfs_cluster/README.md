@@ -25,7 +25,7 @@ in the grid3_ipfs_cluster directory
 
      `docker run -e "CLUSTER_SECRET=$CLUSTER_SECRET" -e "MULTIADDRESS=$MULTIADDRESS" {user|org}/ipfs_cluster`
 
-### Deploying
+## Deploying
 Easiest way to deploy a VM using the flist is to head to to our [playground](https://play.grid.tf) and deploy a Virtual Machine by providing this flist URL.
 * make sure to provide the correct entrypoint, and required env vars.
 
