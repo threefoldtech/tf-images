@@ -24,7 +24,7 @@ in the grid3_ipfs_cluster directory
      `docker run {user|org}/ipfs_cluster`
 - For the other peers in the cluster environment variables are needed:
 
-     `docker run -e CLUSTER_SECRET=$CLUSTER_SECRET MULTIADDRESS=$MULTIADDRESS {user|org}/ipfs_cluster`
+     `docker run -e "CLUSTER_SECRET=$CLUSTER_SECRET" -e "MULTIADDRESS=$MULTIADDRESS" {user|org}/ipfs_cluster`
 
 ### Deploying
 Easiest way to deploy a VM using the flist is to head to to our [playground](https://play.grid.tf) and deploy a Virtual Machine by providing this flist URL.
