@@ -12,7 +12,19 @@ get an ipfs cluster up and running on a VM
      - secret: Adds the Multiaddress of a cluster peer to the peerstore and starts the ipfs cluster daemon. 
      - sshkey: Add the user SSH key to authorized_keys, so he can log in remotely to the host which running this image.
 
+## Building
 
+in the grid3_ipfs_cluster directory
+
+`docker build -t {user|org}/ipfs_cluster .`
+
+## Running with docker
+- For the first peer in the cluster:
+     
+     `docker run {user|org}/ipfs_cluster`
+- For the other peers in the cluster environment variables are needed:
+
+     `docker run -e CLUSTER_SECRET=$CLUSTER_SECRET MULTIADDRESS=$MULTIADDRESS {user|org}/ipfs_cluster`
 
 ### Deploying
 Easiest way to deploy a VM using the flist is to head to to our [playground](https://play.grid.tf) and deploy a Virtual Machine by providing this flist URL.
@@ -38,3 +50,4 @@ https://hub.grid.tf/mayarosama.3bot/mayarosama-ipfscluster-latest.flist
 ### Optional Env Vars (For adding another peer to the ipfs cluster)
 - `CLUSTER_SECRET`: The cluster secret, so it can be added to the configuration file.
 - `MULTIADDRESS`: The cluster peer address so it can be added to the peerstore.
+
