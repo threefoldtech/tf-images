@@ -33,10 +33,6 @@ RUN cd go-ipfs && bash install.sh
 
 RUN mkdir -p /etc/zinit
 COPY zinit /etc/zinit
-# COPY ./ipfs.sh /
-
-# RUN  chmod +x ./ipfs.sh
 
 
 ENTRYPOINT [ "/sbin/zinit", "init" ]
-# ENTRYPOINT [ "./ipfs.sh" ]
