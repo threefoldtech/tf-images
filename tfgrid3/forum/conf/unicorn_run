@@ -1,0 +1,10 @@
+#!/bin/bash
+#TBD check that precomile finished successfully in checking if condition 
+cd $home
+# remove old pid
+[[ -f $home/tmp/pids/unicorn.pid ]] && rm $home/tmp/pids/unicorn.pid
+
+# listen on ipv6 bind address
+sed -i "0,/127.0.0.1/ s//::/" config/unicorn.conf.rb
+LD_PRELOAD=$RUBY_ALLOCATOR HOME=/home/discourse USER=discourse exec thpoff chpst -u discourse:www-data -U discourse:www-data bundle exec config/unicorn_launcher -E production -c config/unicorn.conf.rb
+
