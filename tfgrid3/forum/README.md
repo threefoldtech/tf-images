@@ -117,7 +117,7 @@ docker run -i -p80:80 -p443:443 -p2207:22 -p804:80 --name forum-test -e DISCOURS
     we are using self-sgined by nginx
 
 ### more info
-- this flist same as discourse_3bot but with addataional package restic and its configuration.
+- this flist same as discourse_3bot but with additional package restic and its configuration.
 - there is a crontab uplaod backup to s3 server (minio).
     
 ### Reference
