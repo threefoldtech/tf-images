@@ -23,7 +23,7 @@ in the grid3_ipfs_cluster directory
      `docker run {user|org}/ipfs_cluster`
 - For the other peers in the cluster environment variables are needed:
 
-     `docker run -e "CLUSTER_SECRET=$CLUSTER_SECRET" -e "MULTIADDRESS=$MULTIADDRESS" {user|org}/ipfs_cluster`
+     `docker run -e "CLUSTER_SECRET=$CLUSTER_SECRET" -e "BOOTSTRAP=$BOOTSTRAP" {user|org}/ipfs_cluster`
 
 ## Deploying
 Easiest way to deploy a VM using the flist is to head to to our [playground](https://play.grid.tf) and deploy a Virtual Machine by providing this flist URL.
@@ -44,4 +44,9 @@ https://hub.grid.tf/mayarosama.3bot/mayarosama-ipfscluster-latest.flist
 
 ### Optional Env Vars (For adding another peer to the ipfs cluster)
 - `CLUSTER_SECRET`: The cluster secret, so it can be added to the configuration file.
-- `MULTIADDRESS`: The cluster peer address so it can be added to the peerstore.
+- `BOOTSTRAP`: The cluster peer address so it can be added to the peerstore.
+- `IPFS_PROFILE`
+- `CLUSTER_PINSVCAPI_HTTPLISTENMULTIADDRESS`
+- `CLUSTER_PINSVCAPI_BASICAUTHCREDENTIALS`
+- `CLUSTER_METRICS_ENABLESTATS`
+- `CLUSTER_METRICS_PROMETHEUSENDPOINT`

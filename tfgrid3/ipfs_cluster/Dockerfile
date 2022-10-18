@@ -1,25 +1,19 @@
 
-FROM ubuntu:20.04
+FROM ubuntu:22.04
 
-ENV DEBIAN_FRONTEND=noninteractive
-ENV MULTIADDRESS=""
+WORKDIR /build
 
-RUN apt update && \
-    apt -y install wget curl vim net-tools iputils-ping openssh-server tmux nano
-RUN wget -O /sbin/zinit https://github.com/threefoldtech/zinit/releases/download/v0.2.5/zinit && \
-    chmod +x /sbin/zinit
-RUN wget https://dist.ipfs.io/go-ipfs/v0.10.0/go-ipfs_v0.10.0_linux-amd64.tar.gz && \
-    tar -xvzf go-ipfs_v0.10.0_linux-amd64.tar.gz
-RUN wget https://dist.ipfs.io/ipfs-cluster-service/v1.0.4/ipfs-cluster-service_v1.0.4_linux-amd64.tar.gz && \
-    tar xvfz ipfs-cluster-service_v1.0.4_linux-amd64.tar.gz 
-RUN cp /ipfs-cluster-service/ipfs-cluster-service /bin
-RUN wget https://dist.ipfs.io/ipfs-cluster-ctl/v1.0.4/ipfs-cluster-ctl_v1.0.4_linux-amd64.tar.gz && \
-    tar xvfz ipfs-cluster-ctl_v1.0.4_linux-amd64.tar.gz
-RUN cp /ipfs-cluster-ctl/ipfs-cluster-ctl /bin
-RUN wget https://dist.ipfs.io/ipfs-cluster-follow/v1.0.4/ipfs-cluster-follow_v1.0.4_linux-amd64.tar.gz && \
-    tar xvfz ipfs-cluster-follow_v1.0.4_linux-amd64.tar.gz
-RUN cp /ipfs-cluster-follow/ipfs-cluster-follow /bin
-RUN cd go-ipfs && bash install.sh
+RUN apt-get update && \
+    DEBIAN_FRONTEND=noninteractive apt-get -y install wget openssh-server && \
+    wget -O /sbin/zinit https://github.com/threefoldtech/zinit/releases/download/v0.2.9/zinit && \
+    wget https://dist.ipfs.tech/kubo/v0.16.0/kubo_v0.16.0_linux-amd64.tar.gz && \
+    wget https://dist.ipfs.tech/ipfs-cluster-service/v1.0.4/ipfs-cluster-service_v1.0.4_linux-amd64.tar.gz && \
+    wget https://dist.ipfs.io/ipfs-cluster-ctl/v1.0.4/ipfs-cluster-ctl_v1.0.4_linux-amd64.tar.gz && \
+    for file in *.tar.gz; do tar xzvf "${file}" && rm "${file}"; done && \
+    chmod +x /sbin/zinit && \
+    mv ./kubo/ipfs ./ipfs-cluster-service/ipfs-cluster-service ./ipfs-cluster-ctl/ipfs-cluster-ctl /usr/bin && \
+    apt-get -y remove wget && apt-get -y autoremove && rm -rf /var/lib/apt/lists/* && rm -rf /build/*
+
 RUN mkdir -p /etc/zinit
 
 COPY zinit /etc/zinit

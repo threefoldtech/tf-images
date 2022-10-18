@@ -1,1 +1,2 @@
 exec: bash -c 'ipfs init && exec ipfs daemon'
+test: bash -c 'ipfs swarm addrs &>/dev/null'
