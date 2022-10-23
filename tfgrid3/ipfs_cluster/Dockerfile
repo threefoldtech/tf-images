@@ -5,8 +5,8 @@ WORKDIR /build
 
 RUN export DEBIAN_FRONTEND=noninteractive && apt-get -qy update && \
     apt-get -qy install wget openssh-server && \
-    wget -nv -t 3 -O /sbin/zinit https://github.com/threefoldtech/zinit/releases/download/v0.2.9/zinit && \
-    wget -nv -t 3 https://dist.ipfs.tech/kubo/v0.16.0/kubo_v0.16.0_linux-amd64.tar.gz \
+    wget -nv -O /sbin/zinit https://github.com/threefoldtech/zinit/releases/download/v0.2.9/zinit && \
+    wget -nv 3 https://dist.ipfs.tech/kubo/v0.16.0/kubo_v0.16.0_linux-amd64.tar.gz \
     https://dist.ipfs.tech/ipfs-cluster-service/v1.0.4/ipfs-cluster-service_v1.0.4_linux-amd64.tar.gz \
     https://dist.ipfs.io/ipfs-cluster-ctl/v1.0.4/ipfs-cluster-ctl_v1.0.4_linux-amd64.tar.gz && \
     for file in *.tar.gz; do tar xzvf "${file}" && rm "${file}"; done && \
