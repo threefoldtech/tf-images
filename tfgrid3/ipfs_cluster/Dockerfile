@@ -3,8 +3,8 @@ FROM ubuntu:22.04
 
 WORKDIR /build
 
-RUN apt-get update && \
-    DEBIAN_FRONTEND=noninteractive apt-get -y install wget openssh-server && \
+RUN export DEBIAN_FRONTEND=noninteractive && apt-get -y update && \
+    apt-get -y install wget openssh-server && \
     wget -O /sbin/zinit https://github.com/threefoldtech/zinit/releases/download/v0.2.9/zinit && \
     wget https://dist.ipfs.tech/kubo/v0.16.0/kubo_v0.16.0_linux-amd64.tar.gz && \
     wget https://dist.ipfs.tech/ipfs-cluster-service/v1.0.4/ipfs-cluster-service_v1.0.4_linux-amd64.tar.gz && \

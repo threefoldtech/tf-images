@@ -43,10 +43,12 @@ https://hub.grid.tf/mayarosama.3bot/mayarosama-ipfscluster-latest.flist
 - `SSH_KEY`: User SSH public key.
 
 ### Optional Env Vars (For adding another peer to the ipfs cluster)
-- `CLUSTER_SECRET`: The cluster secret, so it can be added to the configuration file.
-- `BOOTSTRAP`: The cluster peer address so it can be added to the peerstore.
-- `IPFS_PROFILE`
-- `CLUSTER_PINSVCAPI_HTTPLISTENMULTIADDRESS`
-- `CLUSTER_PINSVCAPI_BASICAUTHCREDENTIALS`
-- `CLUSTER_METRICS_ENABLESTATS`
-- `CLUSTER_METRICS_PROMETHEUSENDPOINT`
+- `CLUSTER_SECRET`: The cluster secret. should be same for all cluster peers.
+- `BOOTSTRAP`: The cluster bootstrap peer address to use for joining existed cluster.
+- `IPFS_PROFILE`: ex. "server" to optimize for running with public ip address.
+- `CLUSTER_PINSVCAPI_HTTPLISTENMULTIADDRESS`: "/ip4/0.0.0.0/tcp/9097" to expose the pinning service rest endpoint
+- `CLUSTER_PINSVCAPI_BASICAUTHCREDENTIALS`: ex."username:password"
+- `CLUSTER_RESTAPI_HTTPLISTENMULTIADDRESS`: "/ip4/0.0.0.0/tcp/9094" to expose the rest api endpoint.
+- `CLUSTER_RESTAPI_BASICAUTHCREDENTIALS`: "username:password"
+- `CLUSTER_METRICS_ENABLESTATS`: "true" to enable metrics endpoint.
+- `CLUSTER_METRICS_PROMETHEUSENDPOINT`: "/ip4/0.0.0.0/tcp/8888" to expose it.
