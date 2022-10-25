@@ -52,3 +52,9 @@ https://hub.grid.tf/mayarosama.3bot/mayarosama-ipfscluster-latest.flist
 - `CLUSTER_RESTAPI_BASICAUTHCREDENTIALS`: "username:password"
 - `CLUSTER_METRICS_ENABLESTATS`: "true" to enable metrics endpoint.
 - `CLUSTER_METRICS_PROMETHEUSENDPOINT`: "/ip4/0.0.0.0/tcp/8888" to expose it.
+
+For a full reference of the available env vars please refer to
+- ipfs related:
+     - https://github.com/ipfs/kubo/blob/master/docs/environment-variables.md
+- for ipfs-cluster related refer to the below link, more specifically `Using environment variables to overwrite configuration values` section.
+     - https://ipfscluster.io/documentation/reference/configuration/
