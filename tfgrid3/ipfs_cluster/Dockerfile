@@ -12,7 +12,8 @@ RUN export DEBIAN_FRONTEND=noninteractive && apt-get -qy update && \
     for file in *.tar.gz; do tar xzvf "${file}" && rm "${file}"; done && \
     chmod +x /sbin/zinit && \
     mv ./kubo/ipfs ./ipfs-cluster-service/ipfs-cluster-service ./ipfs-cluster-ctl/ipfs-cluster-ctl /usr/bin && \
-    apt-get -qy remove wget && apt-get -qy autoremove && rm -rf /var/lib/apt/lists/* && rm -rf /build/*
+    apt-get -qy remove wget && apt-get -qy autoremove && rm -rf /var/lib/apt/lists/* && rm -rf /build/* && \
+    unset DEBIAN_FRONTEND
 
 RUN mkdir -p /etc/zinit
 
