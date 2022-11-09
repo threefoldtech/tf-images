@@ -1,6 +1,6 @@
 # grid3_mastodon
 
-get Mastodon up and running in on grid3 VM
+get Mastodon up and running on grid3 VM
 
 ## what in this image
 
@@ -63,10 +63,10 @@ TODO: should be updated to official repo.
 - `SSH_KEY`: User SSH public key.
 - `LOCAL_DOMAIN`: the domain name, eg: grid3mastodon.gent01.dev.grid.tf
 
-#### smtp server settings
+#### SMTP server settings
 
 caution: configure smtp settings bellow **only If** you have an working smtp service and you know what you’re doing.
-otherwise don't set thoses or leave these settings empty. set wrong smtp settings will cause **issues/server errors in mastodon**.
+otherwise don't set those or leave these settings empty. setting wrong SMTP settings will cause **issues/server errors in mastodon**.
 
 - `SMTP_SERVER`: eg, "smtp.gmail.com".
 - `SMTP_PORT`: eg, smtp server port.
