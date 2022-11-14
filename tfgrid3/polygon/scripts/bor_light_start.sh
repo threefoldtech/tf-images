@@ -18,7 +18,7 @@ bor --datadir $DATA_DIR \
   --http.corsdomain '*' \
   --http.port 8545 \
   --ipcpath $BOR_DIR/bor.ipc \
-  --http.api 'admin,debug,web3,eth,txpool,personal,ethash,les,net,vflux' \
+  --http.api 'admin,debug,web3,eth,txpool,personal,bor,net,les,vflux' \
   --syncmode 'light' \
   --networkid '80001' \
   --miner.gaslimit '20000000' \
