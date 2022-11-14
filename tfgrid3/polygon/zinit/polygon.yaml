@@ -1,0 +1,10 @@
+exec: |
+  bash -c ' 
+    chmod +x /root/node/start.sh
+    bash /root/node/start.sh 
+  '
+
+oneshot: true
+after:
+  - network
+  - setup

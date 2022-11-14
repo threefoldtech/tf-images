@@ -1,0 +1,3 @@
+exec: bash /etc/scripts/set_network.sh
+
+oneshot: true
