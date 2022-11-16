@@ -1,0 +1,10 @@
+exec: |
+  bash -c '
+    ipfs-cluster-service init
+    if [ ! -z "$BOOTSTRAP" ]; then
+      echo "$BOOTSTRAP" >> ~/.ipfs-cluster/peerstore &&
+      echo "$BOOTSTRAP have been saved to the peerstore"
+    fi
+    exec ipfs-cluster-service daemon'
+after: 
+  - ipfs

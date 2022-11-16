@@ -23,7 +23,7 @@ in the grid3_ipfs_cluster directory
      `docker run {user|org}/ipfs_cluster`
 - For the other peers in the cluster environment variables are needed:
 
-     `docker run -e "CLUSTER_SECRET=$CLUSTER_SECRET" -e "MULTIADDRESS=$MULTIADDRESS" {user|org}/ipfs_cluster`
+     `docker run -e "CLUSTER_SECRET=$CLUSTER_SECRET" -e "BOOTSTRAP=$BOOTSTRAP" {user|org}/ipfs_cluster`
 
 ## Deploying
 Easiest way to deploy a VM using the flist is to head to to our [playground](https://play.grid.tf) and deploy a Virtual Machine by providing this flist URL.
@@ -43,5 +43,18 @@ https://hub.grid.tf/mayarosama.3bot/mayarosama-ipfscluster-latest.flist
 - `SSH_KEY`: User SSH public key.
 
 ### Optional Env Vars (For adding another peer to the ipfs cluster)
-- `CLUSTER_SECRET`: The cluster secret, so it can be added to the configuration file.
-- `MULTIADDRESS`: The cluster peer address so it can be added to the peerstore.
+- `CLUSTER_SECRET`: The cluster secret. should be same for all cluster peers.
+- `BOOTSTRAP`: The cluster bootstrap peer address to use for joining existed cluster.
+- `IPFS_PROFILE`: ex. "server" to optimize for running with public ip address.
+- `CLUSTER_PINSVCAPI_HTTPLISTENMULTIADDRESS`: "/ip4/0.0.0.0/tcp/9097" to expose the pinning service rest endpoint
+- `CLUSTER_PINSVCAPI_BASICAUTHCREDENTIALS`: ex."username:password"
+- `CLUSTER_RESTAPI_HTTPLISTENMULTIADDRESS`: "/ip4/0.0.0.0/tcp/9094" to expose the rest api endpoint.
+- `CLUSTER_RESTAPI_BASICAUTHCREDENTIALS`: "username:password"
+- `CLUSTER_METRICS_ENABLESTATS`: "true" to enable metrics endpoint.
+- `CLUSTER_METRICS_PROMETHEUSENDPOINT`: "/ip4/0.0.0.0/tcp/8888" to expose it.
+
+For a full reference of the available env vars please refer to
+- ipfs related:
+     - https://github.com/ipfs/kubo/blob/master/docs/environment-variables.md
+- for ipfs-cluster related refer to the below link, more specifically `Using environment variables to overwrite configuration values` section.
+     - https://ipfscluster.io/documentation/reference/configuration/
