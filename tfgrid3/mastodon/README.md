@@ -77,6 +77,6 @@ have default values
 these are used to login at `code-server` and `webmin`
 
 ## Exposed ports
-- `:80`: for mastodon server
+- `:3000`: for mastodon server
 - `:8001`: for code-server
 - `:8002`: for webmin

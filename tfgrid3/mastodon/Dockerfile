@@ -47,7 +47,7 @@ RUN chmod +x /scripts/*.sh
 ENTRYPOINT  ["zinit", "init"]
 
 # mastodon
-EXPOSE 80
+EXPOSE 3000
 # code-server
 EXPOSE 8001
 # webmin
