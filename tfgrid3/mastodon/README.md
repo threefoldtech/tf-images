@@ -69,3 +69,14 @@ otherwise don't set those or leave these settings empty. setting wrong SMTP sett
 - `SMTP_PASSWORD`: The password of the email.
 - `SMTP_FROM_ADDRESS`: Same of `SMTP_LOGIN`.
 - `SMTP_AUTH_METHOD`: The authantication method e.g. `plain`.
+
+### Admin EnvVars
+have default values
+- `ADMIN_USERNAME` || "user"
+- `ADMIN_PASSWORD` || "pass"
+these are used to login at `code-server` and `webmin`
+
+## Exposed ports
+- `:80`: for mastodon server
+- `:8001`: for code-server
+- `:8002`: for webmin

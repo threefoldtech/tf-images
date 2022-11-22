@@ -16,9 +16,39 @@ RUN curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-c
 RUN wget -O /sbin/zinit https://github.com/threefoldtech/zinit/releases/download/v0.2.5/zinit && \
   chmod +x /sbin/zinit 
 
+RUN apt-get update && \ 
+    apt-get install -y iproute2 htop net-tools rsync mc mcedit
+
+RUN apt install -y software-properties-common &&\
+    wget -q http://www.webmin.com/jcameron-key.asc -O- | sudo apt-key add - &&\
+    add-apt-repository "deb [arch=amd64] http://download.webmin.com/download/repository sarge contrib" &&\
+    apt install -y webmin
+
+RUN wget https://github.com/cdr/code-server/releases/download/v3.3.1/code-server-3.3.1-linux-amd64.tar.gz &&\
+    tar -xzvf code-server-3.3.1-linux-amd64.tar.gz &&\
+    sudo cp -r code-server-3.3.1-linux-amd64 /usr/lib/code-server &&\
+    sudo ln -s /usr/lib/code-server/bin/code-server /usr/bin/code-server &&\
+    sudo mkdir /var/lib/code-server
+
+RUN sudo apt install -y debian-keyring debian-archive-keyring &&\
+    curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/gpg.key' | sudo tee /etc/apt/trusted.gpg.d/caddy-stable.asc &&\
+    curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt' | sudo tee /etc/apt/sources.list.d/caddy-stable.list &&\
+    curl https://dl.cloudsmith.io/public/caddy/stable/gpg.key | sudo gpg --yes --dearmor --output /usr/share/keyrings/caddy-stable-archive-keyring.gpg &&\
+    echo 'deb [signed-by=/usr/share/keyrings/caddy-stable-archive-keyring.gpg] https://dl.cloudsmith.io/public/caddy/stable/deb/debian any-version main' | sudo tee /etc/apt/sources.list.d/caddy-stable.list &&\
+    sudo apt update &&\
+    sudo apt install caddy
+
 COPY ./scripts/ /scripts/
 COPY ./zinit/ /etc/zinit/
 COPY ./docker /docker/
+COPY Caddyfile /etc/caddy/Caddyfile
 RUN chmod +x /scripts/*.sh
 
 ENTRYPOINT  ["zinit", "init"]
+
+# mastodon
+EXPOSE 80
+# code-server
+EXPOSE 8001
+# webmin
+EXPOSE 8002

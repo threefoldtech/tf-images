@@ -1,0 +1,2 @@
+exec: bash -c "/scripts/webmin-config.sh"
+oneshot: true
