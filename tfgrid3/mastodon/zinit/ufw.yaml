@@ -3,9 +3,9 @@ exec: |
   ufw default deny incoming
   ufw default allow outgoing
   ufw allow ssh
-  ufw allow 80
   ufw allow 8001
   ufw allow 8002
+  ufw allow 3000
   ufw limit ssh
   ufw --force enable
   '
