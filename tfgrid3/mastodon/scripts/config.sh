@@ -4,11 +4,6 @@ DOCKER_DIR=../docker/
 SCRIPTS_DIR=../scripts/
 ENV_DIR=${DOCKER_DIR}.env.production
 
-# Must send mastodon image to env vars when run the docker-compose.
-# OPTIONS:
-	# tootsuite/mastodon:v4.0.0rc1
-	# mahmoudemmad/mastodon:tfconnect
-
 exec |
 	# Touch the .env.production file
 	touch ${ENV_DIR}
