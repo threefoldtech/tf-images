@@ -1,4 +1,4 @@
-exec: bash -c "service webmin start"
+exec: bash -c "/etc/webmin/.start-init"
 oneshot: true
 after: 
   - webmin-config
