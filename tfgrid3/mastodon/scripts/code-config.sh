@@ -4,7 +4,7 @@ set -x
 
 
 # set credi
-pass="${ADMIN_PASSWORD:=pass}"
+pass="${SUPERUSER_PASSWORD:=pass}"
 
 mkdir -p ~/.config/code-server
 touch ~/.config/code-server/config.yaml

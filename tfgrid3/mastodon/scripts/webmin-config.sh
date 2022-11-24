@@ -6,8 +6,8 @@ set -x
 sed -i "0,/ssl=1/ s//ssl=0/" /etc/webmin/miniserv.conf
 
 # set credi
-user="${ADMIN_USERNAME:=user}"
-pass="${ADMIN_PASSWORD:=pass}"
+user="${SUPERUSER_USERNAME:=user}"
+pass="${SUPERUSER_PASSWORD:=pass}"
 
 echo "$user:$pass:0" >> /etc/webmin/miniserv.users
 echo "$user:access privileges" >> /etc/webmin/webmin.acl
