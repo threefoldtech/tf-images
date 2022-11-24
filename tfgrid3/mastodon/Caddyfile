@@ -1,0 +1,7 @@
+:8001 {
+    reverse_proxy :8080
+}
+
+:8002 {
+    reverse_proxy :10000
+}
