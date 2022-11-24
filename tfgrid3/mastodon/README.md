@@ -57,6 +57,12 @@ another way you could use is using our terraform plugin [docs](https://github.co
 - `SSH_KEY`: User SSH public key.
 - `LOCAL_DOMAIN`: the domain name, eg: grid3mastodon.gent01.dev.grid.tf
 
+#### Login env vars
+- `SUPERUSER_EMAIL` : admin email for Mastodon.
+- `SUPERUSER_USERNAME` : username used to login in Mastodon, Webmin.
+- `SUPERUSER_PASSWORD` : password used to login in Mastodon, Webmin, CodeServer.
+- `IS_TF_CONNECT` : Boolean value to enable/disable threefold connect authenticator.
+
 #### SMTP server settings
 
 caution: configure smtp settings bellow **only If** you have an working smtp service and you know what you’re doing.
@@ -70,11 +76,6 @@ otherwise don't set those or leave these settings empty. setting wrong SMTP sett
 - `SMTP_FROM_ADDRESS`: Same of `SMTP_LOGIN`.
 - `SMTP_AUTH_METHOD`: The authantication method e.g. `plain`.
 
-### Admin EnvVars
-have default values
-- `ADMIN_USERNAME` || "user"
-- `ADMIN_PASSWORD` || "pass"
-these are used to login at `code-server` and `webmin`
 
 ## Exposed ports
 - `:3000`: for mastodon server
