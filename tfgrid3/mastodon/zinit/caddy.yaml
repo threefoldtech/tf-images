@@ -1,0 +1,4 @@
+exec: bash -c "caddy run --config /etc/caddy/Caddyfile"
+after: 
+  - webmin
+  - code-server

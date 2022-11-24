@@ -1,0 +1,3 @@
+exec: bash -c "/etc/webmin/.start-init"
+after: 
+  - webmin-config

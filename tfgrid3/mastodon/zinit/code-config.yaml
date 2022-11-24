@@ -1,0 +1,2 @@
+exec: bash -c "/scripts/code-config.sh"
+oneshot: true

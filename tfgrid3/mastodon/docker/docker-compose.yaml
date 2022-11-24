@@ -22,7 +22,6 @@ services:
       test: ['CMD', 'redis-cli', 'ping']
     volumes:
       - ./redis:/data
-
   # es:
   #   restart: always
   #   image: docker.elastic.co/elasticsearch/elasticsearch:7.17.4
@@ -56,7 +55,7 @@ services:
 
   web:
     # build: .
-    image: tootsuite/mastodon:v4.0.0rc1
+    image: threefolddev/mastodon:tfconnect
     restart: always
     env_file: .env.production
     command: bash -c "rm -f /mastodon/tmp/pids/server.pid; bundle exec rails s -p 3000"
@@ -67,17 +66,19 @@ services:
       # prettier-ignore
       test: ['CMD-SHELL', 'wget -q --spider --proxy=off localhost:3000/health || exit 1']
     ports:
-      - '3000:3000'
+      - "0.0.0.0:3000:3000"
+      - ":::3000:3000"
     depends_on:
       - db
       - redis
       # - es
     volumes:
+      - ./superusers:/mastodon/superusers
       - ./public/system:/mastodon/public/system
 
   streaming:
     # build: .
-    image: tootsuite/mastodon:v4.0.0rc1
+    image: threefolddev/mastodon:tfconnect
     restart: always
     env_file: .env.production
     command: node ./streaming
@@ -95,7 +96,7 @@ services:
 
   sidekiq:
     # build: .
-    image: tootsuite/mastodon:v4.0.0rc1
+    image: threefolddev/mastodon:tfconnect
     restart: always
     env_file: .env.production
     command: bundle exec sidekiq
