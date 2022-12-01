@@ -1,0 +1,9 @@
+exec: |
+  bash -c "
+  cd /var/discourse/
+  ./launcher rebuild app
+  "
+
+after:
+  - setup
+  - dockerd
