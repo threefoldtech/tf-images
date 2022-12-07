@@ -10,5 +10,5 @@ user="${SUPERUSER_USERNAME:=user}"
 pass="${SUPERUSER_PASSWORD:=pass}"
 
 echo "$user:$pass:0" >> /etc/webmin/miniserv.users
-echo "$user:access privileges" >> /etc/webmin/webmin.acl
+sed "s/root: /$user:access privileges /g" /etc/webmin/webmin.acl >> /etc/webmin/webmin.acl
 /usr/share/webmin/changepass.pl /etc/webmin $user $pass
