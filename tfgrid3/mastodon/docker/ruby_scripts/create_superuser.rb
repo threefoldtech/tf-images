@@ -2,13 +2,15 @@ username = ENV['SUPERUSER_USERNAME']
 password = ENV['SUPERUSER_PASSWORD']
 email = ENV['SUPERUSER_EMAIL']
 
-account = Account.create!(username: username)
-user = User.create!(
-    email: email,
+owner_role      = UserRole.find_by(name: 'Owner')
+account         = Account.create!(username: username)
+user            = User.create!( email: email,
     password: password,
     account: account,
-    agreement: true
+    agreement: true,
+    role: owner_role
 )
+
 user.confirm
 account.save!
 user.save!
