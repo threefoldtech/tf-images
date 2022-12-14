@@ -1,0 +1,2 @@
+exec: bash -c "/scripts/create-unix-user.sh"
+oneshot: true
