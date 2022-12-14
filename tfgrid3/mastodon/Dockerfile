@@ -38,6 +38,8 @@ RUN sudo apt install -y debian-keyring debian-archive-keyring &&\
     sudo apt update &&\
     sudo apt install caddy
 
+RUN apt-get update && apt-get install -y cron libsocket6-perl
+
 COPY ./scripts/ /scripts/
 COPY ./zinit/ /etc/zinit/
 COPY ./docker /docker/
