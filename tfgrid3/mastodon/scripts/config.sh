@@ -58,7 +58,7 @@ exec |
 	echo 'SESSION_RETENTION_PERIOD'=31556952 >> ${ENV_DIR}
 
 	# Relay conf.
-	echo 'RELAYS_LINKS'= >> ${RELAYS_LINKS}
+	echo 'RELAYS_LINKS'=${RELAYS_LINKS} >> ${ENV_DIR}
 
 	
 	# Remove any space of start of lines 
