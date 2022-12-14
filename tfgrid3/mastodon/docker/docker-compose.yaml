@@ -7,7 +7,7 @@ services:
     networks:
       - internal_network
     healthcheck:
-      test: ['CMD', 'pg_isready', '-U', 'postgres']
+      test: [ 'CMD', 'pg_isready', '-U', 'postgres' ]
     volumes:
       - ./postgres14:/var/lib/postgresql/data
     environment:
@@ -19,7 +19,7 @@ services:
     networks:
       - internal_network
     healthcheck:
-      test: ['CMD', 'redis-cli', 'ping']
+      test: [ 'CMD', 'redis-cli', 'ping' ]
     volumes:
       - ./redis:/data
   # es:
@@ -64,7 +64,11 @@ services:
       - internal_network
     healthcheck:
       # prettier-ignore
-      test: ['CMD-SHELL', 'wget -q --spider --proxy=off localhost:3000/health || exit 1']
+      test:
+        [
+          'CMD-SHELL',
+          'wget -q --spider --proxy=off localhost:3000/health || exit 1'
+        ]
     ports:
       - "0.0.0.0:3000:3000"
       - ":::3000:3000"
@@ -73,7 +77,7 @@ services:
       - redis
       # - es
     volumes:
-      - ./superusers:/mastodon/superusers
+      - ./ruby_scripts:/mastodon/ruby_scripts
       - ./public/system:/mastodon/public/system
 
   streaming:
@@ -87,7 +91,11 @@ services:
       - internal_network
     healthcheck:
       # prettier-ignore
-      test: ['CMD-SHELL', 'wget -q --spider --proxy=off localhost:4000/api/v1/streaming/health || exit 1']
+      test:
+        [
+          'CMD-SHELL',
+          'wget -q --spider --proxy=off localhost:4000/api/v1/streaming/health || exit 1'
+        ]
     ports:
       - '127.0.0.1:4000:4000'
     depends_on:
@@ -109,8 +117,7 @@ services:
     volumes:
       - ./public/system:/mastodon/public/system
     healthcheck:
-      test: ['CMD-SHELL', "ps aux | grep '[s]idekiq\ 6' || false"]
-
+      test: [ 'CMD-SHELL', "ps aux | grep '[s]idekiq 6' || false" ]
   ## Uncomment to enable federation with tor instances along with adding the following ENV variables
   ## http_proxy=http://privoxy:8118
   ## ALLOW_ACCESS_TO_HIDDEN_SERVICE=true
