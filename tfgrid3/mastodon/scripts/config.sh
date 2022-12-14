@@ -56,5 +56,10 @@ exec |
 	echo 'DB_PASS'= >> ${ENV_DIR}
 	echo 'IP_RETENTION_PERIOD'=31556952 >> ${ENV_DIR}
 	echo 'SESSION_RETENTION_PERIOD'=31556952 >> ${ENV_DIR}
+
+	# Relay conf.
+	echo 'RELAYS_LINKS'= >> ${RELAYS_LINKS}
+
+	
 	# Remove any space of start of lines 
 	exec sed -i 's/ //g' ${ENV_DIR}

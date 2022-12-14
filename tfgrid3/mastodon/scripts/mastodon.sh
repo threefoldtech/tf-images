@@ -9,7 +9,8 @@ else
     # Create and migrate the database.
     docker-compose run --rm web bundle exec rails db:setup
     # Create admin user with given email
-    RAILS_ENV=production docker-compose run --rm web bundle exec rails r superusers/create_superuser.rb 
+    RAILS_ENV=production docker-compose run --rm web bundle exec rails r ruby_scripts/create_superuser.rb
+    RAILS_ENV=production docker-compose run --rm web bundle exec rails r ruby_scripts/create_relays.rb
     # Up all containers
     docker-compose up
 fi
