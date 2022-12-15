@@ -11,4 +11,5 @@ else
     # Create admin user with given email
     RAILS_ENV=production docker-compose run --rm web bundle exec rails r ruby_scripts/create_superuser.rb
     RAILS_ENV=production docker-compose run --rm web bundle exec rails r ruby_scripts/create_relays.rb
+    docker-compose up
 fi

@@ -1,6 +1,3 @@
-exec: |
-  bash -c '
-  cd docker && docker-compose up
-  '
+exec: sh -c "./scripts/mastodon.sh"
 after:
-  - handlers
+  - config

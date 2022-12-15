@@ -1,3 +1,0 @@
-exec: sh -c "./scripts/handlers.sh"
-after:
-  - config
