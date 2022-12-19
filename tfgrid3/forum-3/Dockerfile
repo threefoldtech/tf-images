@@ -3,7 +3,7 @@ FROM ubuntu:20.04
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt update && \
-    apt -y install wget curl vim net-tools iputils-ping openssh-server docker.io git
+    apt -y install wget curl vim net-tools iputils-ping openssh-server docker.io git nginx
 
 RUN wget -O /sbin/zinit https://github.com/threefoldtech/zinit/releases/download/v0.2.5/zinit && \
     chmod +x /sbin/zinit
@@ -16,6 +16,7 @@ RUN git clone https://github.com/threefoldtech/discourse_docker.git /var/discour
     chmod 700 containers
 
 COPY scripts /var/discourse
+COPY nginx/* /etc/nginx/conf.d/
 
 WORKDIR /var/discourse
 

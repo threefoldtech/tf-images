@@ -18,3 +18,5 @@ DISCOURSE_SMTP_PASSWORD:
 ```
 
 ### Logs
+You can find most of the logs on the host machine at `/var/discourse/shared/standalone/logs` for all the servers ever hosted on this machine.
+Or inside the docker container at `/var/www/discourse/logs`

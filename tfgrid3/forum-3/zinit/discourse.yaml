@@ -7,3 +7,5 @@ exec: |
 after:
   - setup
   - dockerd
+
+oneshot: true
