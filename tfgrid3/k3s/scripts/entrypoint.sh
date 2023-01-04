@@ -12,7 +12,7 @@ if [ -z "${K3S_FLANNEL_IFACE}" ]; then
 fi
 
 if [ "$K3S_URL" = "" ]; then
-    k3s server --flannel-iface $K3S_FLANNEL_IFACE --no-deploy traefik $K3S_DATA_DIR >> /var/log/k3s-service.log 2>&1
+    k3s server --flannel-iface $K3S_FLANNEL_IFACE $K3S_DATA_DIR >> /var/log/k3s-service.log 2>&1
 else
     k3s agent --flannel-iface $K3S_FLANNEL_IFACE $K3S_DATA_DIR >> /var/log/k3s-service.log 2>&1
 fi

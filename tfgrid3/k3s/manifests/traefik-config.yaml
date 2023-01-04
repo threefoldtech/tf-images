@@ -1,14 +1,10 @@
 apiVersion: helm.cattle.io/v1
-kind: HelmChart
+kind: HelmChartConfig
 metadata:
   name: traefik
   namespace: kube-system
 spec:
-  chart: traefik
-  repo: https://helm.traefik.io/traefik
   valuesContent: |-
-    image:
-      tag: 2.7.0
     additionalArguments:
       - "--certificatesresolvers.default.acme.tlschallenge"
       - "--certificatesresolvers.default.acme.email=dsafsdajfksdhfkjadsfoo@you.com"
