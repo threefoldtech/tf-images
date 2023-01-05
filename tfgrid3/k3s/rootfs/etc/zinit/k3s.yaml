@@ -1,2 +1,1 @@
 exec: sh -c "/bin/bash /scripts/entrypoint.sh"
-log: stdout
