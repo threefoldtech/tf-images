@@ -11,7 +11,7 @@ if [ -z "${K3S_FLANNEL_IFACE}" ]; then
 fi
 
 if [ -z "${K3S_URL}" ]; then
-    k3s server --flannel-iface $K3S_FLANNEL_IFACE $EXTRA_ARGS 2>&1 | tee -a /var/log/k3s-service.log 
+    exec k3s server --flannel-iface $K3S_FLANNEL_IFACE $EXTRA_ARGS 2>&1
 else
-    k3s agent --flannel-iface $K3S_FLANNEL_IFACE $EXTRA_ARGS 2>&1 | tee -a /var/log/k3s-service.log
+    exec k3s agent --flannel-iface $K3S_FLANNEL_IFACE $EXTRA_ARGS 2>&1
 fi
