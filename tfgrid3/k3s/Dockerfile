@@ -13,5 +13,6 @@ RUN export DEBIAN_FRONTEND=noninteractive && apt-get -qy update && \
 COPY rootfs /
 COPY scripts /scripts
 COPY manifests /var/lib/rancher/k3s/server/manifests/
+ENV KUBECONFIG="/etc/rancher/k3s/k3s.yaml"
 
 ENTRYPOINT [ "zinit", "init" ]
