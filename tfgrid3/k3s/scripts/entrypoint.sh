@@ -8,6 +8,19 @@ if [ -z "${K3S_FLANNEL_IFACE}" ]; then
     K3S_FLANNEL_IFACE=eth0
 fi
 
+# Add additional SANs for planetary network IP, public IPv4, and public IPv6  
+# https://github.com/threefoldtech/tf-images/issues/98
+ifaces=( "tun0" "eth1" "eth2" )
+
+for iface in "${ifaces[@]}"
+do
+    addrs="$(ip addr show $iface | grep -E "inet |inet6 "| grep "global" | cut -d '/' -f1 | cut -d ' ' -f6)"
+    for addr in $addrs
+    do
+        EXTRA_ARGS="$EXTRA_ARGS --tls-san $addr"
+    done
+done
+
 if [ -z "${K3S_URL}" ]; then
     exec k3s server --flannel-iface $K3S_FLANNEL_IFACE $EXTRA_ARGS 2>&1
 else
