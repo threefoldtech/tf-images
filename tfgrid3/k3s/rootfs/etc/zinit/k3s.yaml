@@ -1,1 +1,1 @@
-exec: sh -c "/bin/bash /scripts/entrypoint.sh"
+exec: /scripts/entrypoint.sh
