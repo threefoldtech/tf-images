@@ -17,7 +17,8 @@ do
     addrs="$(ip addr show $iface | grep -E "inet |inet6 "| grep "global" | cut -d '/' -f1 | cut -d ' ' -f6)"
     for addr in $addrs
     do
-        EXTRA_ARGS="$EXTRA_ARGS --tls-san $addr"
+        # `ip route get` just used here to validate the ip addr to handle edge caese where parsing could misbehave 
+        ip route get $addr && EXTRA_ARGS="$EXTRA_ARGS --tls-san $addr"
     done
 done
 
