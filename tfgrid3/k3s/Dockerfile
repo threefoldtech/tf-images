@@ -10,10 +10,10 @@ RUN export DEBIAN_FRONTEND=noninteractive && apt-get -qy update && \
     apt-get -qy remove wget && apt-get -qy autoremove && \
     rm -rf /var/lib/apt/lists/* && rm -rf /build/* && unset DEBIAN_FRONTEND
 
+RUN printf '#!/bin/bash\nexport KUBECONFIG=/etc/rancher/k3s/k3s.yaml' >> /etc/profile.d/setkubeconfig.sh
 COPY rootfs /
 COPY scripts /scripts
 RUN chmod +x /scripts/*
 COPY manifests /var/lib/rancher/k3s/server/manifests/
-ENV KUBECONFIG="/etc/rancher/k3s/k3s.yaml"
 
 ENTRYPOINT [ "zinit", "init" ]
