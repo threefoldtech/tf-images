@@ -1,6 +1,9 @@
 FROM php:8.0-apache
 
-ENV MYSQL_ROOT_PASSWORD=test \
+ENV WORDPRESS_DB_USER=wordpress \
+    WORDPRESS_DB_PASSWORD=wordpress \
+    WORDPRESS_DB_NAME=wordpress \
+	MYSQL_ROOT_PASSWORD=test \
     MYSQL_DATABASE=wordpress \
     MYSQL_USER=wordpress \
     MYSQL_PASSWORD=wordpress \
@@ -42,8 +45,7 @@ RUN set -eux; \
 	apt-get install -y --no-install-recommends \
 		bzip2 \
 		openssl \
-		openssh-server \
-		vim \
+		openssh-server\
 		perl \
 		xz-utils \
 		zstd; \
@@ -208,7 +210,6 @@ RUN set -eux; \
 	# https://github.com/docker-library/wordpress/issues/383#issuecomment-507886512
 	# (replace all instances of "%h" with "%a" in LogFormat)
 	find /etc/apache2 -type f -name '*.conf' -exec sed -ri 's/([[:space:]]*LogFormat[[:space:]]+"[^"]*)%h([^"]*")/\1%a\2/g' '{}' +
-# https://wordpress.org/support/article/htaccess/
 COPY .htaccess /usr/src/wordpress/ 
 RUN set -eux; \
 	version='6.1.1'; \
@@ -221,6 +222,7 @@ RUN set -eux; \
 	tar -xzf wordpress.tar.gz -C /usr/src/; \
 	rm wordpress.tar.gz; \
 	\
+	# https://wordpress.org/support/article/htaccess/
 	chown -R www-data:www-data /usr/src/wordpress; \
 	# pre-create wp-content (and single-level children) for folks who want to bind-mount themes, etc so permissions are pre-created properly instead of root:root
 	# wp-content/cache: https://github.com/docker-library/wordpress/issues/534#issuecomment-705733507
