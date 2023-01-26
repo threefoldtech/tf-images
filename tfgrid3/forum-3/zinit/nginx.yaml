@@ -1,0 +1,2 @@
+exec: bash -c "nginx"
+oneshot: true

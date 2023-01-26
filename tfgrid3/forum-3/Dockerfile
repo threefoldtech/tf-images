@@ -17,6 +17,7 @@ RUN git clone https://github.com/threefoldtech/discourse_docker.git /var/discour
 
 COPY scripts /var/discourse
 COPY nginx/* /etc/nginx/conf.d/
+RUN  rm -rf /etc/nginx/sites-*
 
 WORKDIR /var/discourse
 
