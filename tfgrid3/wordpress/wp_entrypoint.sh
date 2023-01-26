@@ -1,10 +1,5 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
-if [[ ! -v WORDPRESS_DB_HOST ]]; then
-	echo "WORDPRESS_DB_HOST not found, set it to MySQL Ip on this machine";
-	export WORDPRESS_DB_HOST="$(hostname -i):3306" ;
-fi
-
 if [[ "$1" == apache2* ]] || [ "$1" = 'php-fpm' ]; then
 	uid="$(id -u)"
 	gid="$(id -g)"
@@ -72,13 +67,18 @@ if [[ "$1" == apache2* ]] || [ "$1" = 'php-fpm' ]; then
 	fi
 
 	wpEnvs=( "${!WORDPRESS_@}" )
-	if [ ! -s wp-config.php ] && [ "${#wpEnvs[@]}" -gt 0 ]; then
+	if [ ! -s wp-config.php ]; then
 		for wpConfigDocker in \
 			wp-config-docker.php \
 			/usr/src/wordpress/wp-config-docker.php \
 		; do
 			if [ -s "$wpConfigDocker" ]; then
 				echo >&2 "No 'wp-config.php' found in $PWD, but 'WORDPRESS_...' variables supplied; copying '$wpConfigDocker' (${wpEnvs[*]})"
+				# if [[ ! -v WORDPRESS_DB_HOST ]]; then
+				# 	echo "WORDPRESS_DB_HOST not found, set it to MySQL Ip on this machine";
+				# 	export WORDPRESS_DB_HOST="$(hostname -i):3306" ;
+				# fi
+
 				# using "awk" to replace all instances of "put your unique phrase here" with a properly unique string (for AUTH_KEY and friends to have safe defaults if they aren't specified with environment variables)
 				awk '
 					/put your unique phrase here/ {
@@ -99,5 +99,5 @@ if [[ "$1" == apache2* ]] || [ "$1" = 'php-fpm' ]; then
 		done
 	fi
 fi
-
+wp core install --url="http://$(hostname -i)" --title="My Site" --admin_user=exampleAdmin --admin_password=securepass --admin_email=exampleAdmin@nowhere.org --allow-root
 exec "$@"

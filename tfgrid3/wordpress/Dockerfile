@@ -1,14 +1,6 @@
 FROM php:8.0-apache
 
-ENV WORDPRESS_DB_USER=wordpress \
-    WORDPRESS_DB_PASSWORD=wordpress \
-    WORDPRESS_DB_NAME=wordpress \
-	MYSQL_ROOT_PASSWORD=test \
-    MYSQL_DATABASE=wordpress \
-    MYSQL_USER=wordpress \
-    MYSQL_PASSWORD=wordpress \
-	GOSU_VERSION=1.14
-
+ENV GOSU_VERSION=1.14 
 # add our user and group first to make sure their IDs get assigned consistently, regardless of whatever dependencies get added
 RUN groupadd -r mysql && useradd -r -g mysql mysql
 
@@ -46,6 +38,7 @@ RUN set -eux; \
 		bzip2 \
 		openssl \
 		openssh-server\
+		vim \
 		perl \
 		xz-utils \
 		zstd; \
@@ -232,7 +225,10 @@ RUN set -eux; \
 		mkdir "wp-content/$dir"; \
 	done; \
 	chown -R www-data:www-data wp-content; \
-	chmod -R 777 wp-content
+	chmod -R 777 wp-content; \
+	curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar; \
+	chmod +x wp-cli.phar; \
+	mv wp-cli.phar /usr/local/bin/wp;
 
 
 COPY --chown=www-data:www-data wp-config-docker.php /usr/src/wordpress/

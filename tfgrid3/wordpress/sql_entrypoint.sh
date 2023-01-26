@@ -1,6 +1,10 @@
 #!/bin/bash
 set -eo pipefail
 shopt -s nullglob
+MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD:-test}
+MYSQL_DATABASE=${MYSQL_DATABASE:-wordpress}
+MYSQL_USER=${MYSQL_USER:-wordpress}
+MYSQL_PASSWORD=${MYSQL_PASSWORD:-passw}
 
 # logging functions
 mysql_log() {
