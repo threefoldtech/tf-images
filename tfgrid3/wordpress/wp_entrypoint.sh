@@ -99,5 +99,18 @@ if [[ "$1" == apache2* ]] || [ "$1" = 'php-fpm' ]; then
 		done
 	fi
 fi
-wp core install --url="http://$(hostname -i)" --title="My Site" --admin_user=exampleAdmin --admin_password=securepass --admin_email=exampleAdmin@nowhere.org --allow-root
+MYSQL_USER=${MYSQL_USER:-wordpress}
+MYSQL_PASSWORD=${MYSQL_PASSWORD:-password}
+ADMIN_EMAIL=${ADMIN_EMAIL:-example@example.com}
+WP_URL=${WP_URL:-"http://$(hostname -i)"}
+wp core install --url=$WP_URL --title="TF wordpress solution" --admin_user=$MYSQL_USER --admin_password=$MYSQL_PASSWORD --admin_email=$ADMIN_EMAIL --allow-root;
+echo "========================WP_CLI========================================="
+echo "Installation is complete. Your info is listed below."
+echo ""
+echo "Username: $MYSQL_USER"
+echo "email: $ADMIN_EMAIL"
+echo "Password: $MYSQL_PASSWORD"
+echo "URL:  $WP_URL"
+echo ""
+echo "======================================================================="
 exec "$@"
