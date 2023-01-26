@@ -4,7 +4,7 @@ shopt -s nullglob
 MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD:-test}
 MYSQL_DATABASE=${MYSQL_DATABASE:-wordpress}
 MYSQL_USER=${MYSQL_USER:-wordpress}
-MYSQL_PASSWORD=${MYSQL_PASSWORD:-passw}
+MYSQL_PASSWORD=${MYSQL_PASSWORD:-password}
 
 # logging functions
 mysql_log() {
