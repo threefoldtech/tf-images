@@ -46,3 +46,13 @@ https://hub.grid.tf/ashraf.3bot/ashraffouda-nixos-latest.flist
 ### Required Env Vars
 
 - `SSH_KEY`: User SSH public key.
+- `NIX_CONFIG`: the nix configuration content, this is saved to /root/default.nix.
+  for example to have python3 installed on the docker you should provide something like this in NIX_CONFIG
+
+```
+{ pkgs ? import <nixpkgs> { } }: let pythonEnv = pkgs.python3.withPackages(ps: [ ]); in pkgs.mkShell { packages = [ pythonEnv ]; }
+```
+
+### Note
+
+the directory `/nix` holds the nix-store files so make sure you have enough space or mount a large disk under `/nix`
