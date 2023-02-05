@@ -39,7 +39,6 @@ RUN set -eux; \
 		openssl \
 		openssh-server\
 		iproute2\
-		vim \
 		perl \
 		xz-utils \
 		zstd; \
