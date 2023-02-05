@@ -102,15 +102,16 @@ fi
 
 # get the ygg ip
 if [[ ! -v WP_URL ]]; then
-    ifaces=( "tun0" "eth2" )
+    ifaces=( "tun0" "eth2" ) 
     for iface in "${ifaces[@]}"
     do
         addrs="$(ip addr show $iface | grep -E "inet |inet6 "| grep "global" | cut -d '/' -f1 | cut -d ' ' -f6)" || true 
         for addr in $addrs
         do
             # `ip route get` just used here to validate the ip addr to handle edge caese where parsing could misbehave 
-            ip route get $addr && WP_URL="http://[$addr]"
+            ip route get $addr && WP_URL="http://[$addr]" && break;
         done
+		[ -v WP_URL ] && break;
     done
 fi
 MYSQL_USER=${MYSQL_USER:-wordpress}
