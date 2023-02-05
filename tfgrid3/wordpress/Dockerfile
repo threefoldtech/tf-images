@@ -38,6 +38,7 @@ RUN set -eux; \
 		bzip2 \
 		openssl \
 		openssh-server\
+		iproute2\
 		vim \
 		perl \
 		xz-utils \
