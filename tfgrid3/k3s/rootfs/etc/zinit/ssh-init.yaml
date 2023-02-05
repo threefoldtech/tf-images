@@ -1,2 +1,2 @@
-exec: sh -c "/bin/bash /scripts/ssh-init.sh"
+exec: /scripts/ssh-init.sh
 oneshot: true

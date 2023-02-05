@@ -13,7 +13,7 @@ docker run -it --name worker -e K3S_URL="https://<MASTER_IP>:6443" -e K3S_TOKEN=
 ```
 
 ## Flist
-https://hub.grid.tf/ahmed_hanafy_1/ahmedhanafy725-k3s-latest.flist
+https://hub.grid.tf/samehabouelsaad.3bot/abouelsaad-k3s_1.26.0-latest.flist
 
 ## entrypoint 
 
