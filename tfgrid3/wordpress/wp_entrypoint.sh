@@ -74,11 +74,6 @@ if [[ "$1" == apache2* ]] || [ "$1" = 'php-fpm' ]; then
 		; do
 			if [ -s "$wpConfigDocker" ]; then
 				echo >&2 "No 'wp-config.php' found in $PWD, but 'WORDPRESS_...' variables supplied; copying '$wpConfigDocker' (${wpEnvs[*]})"
-				# if [[ ! -v WORDPRESS_DB_HOST ]]; then
-				# 	echo "WORDPRESS_DB_HOST not found, set it to MySQL Ip on this machine";
-				# 	export WORDPRESS_DB_HOST="$(hostname -i):3306" ;
-				# fi
-
 				# using "awk" to replace all instances of "put your unique phrase here" with a properly unique string (for AUTH_KEY and friends to have safe defaults if they aren't specified with environment variables)
 				awk '
 					/put your unique phrase here/ {
