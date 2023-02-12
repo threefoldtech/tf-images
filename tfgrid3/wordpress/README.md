@@ -89,3 +89,8 @@ https://hub.grid.tf/kassem.3bot/0om4r-wordpress-0.0.1.flist
   - _Default_: `wp_`
   
 For full list of the ENV vars check the official [Wordpress](https://hub.docker.com/_/wordpress) and [MySQL](https://hub.docker.com/_/mysql) Docker images.
+
+### Open your Wordpress website
+
+- `$WP_URL`: it redirects to wp template.
+- `${WP_URL}/wp-admin`: redirect to wp control panel
