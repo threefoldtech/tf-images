@@ -65,11 +65,6 @@ https://hub.grid.tf/kassem.3bot/0om4r-wordpress-0.0.1.flist
 - `ADMIN_EMAIL`: this will be used in WP_CLI website installation
 - `WP_URL`: this will be used in WP_CLI website installation.
 
-> Those ENVs and some other ENV that not required; if the user provides them they will get overwritten, for example
-    - `MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD:-test}`
-    - `MYSQL_DATABASE=${MYSQL_DATABASE:-wordpress}`
-> **This approach is used for all the essential envs in case the user never provide them**
-
 ### Optional Env Vars
 
 #### MySQL
