@@ -1,0 +1,9 @@
+exec: /bin/bash -c "
+    cd /umbrel;
+    ./scripts/start;
+    " 
+test:  /bin/bash -c "pgrep docker-compose"
+after:
+ - dockerd
+ - yq
+ - config
