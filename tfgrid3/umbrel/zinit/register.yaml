@@ -1,4 +1,2 @@
-exec: /bin/sh -xc "
-    chmod +x /scripts/register.sh;
-    /scripts/register.sh;"
+exec: /bin/sh -xc "/scripts/register.sh;"
 oneshot: true
