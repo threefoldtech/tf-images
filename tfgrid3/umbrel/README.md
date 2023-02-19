@@ -66,7 +66,7 @@ https://hub.grid.tf/kassem.3bot/0om4r-umbrel-0.0.2.flist
 
 - `SSH_KEY`: User SSH public key.
 - `USERNAME`: this will be used in registration to Umbrel dashboard.
-- `PASSWORD`: this will be used in registration, and login to Umbrel dashboard.
+- `PASSWORD`: this will be used in registration, and login to Umbrel dashboard, and must be 12 char or more.
 
 ### Optional Env Vars
 
