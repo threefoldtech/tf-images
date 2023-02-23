@@ -1,0 +1,10 @@
+exec: |
+  bash -c '
+    cd /
+    docker-compose up
+  '
+oneshot: true
+after: 
+  - dockerd
+  - gen-passwords
+  - domain
