@@ -7,8 +7,7 @@ get an ipfs cluster up and running on a VM
 - zinit process manager which is configured with these services:
      - sshd: starting OpenSSH server daemon 
      - ipfs: starting ipfs daemon.
-     - ipfscluster:Initalize the ipfs cluster service.
-     - secret: Adds the Multiaddress of a cluster peer to the peerstore and starts the ipfs cluster daemon. 
+     - ipfscluster: Initalize the ipfs cluster service, Adds the Multiaddress of a cluster peer to the peerstore and starts the ipfs cluster daemon.
      - sshkey: Add the user SSH key to authorized_keys, so he can log in remotely to the host which running this image.
 
 ## Building
@@ -24,6 +23,14 @@ in the grid3_ipfs_cluster directory
 - For the other peers in the cluster environment variables are needed:
 
      `docker run -e "CLUSTER_SECRET=$CLUSTER_SECRET" -e "BOOTSTRAP=$BOOTSTRAP" {user|org}/ipfs_cluster`
+     
+     - You can get a CLUSTER_SECRET from the ~/.ipfs-cluster/service.json file under the cluster section
+     ![Cluster secret](./imgs/cluster.png)
+
+     - You can get the multiaddress of The bootstrap node using the ```ipfs-cluster-ctl id``` command, The node's public IPv4 should be added to it.
+     ![Cluster secret](./imgs/ipfs-cluster-ctl-id.png)
+
+
 
 ## Deploying
 Easiest way to deploy a VM using the flist is to head to to our [playground](https://play.grid.tf) and deploy a Virtual Machine by providing this flist URL.
@@ -33,7 +40,7 @@ Easiest way to deploy a VM using the flist is to head to to our [playground](htt
 ### URL:
 This Flist should be updated to official repo.
 ```
-https://hub.grid.tf/mayarosama.3bot/mayarosama-ipfscluster-latest.flist
+https://hub.grid.tf/mayarosamaa.3bot/mayarosama-ipfscluster-latest.flist
 ```
 
 ### Entrypoint
