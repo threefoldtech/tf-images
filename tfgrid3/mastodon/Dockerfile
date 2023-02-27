@@ -46,7 +46,6 @@ RUN apt-get update && apt-get install -y \
     cron \
     libsocket6-perl \
     caddy && \
-    apt-get -y remove wget && \
     rm -rf /var/lib/apt/lists/*
 
 COPY ./scripts/ /scripts/
