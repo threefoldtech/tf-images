@@ -80,6 +80,6 @@ https://hub.grid.tf/tf-official-apps/umbrel-latest.flist
 
 ## Your Umbrel
 
-- you can login to your Umbrel dashboard simply by navigating to the machine ip and enter your `PASSWORD
+- you can login to your Umbrel dashboard simply by navigating to the machine ip and enter your `PASSWORD`
 
 > **Warning**: Due to the nature of the grid, shutdown, or restart your umbrel from the dashboard **MAY** make some unwanted behaviors.
