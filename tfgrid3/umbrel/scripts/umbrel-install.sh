@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -euox pipefail
+set -eox pipefail
 
 UMBREL_DISK=${UMBREL_DISK:-};
 UMBREL_VERSION="v0.5.3";
