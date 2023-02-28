@@ -76,8 +76,7 @@ https://hub.grid.tf/tf-official-apps/umbrel-latest.flist
 
   - If the UMBREL_DISK not specified, the install path will be `/umbrel`
 
-> Due to the nature of the grid, shutdown, and restart of your umbrel from the dashboard May make some unwanted behaviors.
-For advanced configuration, please check the envs mentioned in [umbrel-dashboard](https://github.com/getumbrel/umbrel-dashboard), [umbrel-manager](https://github.com/getumbrel/umbrel-manager), and [.env-example](https://github.com/getumbrel/umbrel/blob/master/templates/.env-sample) file.
+> For advanced configuration, please check the envs mentioned in [umbrel-dashboard](https://github.com/getumbrel/umbrel-dashboard), [umbrel-manager](https://github.com/getumbrel/umbrel-manager), and [.env-example](https://github.com/getumbrel/umbrel/blob/master/templates/.env-sample) file.
 
 ## Your Umbrel
 
