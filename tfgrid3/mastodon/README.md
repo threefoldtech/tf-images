@@ -46,7 +46,8 @@ another way you could use is using our terraform plugin [docs](https://github.co
 
 ## Flist
 
-- `https://hub.grid.tf/tf-official-apps/mastodo-latest.flist`
+- Official Flist : `https://hub.grid.tf/tf-official-apps/mastodon-latest.flist`
+- Development Flist : `https://hub.grid.tf/omda.3bot/mahmoudemmad-mastodon-latest.flist`
 
 ### Entrypoint
 

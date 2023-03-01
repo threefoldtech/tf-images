@@ -20,9 +20,9 @@ RUN apt-get update && apt-get install -y \
     wget -q http://www.webmin.com/jcameron-key.asc -O- | apt-key add - && \
     add-apt-repository "deb [arch=amd64] http://download.webmin.com/download/repository sarge contrib" && \
     # Codeserver
-    wget https://github.com/cdr/code-server/releases/download/v3.3.1/code-server-3.3.1-linux-amd64.tar.gz &&\
-    tar -xzvf code-server-3.3.1-linux-amd64.tar.gz &&\
-    cp -r code-server-3.3.1-linux-amd64 /usr/lib/code-server &&\
+    wget https://github.com/cdr/code-server/releases/download/v4.10.0/code-server-4.10.0-linux-amd64.tar.gz &&\
+    tar -xzvf code-server-4.10.0-linux-amd64.tar.gz &&\
+    cp -r code-server-4.10.0-linux-amd64 /usr/lib/code-server &&\
     ln -s /usr/lib/code-server/bin/code-server /usr/bin/code-server &&\
     mkdir /var/lib/code-server && \
     # Cady 
