@@ -46,7 +46,8 @@ another way you could use is using our terraform plugin [docs](https://github.co
 
 ## Flist
 
-- `https://hub.grid.tf/tf-official-apps/mastodo-latest.flist`
+- Official Flist : `https://hub.grid.tf/tf-official-apps/mastodon-latest.flist`
+- Development Flist : `https://hub.grid.tf/omda.3bot/mahmoudemmad-mastodon-latest.flist`
 
 ### Entrypoint
 
@@ -62,6 +63,7 @@ another way you could use is using our terraform plugin [docs](https://github.co
 - `SUPERUSER_USERNAME` : username used to login in Mastodon, Webmin.
 - `SUPERUSER_PASSWORD` : password used to login in Mastodon, Webmin, CodeServer.
 - `IS_TF_CONNECT` : Boolean value to enable/disable threefold connect authenticator.
+- `RELAYS_LINKS` : a list of relays links, to connect the instance on fade-verse.
 
 #### SMTP server settings
 

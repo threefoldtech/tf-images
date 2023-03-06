@@ -1,42 +1,52 @@
 FROM ubuntu:20.04
 
-RUN apt-get update && \
-    apt-get install -y apt-transport-https ca-certificates curl gnupg lsb-release && \
-    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg && \
-    echo "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu \
-    $(lsb_release -cs) stable" |  tee /etc/apt/sources.list.d/docker.list > /dev/null && \
+RUN apt-get update && apt-get install -y \
+    gnupg \
+    lsb-release \
+    wget \
+    apt-transport-https \
+    ca-certificates \
+    ufw \
+    openssh-server \
+    software-properties-common \
+    lsb-release && \
+    # Docker
+    wget -qO- https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg && \
+    echo "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list >/dev/null && \
+    # Zinit
+    wget -O /sbin/zinit https://github.com/threefoldtech/zinit/releases/download/v0.2.10/zinit && \
+    chmod +x /sbin/zinit && \
+    # Webmin
+    wget -q http://www.webmin.com/jcameron-key.asc -O- | apt-key add - && \
+    add-apt-repository "deb [arch=amd64] http://download.webmin.com/download/repository sarge contrib" && \
+    # Codeserver
+    wget https://github.com/cdr/code-server/releases/download/v4.10.0/code-server-4.10.0-linux-amd64.tar.gz &&\
+    tar -xzvf code-server-4.10.0-linux-amd64.tar.gz &&\
+    cp -r code-server-4.10.0-linux-amd64 /usr/lib/code-server &&\
+    ln -s /usr/lib/code-server/bin/code-server /usr/bin/code-server &&\
+    mkdir /var/lib/code-server && \
+    # Cady 
+    wget -qO - https://dl.cloudsmith.io/public/caddy/stable/gpg.key | apt-key add - && \
+    echo "deb [trusted=yes] https://dl.cloudsmith.io/public/caddy/stable/deb/debian any-version main" | tee -a /etc/apt/sources.list.d/caddy-stable.list && \
+    # Update and install all required packages.
     apt-get update && \
-    DEBIAN_FRONTEND=noninteractive TZ=Europe/Belgium apt-get install -y docker-ce docker-ce-cli containerd.io \
-    openssh-server sudo ufw nano vim && \
+    DEBIAN_FRONTEND=noninteractive TZ=Europe/Belgium \
+    apt-get -y install \
+    webmin \
+    docker-ce \
+    docker-ce-cli \
+    docker-compose-plugin \
+    containerd.io \
+    iproute2 \
+    htop \
+    net-tools \
+    rsync \
+    mc \ 
+    mcedit \
+    cron \
+    libsocket6-perl \
+    caddy && \
     rm -rf /var/lib/apt/lists/*
-
-RUN curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose && \
-    chmod +x /usr/local/bin/docker-compose
-
-RUN wget -O /sbin/zinit https://github.com/threefoldtech/zinit/releases/download/v0.2.5/zinit && \
-  chmod +x /sbin/zinit 
-
-RUN apt-get update && \ 
-    apt-get install -y iproute2 htop net-tools rsync mc mcedit
-
-RUN apt install -y software-properties-common &&\
-    wget -q http://www.webmin.com/jcameron-key.asc -O- | sudo apt-key add - &&\
-    add-apt-repository "deb [arch=amd64] http://download.webmin.com/download/repository sarge contrib" &&\
-    apt install -y webmin
-
-RUN wget https://github.com/cdr/code-server/releases/download/v3.3.1/code-server-3.3.1-linux-amd64.tar.gz &&\
-    tar -xzvf code-server-3.3.1-linux-amd64.tar.gz &&\
-    sudo cp -r code-server-3.3.1-linux-amd64 /usr/lib/code-server &&\
-    sudo ln -s /usr/lib/code-server/bin/code-server /usr/bin/code-server &&\
-    sudo mkdir /var/lib/code-server
-
-RUN sudo apt install -y debian-keyring debian-archive-keyring &&\
-    curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/gpg.key' | sudo tee /etc/apt/trusted.gpg.d/caddy-stable.asc &&\
-    curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt' | sudo tee /etc/apt/sources.list.d/caddy-stable.list &&\
-    curl https://dl.cloudsmith.io/public/caddy/stable/gpg.key | sudo gpg --yes --dearmor --output /usr/share/keyrings/caddy-stable-archive-keyring.gpg &&\
-    echo 'deb [signed-by=/usr/share/keyrings/caddy-stable-archive-keyring.gpg] https://dl.cloudsmith.io/public/caddy/stable/deb/debian any-version main' | sudo tee /etc/apt/sources.list.d/caddy-stable.list &&\
-    sudo apt update &&\
-    sudo apt install caddy
 
 COPY ./scripts/ /scripts/
 COPY ./zinit/ /etc/zinit/
