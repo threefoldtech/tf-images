@@ -1,2 +1,3 @@
-exec: sh -c "/bin/bash /start.sh"
+exec: bash /start.sh
 log: stdout
+oneshot: true
