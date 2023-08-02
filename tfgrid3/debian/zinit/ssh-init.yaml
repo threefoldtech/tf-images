@@ -1,0 +1,3 @@
+exec: bash /entrypoint.sh
+log: stdout
+oneshot: true

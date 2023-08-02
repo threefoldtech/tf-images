@@ -1,13 +1,13 @@
 FROM debian:12
 
-ENV DEBIAN_FRONTEND=noninteractive 
+RUN apt update && \
+  apt -y install wget openssh-server
 
-RUN apt update
-RUN apt install openssh-server -y
+RUN wget -O /sbin/zinit https://github.com/threefoldtech/zinit/releases/download/v0.2.5/zinit && \
+  chmod +x /sbin/zinit
 
-COPY entrypoint.sh /
-RUN chmod +x /entrypoint.sh
-RUN rm -f /run/nologin
-RUN /bin/echo -e "LANG=\"en_US.UTF-8\"">/etc/default/local
+COPY zinit /etc/zinit
+COPY entrypoint.sh /entrypoint.sh
 
-ENTRYPOINT ["/entrypoint.sh"]
+RUN chmod +x /sbin/zinit && chmod +x /entrypoint.sh
+ENTRYPOINT  ["zinit", "init"]
