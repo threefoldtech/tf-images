@@ -1,6 +1,9 @@
 FROM debian:12
 
-RUN yum install -y openssh-server && yum clean all
+ENV DEBIAN_FRONTEND=noninteractive 
+
+RUN apt update
+RUN apt install openssh-server -y
 
 COPY entrypoint.sh /
 RUN chmod +x /entrypoint.sh
