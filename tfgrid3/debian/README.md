@@ -1,48 +1,98 @@
-# debian-12
+<h1> Debian Bookworm 12 </h1>
 
-## what in this image
-- based on official docker debian 12
-- include preinstalled openssh-server package.
+<h2> Table of Contents </h2>
 
-## Building
+- [Introduction](#introduction)
+- [Building](#building)
+- [Testing](#testing)
+  - [Running](#running)
+  - [Access using SSH](#access-using-ssh)
+- [Deploying on Grid 3](#deploying-on-grid-3)
+  - [Convert the Docker Image to Zero-OS Flist](#convert-the-docker-image-to-zero-os-flist)
+  - [Quick Deployment](#quick-deployment)
+    - [Playground Deployment Steps](#playground-deployment-steps)
+- [Flist](#flist)
+  - [URL:](#url)
+  - [Entrypoint](#entrypoint)
+  - [Required Env Vars](#required-env-vars)
 
-in the debian-12 directory
+***
+
+# Introduction
+
+This Debian Flist is based on the official docker image of Debian v.12 (Bookworm). It includes the preinstalled `openssh-server` package.
+
+# Building
+
+In the debian-12 directory:
 
 `docker build -t {user|org}/grid3_debian:12 .`
-
-## Testing
-### Running
+***
+# Testing
+## Running
 
 ```bash
 docker run -dti -e SSH_KEY="ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDL/IvQhp..." {user|org}/grid3_debian:12
 ```
 
-### Access using SSH
+## Access using SSH
+
 ```bash
 CONTAINER_IP=$(docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' $(docker container ls -lq))
 ssh root@$CONTAINER_IP
 ```
+***
+# Deploying on Grid 3
 
-## Deploying on grid 3
+## Convert the Docker Image to Zero-OS Flist
 
-### convert the docker image to Zero-OS flist
-Easiest way to convert the docker image to Flist is using [Docker Hub Converter tool](https://hub.grid.tf/docker-convert), make sure you already built and pushed the docker image to docker hub before using this tool.
+The easiest way to convert the docker image to Flist is by using the [Docker Hub Converter tool](https://hub.grid.tf/docker-convert). Make sure that you've already built and pushed the docker image to docker hub before using this tool.
 
-### Deploying
-Easiest way to deploy a VM using the flist is to head to to our [playground](https://play.grid.tf) and deploy a Virtual Machine by providing this flist URL.
-make sure to provide the correct entrypoint.
+Note that a docker image has already been converted to an Flist:
 
-another way you could use is using our terraform plugin [docs](https://github.com/threefoldtech/terraform-provider-grid)
-
-## Flist
-### URL:
 ```
-https://hub.grid.tf/tf-official-apps/threefoldtech-debian-12.flist
+https://hub.grid.tf/ahmedthabet.3bot/threefolddev-debian-12.flist
 ```
 
-### Entrypoint
-- `/entrypoint.sh`
+## Quick Deployment
 
+The easiest way to deploy a micro VM using the Debian Flist is to head to to the [ThreeFold Playground](https://play.grid.tf) and deploy a [Micro Virtual Machine](https://play.grid.tf/#/vm) by providing this Flist URL.
 
-### Required Env Vars
-- `SSH_KEY`: User SSH public key.
+Make sure to provide the correct entrypoint (`/sbin/zinit init`). Note that the entrypoint should already be set by default when you open the micro VM page.
+
+You could also use Terraform instead of the Playground to deploy the Debian Micro VM. Read more on this [here](https://github.com/threefoldtech/terraform-provider-grid).
+
+### Playground Deployment Steps
+
+* Go to the [ThreeFold Playground](https://play.grid.tf)
+* Set your profile manager
+* Go to the [Micro VM](https://play.grid.tf/#/vm) page
+* Choose your parameters (name, VM specs, etc.)
+* Enter the Debian Flist under `FList`:
+  * ```
+    https://hub.grid.tf/ahmedthabet.3bot/threefolddev-debian-12.flist
+    ```
+* Make sure the entrypoint is as follows:
+  * ```
+    /sbin/zinit init`
+    ```
+* Choose a 3Node to deploy on
+* Click `Deploy`
+***
+# Flist
+
+## URL:
+
+```
+https://hub.grid.tf/ahmedthabet.3bot/threefolddev-debian-12.flist
+```
+
+## Entrypoint
+```
+/sbin/zinit init`
+```
+
+## Required Env Vars
+
+* `SSH_KEY`: User SSH public key.
+  * This should be set in your profile manager.
