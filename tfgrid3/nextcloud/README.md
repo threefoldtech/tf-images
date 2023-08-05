@@ -7,6 +7,7 @@
 - [Convert the Docker Image to Zero-OS FList](#convert-the-docker-image-to-zero-os-flist)
 - [TFGrid Deployment](#tfgrid-deployment)
   - [Playground Steps](#playground-steps)
+  - [Set the DNS Record for Your Domain](#set-the-dns-record-for-your-domain)
 - [Conclusion](#conclusion)
 
 ***
@@ -101,6 +102,26 @@ You could also use Terraform instead of the Playground to deploy the Nextcloud A
     ```
   * It might take a couple of minutes to start the Nextcloud instance
 * Follow the Nextcloud AIO steps
+
+### Set the DNS Record for Your Domain
+
+* Go to your domain name registrar (e.g. Namecheap)
+  * In the section Advanced DNS, add a DNS A Record to your domain (both @ and www as hosts) and link it with the VM IP Address
+    * Record with @ as host
+      * Type: A Record
+      * Host: @
+      * Value: VM IP Address
+      * TTL: Automatic
+    * Record with www as host
+      * Type: A Record
+      * Host: www
+      * Value: VM IP Address
+      * TTL: Automatic
+  * It might take up to 30 minutes to set the DNS properly.
+  * To check if the A record has been registered, you can use a common DNS checker:
+    * ```
+      https://dnschecker.org/#A/<domain-name>
+      ```
 
 ## Conclusion
 
