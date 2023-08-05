@@ -91,6 +91,7 @@ You could also use Terraform instead of the Playground to deploy the Nextcloud A
           https://hub.grid.tf/idrnd.3bot/logismosis-nextcloudaio-5-latest.flist
           ```
   * Under `Entry Point`, the following should be set by default: `/sbin/zinit init`
+  * Under `Root File System (GB)`, choose at least 8 GB.
   * Under `CPU (vCores)`, choose at least 2 vCores (minimum).
   * Under `Memory (MB)`, choose at least 4096 MB of RAM (minimum).
   * Make sure that `Public IPv4` is enabled (required).
