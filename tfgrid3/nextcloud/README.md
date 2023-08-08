@@ -88,7 +88,7 @@ You could also use Terraform instead of the Playground to deploy the Nextcloud A
           ```
       * Example:
         * ```
-          https://hub.grid.tf/idrnd.3bot/logismosis-nextcloud-aio2-latest.flist
+          https://hub.grid.tf/idrnd.3bot/logismosis-nextcloudaio-latest.flist
           ```
   * Under `Entry Point`, the following should be set by default: `/sbin/zinit init`
   * Under `Root File System (GB)`, choose at least 8 GB.
