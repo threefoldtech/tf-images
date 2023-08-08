@@ -99,7 +99,7 @@ You could also use Terraform instead of the Playground to deploy the Nextcloud A
 * Click `Deploy`.
 * Go to the following URL:
   * ```
-    <VM_IPv4_Address>:8080
+    https://<VM_IPv4_Address>:8080
     ```
   * It might take a couple of minutes to start the Nextcloud instance
 * Follow the Nextcloud AIO steps
