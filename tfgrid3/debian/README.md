@@ -36,7 +36,7 @@ You could also use Terraform instead of the Playground to deploy the Debian Micr
 * Choose your parameters (name, VM specs, etc.)
 * Enter the Debian FList under `FList`:
   * ```
-    https://hub.grid.tf/ahmedthabet.3bot/threefolddev-debian-12.flist
+    https://hub.grid.tf/tf-official-apps/threefoldtech-debian-12.flist
     ```
 * Make sure the entrypoint is as follows:
   * ```
