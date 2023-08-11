@@ -18,6 +18,12 @@ This Nextcloud All-in-One (AIO) FList can be deployed on a micro VM on the Three
 
 To simply deploy the available FList on the ThreeFold Playground, skip to [this section](#playground-steps).
 
+Note that the official FList for Nextcloud All-in-One is the following:
+
+```
+https://hub.grid.tf/tf-official-apps/threefoldtech-nextcloudaio-latest.flist
+```
+
 ***
 
 ## Create the Docker Image
@@ -88,7 +94,7 @@ You could also use Terraform instead of the Playground to deploy the Nextcloud A
           ```
       * Example:
         * ```
-          https://hub.grid.tf/idrnd.3bot/logismosis-nextcloudaio-latest.flist
+          https://hub.grid.tf/tf-official-apps/threefoldtech-nextcloudaio-latest.flist
           ```
   * Under `Entry Point`, the following should be set by default: `/sbin/zinit init`
   * Under `Root File System (GB)`, choose at least 8 GB.
@@ -123,6 +129,8 @@ You could also use Terraform instead of the Playground to deploy the Nextcloud A
     * ```
       https://dnschecker.org/#A/<domain-name>
       ```
+
+Note that you can also use DDNS services such as [DuckDNS](https://www.duckdns.org/) for a domain name.
 
 ## Conclusion
 
