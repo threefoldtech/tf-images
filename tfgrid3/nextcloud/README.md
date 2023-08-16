@@ -87,7 +87,7 @@ You could also use Terraform instead of the Playground to deploy the Nextcloud A
 * In the section `Config`, 
   * Choose a name for your VM under `Name`.
   * Under `VM Image`, select `Other`.
-    * Enter the Debian FList under `FList`:
+    * Enter the Nextcloud FList under `FList`:
       * Template:
         * ```
           https://hub.grid.tf/<3BOT_name.3bot>/<docker_username>-<docker_image_name>-<tagname>.flist
@@ -113,17 +113,11 @@ You could also use Terraform instead of the Playground to deploy the Nextcloud A
 ### Set the DNS Record for Your Domain
 
 * Go to your domain name registrar (e.g. Namecheap)
-  * In the section Advanced DNS, add a DNS A Record to your domain (both @ and www as hosts) and link it with the VM IP Address
-    * Record with @ as host
-      * Type: A Record
-      * Host: @
-      * Value: VM IP Address
-      * TTL: Automatic
-    * Record with www as host
-      * Type: A Record
-      * Host: www
-      * Value: VM IP Address
-      * TTL: Automatic
+  * In the section Advanced DNS, add a DNS A Record to your domain and link it to the VM IPv4 Address
+    * Type: A Record
+    * Host: @
+    * Value: VM IPv4 Address
+    * TTL: Automatic
   * It might take up to 30 minutes to set the DNS properly.
   * To check if the A record has been registered, you can use a common DNS checker:
     * ```
