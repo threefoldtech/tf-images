@@ -11,6 +11,7 @@ done
 echo "After docker info sleep loop." >> /usr/local/bin/nextcloud_installation.md
 
 docker run \
+--init \
 --sig-proxy=false \
 --name nextcloud-aio-mastercontainer \
 --restart always \
