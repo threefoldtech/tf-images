@@ -1,0 +1,11 @@
+exec: |
+  bash -c "
+    export PUB_IP=$(dig +short txt ch whoami.cloudflare @1.0.0.1 | awk -F'\"' '{ print $2}')
+    export SFTP_SERVER_ADDR=http://$PUB_IP:80
+    export ONLYOFFICE_SERVER_ADDR=http://$PUB_IP:81
+    exec /usr/bin/sftpgo serve -c /var/lib/sftpgo
+  "
+
+env:
+  SFTPGO_DEFAULT_ADMIN_USERNAME: admin
+  SFTPGO_DEFAULT_ADMIN_PASSWORD: admin
