@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
+
 if [[ "$1" == apache2* ]] || [ "$1" = 'php-fpm' ]; then
 	uid="$(id -u)"
 	gid="$(id -g)"
@@ -114,6 +115,8 @@ MYSQL_PASSWORD=${MYSQL_PASSWORD:-password}
 ADMIN_EMAIL=${ADMIN_EMAIL:-example@example.com}
 WP_URL=${WP_URL:-"http://$(hostname -i)"}
 wp core install --url=$WP_URL --title="TF wordpress solution" --admin_user=$MYSQL_USER --admin_password=$MYSQL_PASSWORD --admin_email=$ADMIN_EMAIL --allow-root;
+mkdir -p /var/www/html/wp-content/uploads/
+chown -R www-data:www-data /var/www/html/wp-content/uploads/
 echo "========================WP_CLI========================================="
 echo "Installation is complete. Your info is listed below."
 echo ""

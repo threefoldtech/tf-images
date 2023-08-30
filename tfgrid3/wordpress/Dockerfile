@@ -1,6 +1,6 @@
 FROM php:8.0-apache
 
-ENV GOSU_VERSION=1.14 
+ENV GOSU_VERSION 1.16
 # add our user and group first to make sure their IDs get assigned consistently, regardless of whatever dependencies get added
 RUN groupadd -r mysql && useradd -r -g mysql mysql
 
@@ -14,7 +14,7 @@ RUN set -eux; \
 	apt-get update; \
 	apt-get install -y --no-install-recommends ca-certificates wget; \
 	rm -rf /var/lib/apt/lists/*; \
-	wget https://github.com/threefoldtech/zinit/releases/download/v0.2.10/zinit -O /sbin/zinit; \
+	wget https://github.com/threefoldtech/zinit/releases/download/v0.2.12/zinit -O /sbin/zinit; \
 	dpkgArch="$(dpkg --print-architecture | awk -F- '{ print $NF }')"; \
 	wget -O /usr/local/bin/gosu "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$dpkgArch"; \
 	wget -O /usr/local/bin/gosu.asc "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$dpkgArch.asc"; \
@@ -56,13 +56,13 @@ RUN set -eux; \
 	rm -rf "$GNUPGHOME"
 
 ENV MYSQL_MAJOR 8.0
-ENV MYSQL_VERSION 8.0.32-1debian11
+ENV MYSQL_VERSION 8.0.34-1debian11
 
 RUN echo 'deb [ signed-by=/etc/apt/keyrings/mysql.gpg ] http://repo.mysql.com/apt/debian/ bullseye mysql-8.0' > /etc/apt/sources.list.d/mysql.list
 
 # the "/var/lib/mysql" stuff here is because the mysql-server postinst doesn't have an explicit way to disable the mysql_install_db codepath besides having a database already "configured" (ie, stuff in /var/lib/mysql/mysql)
 # also, we set debconf keys to make APT a little quieter
- 
+
 RUN { \
 		echo mysql-community-server mysql-community-server/data-dir select ''; \
 		echo mysql-community-server mysql-community-server/root-pass password ''; \
@@ -144,9 +144,9 @@ RUN set -ex; \
 	apt-mark auto '.*' > /dev/null; \
 	apt-mark manual $savedAptMark; \
 	ldd "$extDir"/*.so \
-		| awk '/=>/ { print $3 }' \
+		| awk '/=>/ { so = $(NF-1); if (index(so, "/usr/local/") == 1) { next }; gsub("^/(usr/)?", "", so); print so }' \
 		| sort -u \
-		| xargs -r dpkg-query -S \
+		| xargs -r dpkg-query --search \
 		| cut -d: -f1 \
 		| sort -u \
 		| xargs -rt apt-mark manual; \
@@ -193,20 +193,21 @@ RUN set -eux; \
 	{ \
 		echo 'RemoteIPHeader X-Forwarded-For'; \
 	# these IP ranges are reserved for "private" use and should thus *usually* be safe inside Docker
-		echo 'RemoteIPTrustedProxy 10.0.0.0/8'; \
-		echo 'RemoteIPTrustedProxy 172.16.0.0/12'; \
-		echo 'RemoteIPTrustedProxy 192.168.0.0/16'; \
-		echo 'RemoteIPTrustedProxy 169.254.0.0/16'; \
-		echo 'RemoteIPTrustedProxy 127.0.0.0/8'; \
+		echo 'RemoteIPInternalProxy 10.0.0.0/8'; \
+		echo 'RemoteIPInternalProxy 172.16.0.0/12'; \
+		echo 'RemoteIPInternalProxy 192.168.0.0/16'; \
+		echo 'RemoteIPInternalProxy 169.254.0.0/16'; \
+		echo 'RemoteIPInternalProxy 127.0.0.0/8'; \
 	} > /etc/apache2/conf-available/remoteip.conf; \
 	a2enconf remoteip; \
 	# https://github.com/docker-library/wordpress/issues/383#issuecomment-507886512
 	# (replace all instances of "%h" with "%a" in LogFormat)
 	find /etc/apache2 -type f -name '*.conf' -exec sed -ri 's/([[:space:]]*LogFormat[[:space:]]+"[^"]*)%h([^"]*")/\1%a\2/g' '{}' +
+# https://wordpress.org/support/article/htaccess/
 COPY .htaccess /usr/src/wordpress/ 
 RUN set -eux; \
-	version='6.1.1'; \
-	sha1='80f0f829645dec07c68bcfe0a0a1e1d563992fcb'; \
+	version='6.3.1'; \
+	sha1='052777aef40e7f627c63c8a26eefe37b843a44df'; \
 	\
 	curl -o wordpress.tar.gz -fL "https://wordpress.org/wordpress-$version.tar.gz"; \
 	echo "$sha1 *wordpress.tar.gz" | sha1sum -c -; \
@@ -215,7 +216,6 @@ RUN set -eux; \
 	tar -xzf wordpress.tar.gz -C /usr/src/; \
 	rm wordpress.tar.gz; \
 	\
-	# https://wordpress.org/support/article/htaccess/
 	chown -R www-data:www-data /usr/src/wordpress; \
 	# pre-create wp-content (and single-level children) for folks who want to bind-mount themes, etc so permissions are pre-created properly instead of root:root
 	# wp-content/cache: https://github.com/docker-library/wordpress/issues/534#issuecomment-705733507
@@ -225,7 +225,7 @@ RUN set -eux; \
 		mkdir "wp-content/$dir"; \
 	done; \
 	chown -R www-data:www-data wp-content; \
-	chmod -R 777 wp-content; \
+	chmod -R 1777 wp-content; \
 	curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar; \
 	chmod +x wp-cli.phar; \
 	mv wp-cli.phar /usr/local/bin/wp;
