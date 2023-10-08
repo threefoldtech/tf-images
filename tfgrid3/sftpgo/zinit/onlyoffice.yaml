@@ -1,0 +1,12 @@
+exec: |
+  bash -c '
+    /app/ds/run-document-server.sh
+  '
+env:
+  PRODUCT_NAME: documentserver
+  PG_VERSION: 14
+  DS_DOCKER_INSTALLATION: true
+  PRODUCT_EDITION: 
+  COMPANY_NAME: onlyoffice
+  JWT_ENABLED: false
+  REDIS_SERVER_HOST: localhost
