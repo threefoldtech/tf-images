@@ -1,7 +1,7 @@
 include /etc/nginx/includes/http-common.conf;
 server {
-  listen 0.0.0.0:81;
-  listen [::]:81 default_server;
+  listen 0.0.0.0:4000;
+  listen [::]:4000 default_server;
   server_tokens off;
   
   set $secure_link_secret verysecretstring;
