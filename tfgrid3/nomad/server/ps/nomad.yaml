@@ -1,0 +1,3 @@
+exec: nomad agent -config /etc/nomad.d
+after:
+  - configure-node
