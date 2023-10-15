@@ -1,0 +1,2 @@
+exec: bash -c "bash /var/discourse/setup"
+oneshot: true

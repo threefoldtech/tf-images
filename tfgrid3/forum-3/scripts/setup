@@ -1,0 +1,15 @@
+#!/bin/bash
+
+set -x
+
+cd /var/discourse
+
+cp samples/standalone.yml containers/app.yml
+
+for var in DISCOURSE_HOSTNAME DISCOURSE_SMTP_USER_NAME DISCOURSE_SMTP_ADDRESS DISCOURSE_DEVELOPER_EMAILS DISCOURSE_SMTP_PORT DISCOURSE_SMTP_PASSWORD; do
+    if [ -z "${!var}" ]; then
+        echo "$var not found."
+    else
+        sed -i "/$var/c\  $var: ${!var}" containers/app.yml
+    fi
+done
