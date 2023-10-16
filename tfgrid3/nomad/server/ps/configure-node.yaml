@@ -1,0 +1,13 @@
+exec: |
+  bash -c '
+  mkdir /etc/nomad.d && cat > /etc/nomad.d/nomad.hcl << EOF
+  data_dir  = "/opt/nomad/data"
+  datacenter = "dc1"
+
+  server {
+    enabled          = true
+    bootstrap_expect = 3
+  }
+  EOF
+  '
+oneshot: true

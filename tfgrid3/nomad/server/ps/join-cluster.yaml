@@ -1,0 +1,11 @@
+exec: |
+  bash -c '
+    if [ ! -z "$FIRST_SERVER_IP" ]; then
+      while ! nc -z $FIRST_SERVER_IP 4647 </dev/null; do sleep 1; done
+      while ! nc -z localhost 4646 </dev/null; do sleep 1; done
+      exec nomad server join $FIRST_SERVER_IP
+    fi
+  '
+oneshot: true
+after:
+  - nomad
