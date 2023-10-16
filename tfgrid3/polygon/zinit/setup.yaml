@@ -1,0 +1,4 @@
+exec: bash /etc/scripts/setup.sh
+oneshot: true
+after:
+  - network
