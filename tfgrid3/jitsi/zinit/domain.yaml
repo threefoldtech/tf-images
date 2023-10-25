@@ -1,0 +1,8 @@
+exec: bash -c "  sed -i 's|meet.example.com|'"$JITSI_DOMAIN"'|g' '../.env' "
+
+oneshot: true
+
+after: 
+  - gen-passwords
+
+
