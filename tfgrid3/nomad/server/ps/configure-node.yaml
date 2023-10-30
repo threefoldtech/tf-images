@@ -6,7 +6,7 @@ exec: |
 
   server {
     enabled          = true
-    bootstrap_expect = 3
+    bootstrap_expect = ${NOMAD_SERVERS:-1}
   }
   EOF
   '
