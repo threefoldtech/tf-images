@@ -1,3 +1,1 @@
-exec: /usr/bin/dockerd
-after:
-  - containerd
+exec: /usr/bin/dockerd --data-root /mnt/data/docker
