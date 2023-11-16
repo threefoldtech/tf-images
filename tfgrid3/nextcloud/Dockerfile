@@ -17,6 +17,6 @@ RUN sh /usr/local/bin/install-docker.sh
 COPY ./Caddyfile /etc/caddy/
 COPY ./scripts/ /scripts/
 COPY ./zinit/ /etc/zinit/
-RUN chmod +x /sbin/zinit && chmod +x /scripts/*.sh
+RUN chmod +x /scripts/*.sh
 
 ENTRYPOINT ["/sbin/zinit", "init"]
