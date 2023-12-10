@@ -5,6 +5,6 @@ ENV TERM=xterm
 RUN apt update && \
   apt -y install curl wget git make build-essential sudo unzip vim libgc-dev
 RUN wget 'https://github.com/vlang/v/releases/download/weekly.2022.16/v_linux.zip' && unzip v_linux.zip && cd v &&  sudo ./v symlink
-RUN wget 'https://raw.githubusercontent.com/freeflowuniverse/crystaltools/development-fix-install/install.sh'
+RUN wget 'https://raw.githubusercontent.com/freeflowuniverse/crystaltools/development/install.sh'
 RUN bash install.sh
 
