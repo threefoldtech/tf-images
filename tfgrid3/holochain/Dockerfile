@@ -9,3 +9,21 @@ RUN curl -sSL "https://github.com/threefoldtech/mycelium/releases/download/${MYC
 ENV PATH="/usr/local/bin:${PATH}"
 
 RUN curl https://holochain.github.io/holochain/setup.sh | bash
+
+RUN apt install openssh-server -y
+RUN nix-env -iA nixpkgs.mc
+RUN curl -fsSL https://code-server.dev/install.sh | sh
+
+# Copy entrypoint script
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
+ENV PATH="/root/.nix-profile/bin:${PATH}"
+RUN echo PATH=${PATH} >> /root/.bashrc
+
+# Expose SSH port
+EXPOSE 22
+# Expose code-server port
+EXPOSE 8080
+
+# Set the entry point to the custom script
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
