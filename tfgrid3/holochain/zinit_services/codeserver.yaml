@@ -1,0 +1,9 @@
+exec: |
+  bash -c '
+    export PASSWORD="password"
+    if [ -n "$CODE_SERVER_PASSWORD" ]; then
+       export PASSWORD=$CODE_SERVER_PASSWORD
+    fi
+    exec code-server --bind-addr "[::]:8080"
+
+  '
