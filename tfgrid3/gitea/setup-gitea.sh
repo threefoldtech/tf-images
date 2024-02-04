@@ -13,6 +13,10 @@ wget -O gitea https://dl.gitea.io/gitea/1.15.5/gitea-1.15.5-linux-amd64
 # Make the Gitea binary executable
 chmod +x gitea
 
+su git
+
+gitea 
+
 # Create the required directory structure
 mkdir -p /var/lib/gitea/{custom,data,log}
 chown -R git:git /var/lib/gitea/
