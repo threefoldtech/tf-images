@@ -24,15 +24,18 @@ ENTRYPOINT ["zinit", "init"]
 # Add the Gitea setup script 
 COPY setup-gitea.sh /setup-gitea.sh
 RUN chmod +x /setup-gitea.sh
+COPY app.ini /data/gitea/conf/app.ini
+
 
 # Run the Gitea setup script
 RUN /bin/bash /setup-gitea.sh
 
-# Expose ports for Gitea, SSH, and Nginx
-EXPOSE 3000 22 80
+CMD ["/usr/bin/s6-svscan", "/etc/s6"]
+
+
 
 # Switch to the non-root user
-USER git
+USER gitea
 
 
 # Set working directory
@@ -46,3 +49,6 @@ RUN apt-get install -y nginx
 
 # Start Nginx on container startup
 CMD ["nginx", "-g", "daemon off;"]
+
+# Expose ports for Gitea, SSH, and Nginx
+EXPOSE 3000 22 80
