@@ -16,13 +16,14 @@ COPY start.sh /start.sh
 COPY app.ini /data/gitea/conf/app.ini
 
 # Set permissions for zinit and startup script
-RUN chmod +x /sbin/zinit && chmod +x /start.sh && chmod +x /setup-gitea.sh
+RUN chmod +x /sbin/zinit && chmod +x /start.sh
 
 # Run zinit init as entrypoint
 ENTRYPOINT ["zinit", "init"]
 
 # Add the Gitea setup script 
 COPY setup-gitea.sh /setup-gitea.sh
+RUN chmod +x /setup-gitea.sh
 
 # Run the Gitea setup script
 RUN /bin/bash /setup-gitea.sh

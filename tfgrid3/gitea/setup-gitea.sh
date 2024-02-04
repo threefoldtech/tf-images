@@ -15,8 +15,6 @@ chmod +x gitea
 
 su git
 
-gitea 
-
 # Create the required directory structure
 mkdir -p /var/lib/gitea/{custom,data,log}
 chown -R git:git /var/lib/gitea/
