@@ -1,0 +1,4 @@
+exec: sh -c 'exec /root/hero/bin/hero bootstrap -d'
+oneshot: true
+after:
+  - redis

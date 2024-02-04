@@ -1,0 +1,9 @@
+exec: |
+  bash -c '
+    export PASSWORD="password"
+    if [ -n "$DAGU_PASSWORD" ]; then
+       export PASSWORD=$DAGU_PASSWORD
+    fi
+    exec dagu server -p 8081
+    exec /scripts/mycelium.vsh
+  '

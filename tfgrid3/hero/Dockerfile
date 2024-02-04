@@ -39,7 +39,6 @@ RUN bash -x /tmp/hero_install.sh
 # Copy entrypoint script
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
-ENV PATH="/usr/local/go/bin:${PATH}"
 RUN echo PATH=${PATH} >> /root/.bashrc
 
 # Expose SSH port
