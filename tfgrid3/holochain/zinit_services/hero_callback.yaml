@@ -1,4 +1,0 @@
-exec: sh -c 'exec /root/hero/bin/hero callback $HOMEIP'
-oneshot: true
-after:
-  - redis
