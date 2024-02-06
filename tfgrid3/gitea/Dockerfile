@@ -2,7 +2,7 @@ FROM ubuntu:22.04
 
 # Install dependencies
 RUN apt update && \
-  apt -y install wget openssh-server sudo
+  apt -y install wget openssh-server sudo sqlite3
 
 # Install zinit
 RUN wget -O /sbin/zinit https://github.com/threefoldtech/zinit/releases/download/v0.2.5/zinit && \
@@ -10,45 +10,26 @@ RUN wget -O /sbin/zinit https://github.com/threefoldtech/zinit/releases/download
 
 # Copy zinit configuration and startup script
 COPY zinit /etc/zinit
-COPY start.sh /start.sh
+COPY ssh-key.sh /ssh-key.sh
 
 # Copy app.ini to Gitea data directory
 COPY app.ini /data/gitea/conf/app.ini
 
 # Set permissions for zinit and startup script
-RUN chmod +x /sbin/zinit && chmod +x /start.sh
-
-# Run zinit init as entrypoint
-ENTRYPOINT ["zinit", "init"]
+RUN chmod +x /sbin/zinit && chmod +x /ssh-key.sh
 
 # Add the Gitea setup script 
 COPY setup-gitea.sh /setup-gitea.sh
 RUN chmod +x /setup-gitea.sh
-COPY app.ini /data/gitea/conf/app.ini
-
 
 # Run the Gitea setup script
-RUN /bin/bash /setup-gitea.sh
-
-CMD ["/usr/bin/s6-svscan", "/etc/s6"]
-
-
+# RUN /bin/bash /setup-gitea.sh
 
 # Switch to the non-root user
-USER gitea
+USER root
 
+# Expose ports for Gitea, SSH
+EXPOSE 3000 22
 
-# Set working directory
-WORKDIR /data/gitea
-
-# Command to start Gitea with SQLite
-CMD ["/usr/local/bin/gitea", "web", "--config", "/data/gitea/conf/app.ini"]
-
-# Install Nginx
-RUN apt-get install -y nginx
-
-# Start Nginx on container startup
-CMD ["nginx", "-g", "daemon off;"]
-
-# Expose ports for Gitea, SSH, and Nginx
-EXPOSE 3000 22 80
+# Run zinit init as entrypoint
+ENTRYPOINT ["zinit", "init"]

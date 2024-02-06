@@ -1,0 +1,5 @@
+exec: |
+  bash -c '
+    # Start the Gitea service
+    /usr/local/bin/gitea web -c /etc/gitea/app.ini
+  '
