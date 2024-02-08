@@ -3,7 +3,7 @@ FROM ubuntu:jammy
 RUN export DEBIAN_FRONTEND=noninteractive &&\
     apt update &&\ 
     apt install  xfce4 xfce4-goodies tigervnc-common tigervnc-xorg-extension tigervnc-standalone-server tigervnc-viewer tigervnc-tools\
-    curl htop tmux screen mc wget iproute2 rsync dnsutils xz-utils sudo openssh-server vim libatomic1 redis-server -y
+    curl htop tmux screen mc wget iproute2 rsync dnsutils xz-utils sudo openssh-server vim libatomic1 redis-server firefox -y
 
 # Installing hero
 RUN curl -fsSL https://raw.githubusercontent.com/freeflowuniverse/crystallib/development/scripts/installer_hero.sh | bash
