@@ -5,7 +5,6 @@ exec: |
     export DAGU_IS_BASICAUTH=1
     export DAGU_BASICAUTH_USERNAME
     export DAGU_BASICAUTH_PASSWORD
-    export HOST_IP=$(wget -qO - https://ipinfo.io/ip --timeout=20)
-    exec dagu server -p 8081 -s ${HOST_IP}
+    exec dagu server -s :: -p 8081
 
   '
