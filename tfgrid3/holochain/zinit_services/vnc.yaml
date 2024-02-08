@@ -1,0 +1,17 @@
+exec: |
+  bash -c '
+    export VNC_PASSWORD="password"
+    if [ -n "$VNC_SERVER_PASSWORD" ]; then
+      export VNC_PASSWORD=$VNC_SERVER_PASSWORD
+    fi
+    
+    mkdir /root/.vnc    
+
+    touch /root/.vnc/passwd
+    chmod 600 /root/.vnc/passwd
+    echo $VNC_PASSWORD | vncpasswd -f > /root/.vnc/passwd
+
+    exec tigervncserver :1 -localhost no -geometry 1024x768 -depth 32
+  '
+oneshot: true
+

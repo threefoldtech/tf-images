@@ -18,6 +18,11 @@ ENV PATH="/root/.nix-profile/bin:${PATH}"
 RUN nix-env -iA nixpkgs.mc
 RUN curl -fsSL https://code-server.dev/install.sh | sh
 
+# Insatll vnc
+RUN export DEBIAN_FRONTEND=noninteractive && \
+apt install lxde -y && \
+apt install tigervnc-common tigervnc-xorg-extension tigervnc-standalone-server tigervnc-viewer tigervnc-tools -y
+
 # Copy entrypoint script
 RUN  curl -sSL "https://github.com/threefoldtech/zinit/releases/download/v0.2.14/zinit" -o /sbin/zinit &&\
     chmod +x /sbin/zinit
