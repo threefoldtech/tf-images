@@ -10,6 +10,9 @@ ENV PATH="/root/hero/bin:${PATH}"
 # remove lines from 46-48 which checks for systemd
 RUN curl  https://holochain.github.io/holochain/setup.sh  | sed -e '42,49d'  | bash
 
+# install dagu
+RUN curl -L https://raw.githubusercontent.com/yohamta/dagu/main/scripts/downloader.sh | bash
+
 ENV PATH="/root/.nix-profile/bin:${PATH}"
 RUN nix-env -iA nixpkgs.mc
 RUN curl -fsSL https://code-server.dev/install.sh | sh
@@ -27,6 +30,8 @@ RUN chmod +x /scripts/*.sh
 EXPOSE 22
 # Expose code-server port
 EXPOSE 8080
+# Expose dagu port
+EXPOSE 8081
 
 ENTRYPOINT ["/sbin/zinit", "init"]
 
