@@ -11,7 +11,8 @@ ENV PATH="/root/hero/bin:${PATH}"
 RUN curl  https://holochain.github.io/holochain/setup.sh  | sed -e '42,49d'  | bash
 
 # install dagu
-RUN curl -L https://raw.githubusercontent.com/yohamta/dagu/main/scripts/downloader.sh | bash
+RUN curl -L https://raw.githubusercontent.com/yohamta/dagu/main/scripts/downloader.sh | bash &&\
+    mv dagu /usr/local/bin
 
 ENV PATH="/root/.nix-profile/bin:${PATH}"
 RUN nix-env -iA nixpkgs.mc
