@@ -1,7 +1,9 @@
 FROM ubuntu:jammy
 
-RUN apt update &&\ 
-    apt install curl xz-utils sudo openssh-server vim libatomic1 redis-server -y
+RUN export DEBIAN_FRONTEND=noninteractive &&\
+    apt update &&\ 
+    apt install  xfce4 xfce4-goodies tigervnc-common tigervnc-xorg-extension tigervnc-standalone-server tigervnc-viewer tigervnc-tools\
+    curl htop tmux screen mc wget iproute2 rsync dnsutils xz-utils sudo openssh-server vim libatomic1 redis-server -y
 
 # Installing hero
 RUN curl -fsSL https://raw.githubusercontent.com/freeflowuniverse/crystallib/development/scripts/installer_hero.sh | bash
@@ -17,11 +19,6 @@ RUN curl -L https://raw.githubusercontent.com/yohamta/dagu/main/scripts/download
 ENV PATH="/root/.nix-profile/bin:${PATH}"
 RUN nix-env -iA nixpkgs.mc
 RUN curl -fsSL https://code-server.dev/install.sh | sh
-
-# Insatll vnc
-RUN export DEBIAN_FRONTEND=noninteractive && \
-apt install lxde -y && \
-apt install tigervnc-common tigervnc-xorg-extension tigervnc-standalone-server tigervnc-viewer tigervnc-tools -y
 
 # Copy entrypoint script
 RUN  curl -sSL "https://github.com/threefoldtech/zinit/releases/download/v0.2.14/zinit" -o /sbin/zinit &&\
