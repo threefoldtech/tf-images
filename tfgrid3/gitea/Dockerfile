@@ -8,6 +8,10 @@ RUN apt update && \
 RUN wget -O /sbin/zinit https://github.com/threefoldtech/zinit/releases/download/v0.2.5/zinit && \
   chmod +x /sbin/zinit
 
+# Install Caddy
+RUN wget -O /usr/bin/caddy https://github.com/caddyserver/caddy/releases/download/v2.7.6/caddy_2.7.6_linux_amd64.tar.gz
+RUN chmod +x /usr/bin/caddy
+
 # Copy zinit configuration and startup script
 COPY zinit /etc/zinit
 COPY ssh-key.sh /ssh-key.sh
@@ -22,14 +26,8 @@ RUN chmod +x /sbin/zinit && chmod +x /ssh-key.sh
 COPY setup-gitea.sh /setup-gitea.sh
 RUN chmod +x /setup-gitea.sh
 
-# Run the Gitea setup script
-# RUN /bin/bash /setup-gitea.sh
-
-# Switch to the non-root user
-USER root
-
-# Expose ports for Gitea, SSH
-EXPOSE 3000 22
+# Expose ports for Gitea, SSH, and Caddy
+EXPOSE 3000 22 80
 
 # Run zinit init as entrypoint
 ENTRYPOINT ["zinit", "init"]
