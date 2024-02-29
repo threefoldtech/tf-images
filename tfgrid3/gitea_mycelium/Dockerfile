@@ -46,8 +46,8 @@ RUN DOCKER_CONFIG=${DOCKER_CONFIG:-/usr/local/lib/docker/cli-plugins} && \
     ln -s $DOCKER_CONFIG/docker-compose /usr/local/bin/docker-compose
 
 # Install Caddy
-RUN CADDY_VERSION=$(curl -s https://api.github.com/repos/caddyserver/caddy/releases/latest | grep 'tag_name' | cut -d '"' -f 4) && \
-    curl -Lo /tmp/caddy.tar.gz "https://github.com/caddyserver/caddy/releases/download/${CADDY_VERSION}/caddy_${CADDY_VERSION}_linux_$(dpkg --print-architecture).tar.gz" && \
+RUN CADDY_VERSION=$(curl -s https://api.github.com/repos/caddyserver/caddy/releases/latest | grep 'tag_name' | cut -d '"' -f 4 | sed 's/^v//') && \
+    curl -Lo /tmp/caddy.tar.gz "https://github.com/caddyserver/caddy/releases/download/v${CADDY_VERSION}/caddy_${CADDY_VERSION}_linux_$(dpkg --print-architecture).tar.gz" && \
     tar -xzf /tmp/caddy.tar.gz -C /usr/bin caddy 
 
 # Cleaning up
