@@ -1,0 +1,4 @@
+exec: /bin/sh -eux -c "
+    chmod +x /usr/local/bin/export_env.sh;
+    /usr/local/bin/export_env.sh;"
+oneshot: true
