@@ -1,0 +1,6 @@
+- name: docker_compose_up
+  exec:
+    - cmd: docker-compose -f /docker/docker-compose.yml up -d
+  after:
+    - gitea_env_init
+  oneshot: true
