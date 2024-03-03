@@ -1,4 +1,2 @@
-exec: /bin/sh -eux -c "
-    chmod +x /usr/local/bin/export_env.sh;
-    /usr/local/bin/export_env.sh;"
+exec: bash -c 'env | grep "GITEA__" > /docker/.env'
 oneshot: true
