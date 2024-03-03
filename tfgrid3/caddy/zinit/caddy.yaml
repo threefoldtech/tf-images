@@ -1,0 +1,5 @@
+exec: bash -c "caddy run"
+after: 
+  - root
+oneshot: true
+

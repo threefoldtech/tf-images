@@ -1,0 +1,4 @@
+exec: bash -c "sed -i 's|localhost:9000|'"$ROOT"'|g' /Caddyfile"
+after: 
+  - clone
+
