@@ -21,6 +21,6 @@ RUN wget -O /sbin/zinit https://github.com/threefoldtech/zinit/releases/download
 RUN mkdir -p /etc/zinit
 COPY zinit /etc/zinit
 COPY Caddyfile /Caddyfile
-
+EXPOSE 9000
 
 ENTRYPOINT [ "/sbin/zinit", "init" ]

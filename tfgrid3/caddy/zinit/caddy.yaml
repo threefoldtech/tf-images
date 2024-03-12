@@ -1,5 +1,9 @@
-exec: bash -c "caddy run"
+exec: |
+  bash -c '
+    mv Caddyfile /$ROOT
+    cd /$ROOT
+    caddy run
+  '
 after: 
-  - root
+  - domain
 oneshot: true
-

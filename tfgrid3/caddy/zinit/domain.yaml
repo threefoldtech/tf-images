@@ -1,0 +1,4 @@
+exec: bash -c " if [ ! -z "$USER_DOMAIN" ]; then sed -i 's|:9000|'"$USER_DOMAIN"'|g' /Caddyfile; fi"
+after: 
+  - clone
+oneshot: true
