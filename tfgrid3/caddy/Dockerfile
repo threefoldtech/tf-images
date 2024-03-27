@@ -12,9 +12,6 @@ RUN  apt install -y debian-keyring debian-archive-keyring apt-transport-https cu
     apt install caddy 
 RUN    apt install -y git
 
-RUN curl -sL https://deb.nodesource.com/setup_16.x -o /tmp/nodesource_setup.sh && \
-    bash /tmp/nodesource_setup.sh
-
 RUN wget -O /sbin/zinit https://github.com/threefoldtech/zinit/releases/download/v0.2.5/zinit && \
     chmod +x /sbin/zinit
 
