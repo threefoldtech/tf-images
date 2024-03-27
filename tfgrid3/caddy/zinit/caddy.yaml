@@ -1,0 +1,8 @@
+exec: |
+  bash -c '
+    cd /$ROOT
+    caddy run
+  '
+after: 
+  - caddyfile
+
