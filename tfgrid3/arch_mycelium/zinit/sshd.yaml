@@ -1,0 +1,4 @@
+exec: /bin/sh  -c " set -x ; 
+      /usr/sbin/sshd;"
+after: 
+  - ssh_config

@@ -1,0 +1,4 @@
+exec: docker-compose -f /docker/docker-compose.yaml up -d
+after:
+    - dockerd
+oneshot: true

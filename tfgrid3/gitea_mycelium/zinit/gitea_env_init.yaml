@@ -1,0 +1,2 @@
+exec: bash -c 'env | grep "GITEA__" > /docker/.env'
+oneshot: true
