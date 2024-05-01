@@ -1,0 +1,4 @@
+exec: "redis-server /etc/redis/redis.conf"
+test: "redis-cli ping"
+oneshot: true
+

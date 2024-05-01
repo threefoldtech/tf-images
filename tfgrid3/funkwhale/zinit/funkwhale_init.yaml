@@ -1,0 +1,6 @@
+exec: /bin/sh -eux -c "
+    chmod +x /usr/local/bin/funkwhale_init.sh;
+    /usr/local/bin/funkwhale_init.sh;"
+oneshot: true
+after:
+      - postgresql

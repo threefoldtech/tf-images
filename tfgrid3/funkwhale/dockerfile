@@ -1,0 +1,64 @@
+FROM ubuntu:22.04
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Basic setup
+RUN apt-get update && \
+    apt-get upgrade -y && \
+    apt-get install -y wget curl software-properties-common openssh-server ufw postgresql postgresql-contrib unzip python3 python3-venv openssl sudo && \
+    apt install -y $(curl https://dev.funkwhale.audio/funkwhale/funkwhale/-/raw/1.4.0/deploy/requirements.apt)
+
+# Download and install latest zinit
+RUN curl -s https://api.github.com/repos/threefoldtech/zinit/releases/latest | \
+    grep "browser_download_url" | \
+    cut -d '"' -f 4 | \
+    wget -qi - -O /sbin/zinit
+RUN chmod +x /sbin/zinit
+
+# Add zinit config files
+ADD zinit /etc/zinit/
+
+# init config files
+COPY scripts/ufw.sh /usr/local/bin/
+COPY scripts/funkwhale_init.sh /usr/local/bin/
+
+# Install Caddy 
+RUN apt install -y debian-keyring debian-archive-keyring apt-transport-https  && \
+    curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/gpg.key' |  gpg --dearmor -o /usr/share/keyrings/caddy-stable-archive-keyring.gpg && \
+    curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt' | tee /etc/apt/sources.list.d/caddy-stable.list && \
+    apt update && \
+    apt install caddy
+
+# Create Funkwhale user and setup directories
+RUN useradd --system --shell /bin/bash --create-home --home-dir /srv/funkwhale funkwhale && \
+    mkdir -p /srv/funkwhale/config /srv/funkwhale/api /srv/funkwhale/data/static /srv/funkwhale/data/media /srv/funkwhale/data/music /srv/funkwhale/front && \
+    chown -R funkwhale:funkwhale /srv/funkwhale
+
+# Download Funkwhale artifacts
+RUN cd /srv/funkwhale && \
+    curl -L -o "api-1.4.0.zip" "https://dev.funkwhale.audio/funkwhale/funkwhale/-/jobs/artifacts/1.4.0/download?job=build_api" && \
+    unzip "api-1.4.0.zip" -d extracted && \
+    mv extracted/api/* api/ && \
+    rm -rf extracted api-1.4.0.zip && \
+    curl -L -o "front-1.4.0.zip" "https://dev.funkwhale.audio/funkwhale/funkwhale/-/jobs/artifacts/1.4.0/download?job=build_front" && \
+    unzip "front-1.4.0.zip" -d extracted && \
+    mv extracted/front/* front/ && \
+    rm -rf extracted front-1.4.0.zip
+
+# Set up Python virtual environment
+RUN python3 -m venv /srv/funkwhale/venv && \
+    /srv/funkwhale/venv/bin/pip install --upgrade pip wheel && \
+    /srv/funkwhale/venv/bin/pip install --editable /srv/funkwhale/api
+
+# Set up environment file
+RUN DJANGO_SECRET_KEY=$(openssl rand -base64 45) && \
+    echo "DJANGO_SECRET_KEY=$DJANGO_SECRET_KEY" > /srv/funkwhale/config/.env && \
+    echo "CACHE_URL=redis://127.0.0.1:6379/0" >> /srv/funkwhale/config/.env && \
+    chown funkwhale:funkwhale /srv/funkwhale/config/.env && \
+    chmod 600 /srv/funkwhale/config/.env
+
+# Cleaning up
+RUN rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+# Setup entry command
+CMD ["/sbin/zinit", "init", "--container"]

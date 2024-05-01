@@ -1,0 +1,3 @@
+exec: "sh -c 'cd /srv/funkwhale/api && . /srv/funkwhale/config/.env && /srv/funkwhale/venv/bin/celery --app funkwhale_api.taskapp beat --loglevel INFO'"
+after:
+    - funkwhale_init

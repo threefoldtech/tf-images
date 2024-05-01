@@ -1,0 +1,5 @@
+exec: "/etc/init.d/postgresql start"
+test: "pg_isready -U postgres"
+oneshot: true
+after:
+    - redis
