@@ -5,7 +5,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 # Basic setup
 RUN apt-get update && \
     apt-get upgrade -y && \
-    apt-get install -y wget curl software-properties-common openssh-server ufw postgresql postgresql-contrib unzip python3 python3-venv openssl sudo && \
+    apt-get install -y wget curl software-properties-common openssh-server ufw postgresql postgresql-contrib unzip python3 python3-venv openssl sudo nginx certbot python3-certbot-nginx gettext vim && \
     apt install -y $(curl https://dev.funkwhale.audio/funkwhale/funkwhale/-/raw/1.4.0/deploy/requirements.apt)
 
 # Download and install latest zinit
@@ -50,9 +50,12 @@ RUN python3 -m venv /srv/funkwhale/venv && \
     /srv/funkwhale/venv/bin/pip install --upgrade pip wheel && \
     /srv/funkwhale/venv/bin/pip install --editable /srv/funkwhale/api
 
+# Download funkwhale env
+RUN curl -L -o /srv/funkwhale/config/.env "https://dev.funkwhale.audio/funkwhale/funkwhale/raw/1.4.0/deploy/env.prod.sample"
+
 # Set up environment file
 RUN DJANGO_SECRET_KEY=$(openssl rand -base64 45) && \
-    echo "DJANGO_SECRET_KEY=$DJANGO_SECRET_KEY" > /srv/funkwhale/config/.env && \
+    echo "DJANGO_SECRET_KEY=$DJANGO_SECRET_KEY" >> /srv/funkwhale/config/.env && \
     echo "CACHE_URL=redis://127.0.0.1:6379/0" >> /srv/funkwhale/config/.env && \
     chown funkwhale:funkwhale /srv/funkwhale/config/.env && \
     chmod 600 /srv/funkwhale/config/.env
