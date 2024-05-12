@@ -1,2 +1,0 @@
-#!/bin/bash
-curl -s ipinfo.io | jq ".ip" | tr -d '"' > /tmp/checkipaddr

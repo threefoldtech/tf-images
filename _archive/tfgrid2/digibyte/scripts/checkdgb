@@ -1,8 +1,0 @@
-#!/usr/bin/env bash
-if pgrep -x "digibyted" > /dev/null
-then
-    echo "OK" > /tmp/checkdgb
-else
-    echo "NO" > /tmp/checkdgb
-    /opt/dgb/bin/digibyted -conf=/dgb/digibyte.conf > /dev/null 2>&1
-fi

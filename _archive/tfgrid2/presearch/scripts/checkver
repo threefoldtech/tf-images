@@ -1,2 +1,0 @@
-#!/bin/bash
-cat /var/www/localhost/htdocs/node.log | grep -i presearch-node | awk '{print $NF}' > /tmp/checkpsver

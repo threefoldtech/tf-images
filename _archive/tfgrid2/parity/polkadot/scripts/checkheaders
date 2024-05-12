@@ -1,2 +1,0 @@
-#!/usr/bin/env bash
-curl -s localhost:9615/metrics | grep -i "sync_target" | awk '{print $2}' > /tmp/checkheaders

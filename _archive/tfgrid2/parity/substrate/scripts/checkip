@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-nodeip=`curl -s ipinfo.io | jq .ip | tr -d '"'`
-echo $nodeip > /tmp/checkip

@@ -1,2 +1,0 @@
-#!/usr/bin/env bash
-ps -eo pid,comm,etime,args | grep "[p]olkadot" | awk '{print $3}' > /tmp/checkuptime

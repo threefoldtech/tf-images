@@ -1,2 +1,0 @@
-#!/usr/bin/env bash
-tail -n 100 /var/www/html/node.log > /tmp/checklogs
