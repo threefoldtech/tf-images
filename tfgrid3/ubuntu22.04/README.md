@@ -1,3 +1,4 @@
+# Creating Minimal Ubuntu Jammy FLIST : A Step-by-Step Guide
 ## Install arch-install-scripts package to use arch-chroot
 ```
 sudo apt install arch-install-scripts -y
@@ -7,7 +8,9 @@ sudo apt install arch-install-scripts -y
 ```
 mkdir ubuntu-jammy
 sudo debootstrap jammy ubuntu-jammy http://archive.ubuntu.com/ubuntu
-# Enter the new environment using arch-chroot.
+```
+### Enter the new environment using arch-chroot.
+```
 arch-chroot ubuntu-jammy/
 ```
 
@@ -46,8 +49,8 @@ sudo mv ubuntu-jammy/boot/vmlinuz-5.15.0-25-generic.elf ubuntu-jammy/boot/vmlinu
 tar -czf ubuntu-jammy.tar.gz -C ubuntu-jammy .
 ```
 
-# Uploading flist
-# From the hub you can generate api key to use
+## Uploading flist
+### From the hub you can generate api key to use
 ```
 clsecret="$API_KEY"
 curl -X Post -H "Authorization: Bearer ${clsecret}" -F "file=@ubuntu-jammy.tar.gz"  https://hub.grid.tf/api/flist/me/upload
