@@ -8,7 +8,7 @@ This script automates the setup, configuration, archiving, and uploading of an U
 
 ```bash
 chmod +x ubuntu22-flist-builder.sh
-./ubuntu22-flist-builder.sh
+./ubuntu22-flist-builder.sh ${your_api_key_here}
 ```
 
 ## Manual Process

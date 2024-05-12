@@ -6,6 +6,14 @@ if [ "$(id -u)" -ne 0 ]; then
 	        exit 1
 fi
 
+# Check if API_KEY provided or not
+if [ -z "$1" ]; then
+    echo "Usage: $0 <API_KEY>"
+    exit 2
+fi
+
+API_KEY=$1
+
 # Install arch-install-scripts package to use arch-chroot
 apt-get update
 apt-get install arch-install-scripts -y
