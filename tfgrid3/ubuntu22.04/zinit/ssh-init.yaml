@@ -1,3 +1,0 @@
-exec: bash /start.sh
-log: stdout
-oneshot: true
