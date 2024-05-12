@@ -1,26 +1,20 @@
-# centos-8
+# centos-stream9
 
 ## what in this image
-- based on official docker centos 8
+- based on Quay.io official CentOS stream 9
 - include preinstalled openssh-server package.
 
 ## Building
 
-in the centos-8 directory
+in the centos-stream9 directory
 
-`docker build -t {user|org}/grid3_centos:8 .`
+`docker build -t {user|org}/grid3_centos:stream9 .`
 
 ## Testing
 ### Running
 
 ```bash
-docker run -dti -e SSH_KEY="ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDL/IvQhp..." {user|org}/grid3_centos:8
-```
-
-### Access using SSH
-```bash
-CONTAINER_IP=$(docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' $(docker container ls -lq))
-ssh root@$CONTAINER_IP
+docker run -dti {user|org}/grid3_centos:stream9
 ```
 
 ## Deploying on grid 3

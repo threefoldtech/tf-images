@@ -14,13 +14,7 @@ in the alpine-3 directory
 ### Running
 
 ```bash
-docker run -dti -e SSH_KEY="ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDL/IvQhp..." {user|org}/grid3_alpine:3
-```
-
-### Access using SSH
-```bash
-CONTAINER_IP=$(docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' $(docker container ls -lq))
-ssh root@$CONTAINER_IP
+docker run -dti {user|org}/grid3_alpine:3
 ```
 
 ## Deploying on grid 3
