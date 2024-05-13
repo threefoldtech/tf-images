@@ -5,6 +5,7 @@ ssh-keygen -A
 
 # add user key to authorized_keys
 mkdir -p /root/.ssh
+echo $SSH_KEY >> /root/.ssh/authorized_keys
 if [ ! -f "/nix/store" ]; then
     NIX_VERSION=2.3.14
     mkdir -p -m 0755 /nix && USER=root sh nix-${NIX_VERSION}-$(uname -m)-linux/install
