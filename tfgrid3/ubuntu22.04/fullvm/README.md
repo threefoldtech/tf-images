@@ -1,4 +1,4 @@
-# Creating Minimal Ubuntu Jammy FLIST : A Step-by-Step Guide
+# Creating Minimal Ubuntu Jammy FullVM FLIST : A Step-by-Step Guide
 
 ## Automated Process
 
@@ -10,7 +10,7 @@ This script automates the setup, configuration, archiving, and uploading of an U
 chmod +x ubuntu22-flist-builder.sh
 ./ubuntu22-flist-builder.sh ${your_api_key_here}
 ```
-
+---
 ## Manual Process
 
 ### Install arch-install-scripts package to use arch-chroot
@@ -69,4 +69,6 @@ tar -czf ubuntu-jammy.tar.gz -C ubuntu-jammy .
 clsecret="$API_KEY"
 curl -X Post -H "Authorization: Bearer ${clsecret}" -F "file=@ubuntu-jammy.tar.gz"  https://hub.grid.tf/api/flist/me/upload
 ```
-
+---
+## Testing 
+ - For now test it through terraform  
