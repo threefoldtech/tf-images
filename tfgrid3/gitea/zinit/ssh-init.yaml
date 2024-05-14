@@ -1,0 +1,3 @@
+exec: bash /ssh-key.sh
+log: stdout
+oneshot: true
