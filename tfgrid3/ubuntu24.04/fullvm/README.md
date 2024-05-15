@@ -10,7 +10,7 @@ This script automates the setup, configuration, archiving, and uploading of an U
 chmod +x ubuntu24-fullvm-flist-builder.sh
 ./ubuntu24-fullvm-flist-builder.sh ${your_api_key_here}
 ```
-
+---
 ## Manual Process
 
 ### Install arch-install-scripts package to use arch-chroot
@@ -69,4 +69,7 @@ tar -czf ubuntu-noble.tar.gz -C ubuntu-noble .
 clsecret="$API_KEY"
 curl -X Post -H "Authorization: Bearer ${clsecret}" -F "file=@ubuntu-noble.tar.gz"  https://hub.grid.tf/api/flist/me/upload
 ```
+---
 
+## Testing 
+ - For now test it through terraform 
