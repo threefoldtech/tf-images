@@ -59,7 +59,7 @@ extract-vmlinux ubuntu-noble/boot/vmlinuz | tee ubuntu-noble/boot/vmlinuz-6.8.0-
 mv ubuntu-noble/boot/vmlinuz-6.8.0-31-generic.elf ubuntu-noble/boot/vmlinuz-6.8.0-31-generic
 
 # Create a compressed archive of the configured system for uploading to hub.
-tar -czf ubuntu-24.04.tar.gz -C ubuntu-noble .
+tar -czf ubuntu-24.04_fullvm.tar.gz -C ubuntu-noble .
 
 # Upload flist
 # Ensure API_KEY is set
@@ -68,4 +68,4 @@ if [ -z "$API_KEY" ]; then
 	        exit 2
 fi
 
-curl -X POST -H "Authorization: Bearer $API_KEY" -F "file=@ubuntu-24.04.tar.gz" https://hub.grid.tf/api/flist/me/upload
+curl -X POST -H "Authorization: Bearer $API_KEY" -F "file=@ubuntu-24.04_fullvm.tar.gz" https://hub.grid.tf/api/flist/me/upload
