@@ -1,4 +1,5 @@
-FROM centos:8
+FROM quay.io/centos/centos:stream9
+
 RUN yum install -y openssh-server && yum clean all
 
 COPY entrypoint.sh /
