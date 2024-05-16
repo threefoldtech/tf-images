@@ -59,7 +59,7 @@ extract-vmlinux ubuntu-jammy/boot/vmlinuz | tee ubuntu-jammy/boot/vmlinuz-5.15.0
 mv ubuntu-jammy/boot/vmlinuz-5.15.0-25-generic.elf ubuntu-jammy/boot/vmlinuz-5.15.0-25-generic
 
 # Create a compressed archive of the configured system for uploading to hub.
-tar -czf ubuntu-jammy.tar.gz -C ubuntu-jammy .
+tar -czf ubuntu-22.04.tar.gz -C ubuntu-jammy .
 
 # Upload flist
 # Ensure API_KEY is set
@@ -68,4 +68,4 @@ if [ -z "$API_KEY" ]; then
 	        exit 2
 fi
 
-curl -X POST -H "Authorization: Bearer $API_KEY" -F "file=@ubuntu-jammy.tar.gz" https://hub.grid.tf/api/flist/me/upload
+curl -X POST -H "Authorization: Bearer $API_KEY" -F "file=@ubuntu-22.04.tar.gz" https://hub.grid.tf/api/flist/me/upload
