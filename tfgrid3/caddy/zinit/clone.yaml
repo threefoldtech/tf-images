@@ -1,2 +1,0 @@
-exec:  bash -c 'git clone $GITHUB_URL'
-oneshot: true

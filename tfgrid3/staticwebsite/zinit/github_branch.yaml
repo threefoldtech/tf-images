@@ -1,6 +1,6 @@
 exec: |
   bash -c '
-  cd /$ROOT
+  cd /website
     if [ ! -z "$GITHUB_BRANCH" ]; then
       git checkout $GITHUB_BRANCH -q
     fi
