@@ -1,0 +1,15 @@
+exec: |
+  bash -c '
+
+    touch /Caddyfile
+    chmod 700 /Caddyfile
+    if [ ! -z "$USER_DOMAIN" ]; then
+      echo -e "$USER_DOMAIN { \n root * /$HTML_DIR \n file_server \n }" >> /Caddyfile
+    else 
+      echo -e ":9000 { \n root * /$HTML_DIR \n file_server \n}" >> /Caddyfile
+    fi
+  '
+
+after: 
+  - github_branch
+oneshot: true

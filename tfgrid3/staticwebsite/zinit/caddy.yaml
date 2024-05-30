@@ -1,0 +1,7 @@
+exec: |
+  bash -c '
+    caddy run
+  '
+after: 
+  - caddyfile
+
