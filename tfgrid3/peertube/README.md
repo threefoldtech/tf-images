@@ -51,7 +51,7 @@ convert to flist using the [tf-docker-converter](https://hub.grid.tf)
 
 ### Use
 
-- Rus as a contianer
+- Run as a container
 
 ```
 docker run -d -p <host-port>:9000 -v <host-volume>:/data --env-file ./.env <docker-username>/peertube:<version>
