@@ -1,2 +1,2 @@
-exec: bash -c 'env | grep "GITEA__" > /docker/.env'
+exec: bash -c 'genv=$(env | grep "GITEA__"); [[ -n "$genv" ]] && echo "$genv" > /docker/.env || echo "No GITEA__ vars found"'
 oneshot: true
