@@ -1,0 +1,25 @@
+timeout: 10m
+format: sarif
+dependency-tree: true
+list-all-pkgs: true
+exit-code: 0
+output: 'trivy-results.sarif'
+ignore-unfixed: true
+severity:
+  - HIGH
+  - CRITICAL
+scan:
+  security-checks:
+      scanners:
+        - vuln
+        - misconfig
+        - secret
+        - license
+    
+vulnerability:
+  type:
+    - os
+    - library
+  ignore-unfixed: true
+db:
+  skip-update: false
