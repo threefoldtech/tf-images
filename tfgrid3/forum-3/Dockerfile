@@ -5,7 +5,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN apt update && \
     apt -y install wget curl vim net-tools iputils-ping openssh-server docker.io git nginx
 
-RUN wget -O /sbin/zinit https://github.com/threefoldtech/zinit/releases/download/v0.2.5/zinit && \
+RUN wget -O /sbin/zinit https://github.com/threefoldtech/zinit/releases/download/v0.2.14/zinit && \
     chmod +x /sbin/zinit
 
 RUN mkdir -p /etc/zinit
