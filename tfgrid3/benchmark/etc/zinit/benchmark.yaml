@@ -1,0 +1,4 @@
+exec: /etc/periodic/15min/benchmark
+oneshot: true
+after:
+  - write-env

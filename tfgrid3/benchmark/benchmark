@@ -1,0 +1,29 @@
+#!/bin/sh
+
+. /root/.env
+
+cpudata=$(cpubench -j | jq '"single=\(.single),multi=\(.multi),threads=\(.threads)"' -r)
+
+
+curl --request POST \
+"${INFLUX_URL}/api/v2/write?org=${INFLUX_ORG}&bucket=${INFLUX_BUCKET}&precision=s" \
+--header "Authorization: Token ${INFLUX_TOKEN}" \
+--header "Content-Type: text/plain; charset=utf-8" \
+--header "Accept: application/json" \
+--data-binary "cpu,node=${NODE_ID},farm=${FARM_ID} ${cpudata} $(date +%s)"
+
+fiodata=$(fio --name=write_throughput --directory=/fio --numjobs=4 --size=1G --time_based --runtime=1m --ramp_time=2s --ioengine=libaio --direct=1 --verify=0 --bs=1M --iodepth=64 --rw=write --group_reporting=1 --iodepth_batch_submit=64 --iodepth_batch_complete_max=64 --output-format=json+ | jq -r '"write_io_bytes=\(.jobs[0].write.io_bytes),
+write_bw_bytes=\(.jobs[0].write.bw_bytes),
+write_iops=\(.jobs[0].write.iops),
+write_latency_min_ns=\(.jobs[0].write.lat_ns.min),
+write_latency_max_ns=\(.jobs[0].write.lat_ns.max),
+write_latency_mean_ns=\(.jobs[0].write.lat_ns.mean)"'| tr -d '\n')
+
+rm -rf /fio/*
+
+curl --request POST \
+"${INFLUX_URL}/api/v2/write?org=${INFLUX_ORG}&bucket=${INFLUX_BUCKET}&precision=s" \
+--header "Authorization: Token ${INFLUX_TOKEN}" \
+--header "Content-Type: text/plain; charset=utf-8" \
+--header "Accept: application/json" \
+--data-binary "io,node=${NODE_ID},farm=${FARM_ID} ${fiodata} $(date +%s)"
