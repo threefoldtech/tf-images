@@ -9,6 +9,4 @@ if [ ! -z "$SSH_KEY" ]; then
     
     chmod 700 /root/.ssh
     chmod 600 /root/.ssh/authorized_keys
-
-    echo "$SSH_KEY" >> /root/.ssh/authorized_keys
 fi
