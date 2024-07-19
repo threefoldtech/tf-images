@@ -1,0 +1,3 @@
+exec: /scripts/zos_boot_generator.sh
+after:
+  - sshd
