@@ -1,5 +1,9 @@
 #!/bin/bash
 
+mkdir -p ./program
+
+cd ./program
+
 git clone https://github.com/threefoldtech/0-bootstrap
 cd 0-bootstrap
 
@@ -13,5 +17,3 @@ sed -i "s/http:\/\/default\.tld/https:\/\/$domain_name\.$domain_tld/g" config.py
 cat db/schema.sql | sqlite3 db/bootstrap.sqlite3
 
 bash setup/template.sh
-
-python3 bootstrap.py

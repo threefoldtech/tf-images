@@ -1,0 +1,3 @@
+exec: /scripts/python.sh
+after:
+  - zos_boot_generator.sh
