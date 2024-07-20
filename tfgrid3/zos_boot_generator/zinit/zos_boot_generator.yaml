@@ -1,3 +1,4 @@
 exec: /scripts/zos_boot_generator.sh
+oneshot: true
 after:
   - sshd
