@@ -1,5 +1,5 @@
 #!/bin/bash
 
-cd ./program/0-bootstrap
+cd /code/0-bootstrap
 
 python3 bootstrap.py

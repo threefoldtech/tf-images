@@ -14,6 +14,12 @@ RUN wget -O /sbin/zinit https://github.com/threefoldtech/zinit/releases/download
 RUN wget -O /sbin/caddy 'https://caddyserver.com/api/download?os=linux&arch=amd64&p=github.com%2Fcaddyserver%2Freplace-response&idempotency=43631173212363' && \
   chmod +x /sbin/caddy
 
+RUN mkdir -p /code && \
+  cd /code && \
+  git clone https://github.com/threefoldtech/0-bootstrap && \
+  cd 0-bootstrap && \
+  bash setup/template.sh
+
 COPY ./scripts/ /scripts/
 COPY ./zinit/ /etc/zinit/
 RUN chmod +x /scripts/*.sh

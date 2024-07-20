@@ -1,3 +1,3 @@
 #!/bin/bash
 
-caddy reverse-proxy -r --from ${DOMAIN} --to :5555
+caddy reverse-proxy -r --from $DOMAIN --to :5555
