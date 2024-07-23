@@ -15,7 +15,7 @@
 
 ## Introduction
 
-This Z-OS Boot Generator FList can be deployed on a micro VM on the ThreeFold Grid, either via the TF Dashboard, or Terraform. This FList uses `Ubuntu 22.04` and also includes the preinstalled `openssh-server` package. Docker is installed directly from [www.get.docker.com](https://get.docker.com/). This FList  Z-OS Boot Generator is installed based on the latest Z-OS Boot Generator release from the Docker Hub.
+This Z-OS Boot Generator FList can be deployed on a micro VM on the ThreeFold Grid, either via the TF Dashboard, or Terraform. This FList uses `Ubuntu 22.04` and also includes the preinstalled `openssh-server` package. This FList  Z-OS Boot Generator is installed based on the latest Z-OS Boot Generator release from the Docker Hub.
 
 To simply deploy the available FList on the ThreeFold Dashboard, skip to [this section](#dashboard-steps).
 
