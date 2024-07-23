@@ -1,0 +1,4 @@
+exec: /scripts/dashboard_suite.sh
+oneshot: true
+after:
+  - sshd
