@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Go to the network directory
-cd /code/grid_deployment/docker-compose/${NETWORK}net
+cd /mnt/disk/code/grid_deployment/docker-compose/${NETWORK}net
 
 git checkout branch development_pv_2
 

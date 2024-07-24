@@ -14,9 +14,11 @@ RUN curl -fsSL https://get.docker.com -o /usr/local/bin/install-docker.sh && \
 
 RUN sh /usr/local/bin/install-docker.sh
 
-RUN mkdir -p /code && \
-  cd /code && \
+RUN mkdir -p /mnt/disk/code && \
+  cd /mnt/disk/code && \
   git clone https://github.com/threefoldtech/grid_deployment
+
+RUN mkdir -p /mnt/disk/docker
 
 COPY ./Caddyfile /etc/caddy/
 COPY ./scripts/ /scripts/

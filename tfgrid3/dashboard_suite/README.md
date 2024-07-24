@@ -105,11 +105,15 @@ You could also use Terraform instead of the Dashboard to deploy the Dashboard Su
           https://hub.grid.tf/tf-official-apps/threefoldtech-dashboard_suite-latest.flist
           ```
   * Under `Entry Point`, the following should be set by default: `/sbin/zinit init`
-  * `Select instance capacity` should be at 8 vcores, 1000GB of SSD and 32GB of RAM.
+  * `Select instance capacity` should be at 8 vcores, 50GB of SSD and 32GB of RAM.
   * Make sure that `IPv4` and `IPv6` are enabled (required).
-* In the tab `Environment Variables`. Click on the `plus` button then add 3 variables:
+* In the tab `Environment Variables`, click on the `plus` button then add 3 variables:
   * `DOMAIN` for `Name` and your domain (e.g. `example.com`) for `Value`.
   * `SEED` for `Name` and your TF seed phrase of the network you want to deploy the Dashboard Suite on (main, dev or test) (e.g. `main`) for `Value`.
+* In the tab `Disks`, click on the `plus` button then add the disk:
+  * `Name`: choose a name
+  * `Size (GB)`: choose a size, minimum 750 GB
+  * `Mount Point`: `/mnt/disk`
 * Click `Deploy`.
 
 ## DNS Settings
