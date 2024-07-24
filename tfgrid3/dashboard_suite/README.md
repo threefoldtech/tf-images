@@ -134,6 +134,8 @@ The following table explicitly shows how to set the A and AAAA records for your 
 
 As stated above, each network instance must be on its own VM or machine to work properly. Make sure to adjust the DNS records accordingly.
 
+> Note: For the deployment process, we set a simple status html webpage at the domain URL, e.g. example.com. To acces this, set a DNS A record with host `@` to the IPv4 address.
+
 ## Access the Dashboard Suite
 
 You can now access the Dashboard Suite at the associated domains:
