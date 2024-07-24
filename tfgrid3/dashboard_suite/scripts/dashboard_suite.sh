@@ -1,9 +1,15 @@
 #!/bin/bash
 
+# Download the repo and create the directories
+mkdir -p /mnt/disk/code
+cd /mnt/disk/code
+git clone https://github.com/threefoldtech/grid_deployment
+cd /mnt/disk/code/grid_deployment
+
+# Temporary: got to working branch
+git checkout development_pv_2
 # Go to the network directory
 cd /mnt/disk/code/grid_deployment/docker-compose/${NETWORK}net
-
-git checkout branch development_pv_2
 
 # Copy the secret env file
 cp .secrets.env-example .secrets.env
@@ -21,4 +27,4 @@ sed -i "s/ACTIVATION_SERVICE_MNEMONIC\=\"\"/ACTIVATION_SERVICE_MNEMONIC\=\"${SEE
 sed -i "s/GRID_PROXY_MNEMONIC\=\"\"/GRID_PROXY_MNEMONIC\=\"${SEED}\"/g" .secrets.env
 
 # Load and deploy the TFGrid Stack
-yes y | sh install_grid_bknd.sh
+yes y | sh install_grid_bknd.sh

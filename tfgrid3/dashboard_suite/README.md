@@ -47,11 +47,11 @@ To create the the Dashboard Suite image, clone this repository, then build and p
     ```
 * Build the image:
   * ```
-    docker build -t <docker_username>/dashboard_suite .
+    sudo docker build -t <docker_username>/dashboard_suite .
     ```
 * Push the image to the Docker Hub:
   * ```
-    docker push <your_username>/dashboard_suite
+    sudo docker push <your_username>/dashboard_suite
     ```
  
 
@@ -105,11 +105,12 @@ You could also use Terraform instead of the Dashboard to deploy the Dashboard Su
           https://hub.grid.tf/tf-official-apps/threefoldtech-dashboard_suite-latest.flist
           ```
   * Under `Entry Point`, the following should be set by default: `/sbin/zinit init`
-  * `Select instance capacity` should be at 8 vcores, 50GB of SSD and 32GB of RAM.
+  * `Select instance capacity` should be at least 8 vcores, 50GB of SSD and 24GB of RAM.
   * Make sure that `IPv4` and `IPv6` are enabled (required).
 * In the tab `Environment Variables`, click on the `plus` button then add 3 variables:
   * `DOMAIN` for `Name` and your domain (e.g. `example.com`) for `Value`.
-  * `SEED` for `Name` and your TF seed phrase of the network you want to deploy the Dashboard Suite on (main, dev or test) (e.g. `main`) for `Value`.
+  * `SEED` for `Name` and your TF seed phrase of the network you want to deploy the Dashboard Suite on (main, test, qa or dev).
+  * `NETWORK` for `Name` and the network you want to deploy on (main, test, qa or dev)
 * In the tab `Disks`, click on the `plus` button then add the disk:
   * `Name`: choose a name
   * `Size (GB)`: choose a size, minimum 750 GB

@@ -1,5 +1,5 @@
 #!/bin/bash
 
-export DOMAIN=${DOMAIN}
+export DOMAIN=$DOMAIN
 
 caddy run --config /etc/caddy/Caddyfile
