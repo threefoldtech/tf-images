@@ -1,3 +1,5 @@
 #!/bin/bash
 
-caddy reverse-proxy -r --from ${DOMAIN} --to :80
+export DOMAIN=${DOMAIN}
+
+caddy run --config /etc/caddy/Caddyfile

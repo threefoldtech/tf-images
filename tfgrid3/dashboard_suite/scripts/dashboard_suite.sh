@@ -3,6 +3,8 @@
 # Go to the network directory
 cd /code/grid_deployment/docker-compose/${NETWORK}net
 
+git checkout branch development_pv_2
+
 # Copy the secret env file
 cp .secrets.env-example .secrets.env
 
