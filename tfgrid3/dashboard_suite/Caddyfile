@@ -1,4 +1,4 @@
-{$DOMAIN} 
+{$DOMAIN}
 
 file_server {
     root /mnt/disk/tmp/webpage
