@@ -114,7 +114,7 @@ You could also use Terraform instead of the Dashboard to deploy the Dashboard Su
 * In the tab `Disks`, click on the `plus` button then add the disk:
   * `Name`: choose a name
   * `Size (GB)`: choose a size, minimum 750 GB
-  * `Mount Point`: `/mnt/disk`
+  * `Mount Point`: `/storage`
 * Click `Deploy`.
 
 ## DNS Settings

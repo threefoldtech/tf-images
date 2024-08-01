@@ -1,15 +1,15 @@
 #!/bin/bash
 
 # Download the repo and create the directories
-mkdir -p /mnt/disk/code
-cd /mnt/disk/code
+mkdir -p /storage/code
+cd /storage/code
 git clone https://github.com/threefoldtech/grid_deployment
-cd /mnt/disk/code/grid_deployment
+cd /storage/code/grid_deployment
 
 # Temporary: got to working branch
 git checkout development_pv_2
 # Go to the network directory
-cd /mnt/disk/code/grid_deployment/docker-compose/${NETWORK}net
+cd /storage/code/grid_deployment/docker-compose/${NETWORK}net
 
 # Copy the secret env file
 cp .secrets.env-example .secrets.env

@@ -1,1 +1,1 @@
-exec: /usr/bin/dockerd --data-root /mnt/disk/docker
+exec: /usr/bin/dockerd --data-root /storage/docker

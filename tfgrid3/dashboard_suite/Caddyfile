@@ -1,5 +1,5 @@
 {$DOMAIN}
 
 file_server {
-    root /mnt/disk/tmp/webpage
+    root /storage/tmp/webpage
 }
