@@ -1,8 +1,7 @@
 FROM ubuntu:22.04
 
-RUN apt-get update
-
-RUN apt-get install -y git ufw openssh-server pv curl
+RUN apt-get update && \
+    apt-get install -y git ufw openssh-server pv curl
 
 RUN wget -O /sbin/zinit https://github.com/threefoldtech/zinit/releases/download/v0.2.5/zinit && \
   chmod +x /sbin/zinit
