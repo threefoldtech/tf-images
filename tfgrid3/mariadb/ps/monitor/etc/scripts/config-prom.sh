@@ -9,6 +9,9 @@ fi
 # Split the PROM_TARGETS string into an array
 IFS=',' read -ra TARGETS <<< "$PROM_TARGETS"
 
+mkdir -p /etc/prometheus
+touch /etc/prometheus/prometheus.yml
+
 # Generate the Prometheus config with dynamic targets
 cat <<EOF > /etc/prometheus/prometheus.yml
 global:
