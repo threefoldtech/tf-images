@@ -1,0 +1,2 @@
+exec: bash /etc/scripts/config-prom.sh
+oneshot: true
