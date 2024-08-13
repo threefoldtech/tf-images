@@ -1,0 +1,7 @@
+exec: |
+  bash -c '
+  mysqld_exporter \
+    --web.listen-address=:9500 \
+    --mysqld.username=${MYSQL_USER}:${MYSQL_PASSWORD} \
+    --mysqld.address=localhost:3306
+  '

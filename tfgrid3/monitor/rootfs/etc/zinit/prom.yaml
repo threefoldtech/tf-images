@@ -1,0 +1,3 @@
+exec: prometheus --config.file=/etc/prometheus/prometheus.yml
+after:
+  - prom-setup

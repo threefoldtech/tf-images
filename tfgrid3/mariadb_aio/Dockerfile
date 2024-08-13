@@ -1,9 +1,9 @@
 FROM ubuntu
 
 ENV DEBIAN_FRONTEND=noninteractive
+RUN apt update && apt install -y wget openssh-server
 
-RUN apt update && \
-    apt-get install -y \
+RUN apt-get install -y \
     apt-transport-https \
     ca-certificates \
     curl \
@@ -17,7 +17,6 @@ RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add - &&\
 
 RUN apt-get update && apt-get install -y docker-ce
 
-RUN apt install -y wget openssh-server
 
 COPY . .
 
