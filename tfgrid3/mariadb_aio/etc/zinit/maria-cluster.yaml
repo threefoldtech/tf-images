@@ -1,0 +1,2 @@
+exec: docker compose -p monitored-mariadb up
+oneshot: true
