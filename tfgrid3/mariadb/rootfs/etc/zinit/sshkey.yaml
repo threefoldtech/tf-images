@@ -1,5 +1,4 @@
 exec: |
-  bash -c '
     if [ ! -z "$SSH_KEY" ]; then
       mkdir -p /var/run/sshd
       mkdir -p /root/.ssh
@@ -10,5 +9,4 @@ exec: |
 
       echo "$SSH_KEY" >> /root/.ssh/authorized_keys
     fi
-  '
 oneshot: true

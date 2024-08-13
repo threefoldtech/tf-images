@@ -1,0 +1,7 @@
+exec: | 
+  bash -c '
+    mariadbd --user=mysql
+  '
+
+after:
+  - mariadb-setup

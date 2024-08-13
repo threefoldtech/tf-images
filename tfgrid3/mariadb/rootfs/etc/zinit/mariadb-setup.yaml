@@ -1,0 +1,6 @@
+exec: | 
+  bash -c '
+    mariadb-install-db --user=mysql
+  '
+
+oneshot: true
