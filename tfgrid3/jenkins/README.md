@@ -28,7 +28,7 @@ The image includes a Groovy script that automatically creates the Jenkins admin 
 
 ## Testing
 
-To test the Jenkins flist:
+You can use the flist provided [here](https://hub.grid.tf/amryassir.3bot/amryassir-jenkinsv2-latest.flist.md)
 
 ### Deploy the VM:
 
