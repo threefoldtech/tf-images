@@ -1,1 +1,1 @@
-exec: /usr/bin/jenkins --httpPort=9090
+exec: /usr/bin/jenkins
