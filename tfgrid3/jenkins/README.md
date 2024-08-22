@@ -37,5 +37,5 @@ To test the Jenkins flist:
 
 ### Access Jenkins:
 
-- Once the VM is running, access Jenkins via the VM's IP address on port `9090`.
+- Once the VM is running, access Jenkins via the VM's IP address on port `80`.
 - Log in using the credentials specified in the environment variables.
