@@ -1,1 +1,2 @@
 exec: /usr/sbin/sshd -D
+log: ring 

@@ -14,6 +14,6 @@ COPY rootfs /
 RUN mkdir -p /root/.jenkins/init.groovy.d
 COPY /set-admin-user.groovy /root/.jenkins/init.groovy.d/set-admin-user.groovy
 
-EXPOSE 9090
+EXPOSE 80
 
 ENTRYPOINT [ "/sbin/zinit", "init" ]
