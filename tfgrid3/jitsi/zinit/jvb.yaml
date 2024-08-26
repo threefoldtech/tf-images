@@ -1,0 +1,7 @@
+exec: root/scripts/jvb.sh
+signal:
+  stop: SIGKILL
+log: ring
+after:
+  - jicofo
+oneshot: true
