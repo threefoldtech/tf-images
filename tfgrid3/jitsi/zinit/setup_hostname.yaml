@@ -1,5 +1,4 @@
 exec: /root/scripts/setup_hostname.sh
 after:
   - sshd
-log: ring
 oneshot: true

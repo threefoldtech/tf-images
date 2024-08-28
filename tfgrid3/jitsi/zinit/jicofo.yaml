@@ -1,5 +1,3 @@
 exec: root/scripts/jicofo.sh
-log: ring
 after:
   - prosody
-oneshot: true

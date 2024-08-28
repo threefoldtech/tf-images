@@ -1,5 +1,4 @@
-exec: root/scripts/nginx.sh
+exec: /root/scripts/nginx.sh
 oneshot: true
-log: ring
 after:
   - install_jitsi

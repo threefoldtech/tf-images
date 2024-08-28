@@ -1,5 +1,3 @@
 exec: /root/scripts/prosody.sh
-log: ring
 after:
   - install_jitsi
-oneshot: true
