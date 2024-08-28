@@ -1,3 +1,4 @@
 exec: /scripts/nextcloud.sh
 after:
   - dockerd
+oneshot: true

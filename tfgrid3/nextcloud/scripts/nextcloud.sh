@@ -1,10 +1,6 @@
 #!/bin/bash
 
 export COMPOSE_HTTP_TIMEOUT=800
-while ! docker info > /dev/null 2>&1; do
-    echo docker not ready
-    sleep 2
-done
 
 docker run \
 --init \
