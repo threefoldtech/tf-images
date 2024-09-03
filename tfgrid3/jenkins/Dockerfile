@@ -12,7 +12,7 @@ RUN wget -O /sbin/zinit https://github.com/threefoldtech/zinit/releases/download
 COPY rootfs /
 
 RUN mkdir -p /root/.jenkins/init.groovy.d
-COPY /set-admin-user.groovy /root/.jenkins/init.groovy.d/set-admin-user.groovy
+COPY ./set-admin-user.groovy /root/.jenkins/init.groovy.d/set-admin-user.groovy
 
 EXPOSE 80
 
