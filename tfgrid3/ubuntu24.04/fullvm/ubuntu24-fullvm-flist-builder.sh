@@ -31,9 +31,10 @@ echo 'nameserver 1.1.1.1' > /etc/resolv.conf
 apt-get update
 apt-get install cloud-init openssh-server curl initramfs-tools -y
 cloud-init clean
-apt-get install linux-modules-extra-6.8.0-31-generic -y
+apt-get install linux-image-6.8.0-31-generic linux-modules-extra-6.8.0-31-generic -y
 echo 'fs-virtiofs' >> /etc/initramfs-tools/modules
 update-initramfs -c -k all
+update-grub
 apt-get clean
 EOF
 
