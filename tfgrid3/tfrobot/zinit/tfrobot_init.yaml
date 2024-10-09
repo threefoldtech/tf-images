@@ -1,0 +1,8 @@
+exec: /bin/sh -eux -c "
+      chmod +x /usr/local/bin/tfrobot.sh;
+      if [ -z ${tfrobot_version:-} ]; then
+          bash tfrobot.sh;
+      else
+          bash tfrobot.sh $tfrobot_version;
+      fi"
+oneshot: true
