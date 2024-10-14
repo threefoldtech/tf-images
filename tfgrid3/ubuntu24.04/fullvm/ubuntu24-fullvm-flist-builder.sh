@@ -34,6 +34,9 @@ cloud-init clean
 apt-get install linux-modules-extra-6.8.0-31-generic -y
 echo 'fs-virtiofs' >> /etc/initramfs-tools/modules
 update-initramfs -c -k all
+update-initramfs -c -k 6.8.0-31-generic
+ln -sf /boot/initrd.img-6.8.0-31-generic /boot/initrd.img
+ln -sf /boot/vmlinuz-6.8.0-31-generic /boot/vmlinuz
 apt-get clean
 EOF
 
