@@ -1,0 +1,4 @@
+exec: bash -c "nginx"
+after:
+    - dockerd 
+oneshot: true
