@@ -8,6 +8,7 @@ RUN apt-get update && \
     wget \
     ca-certificates \
     curl \
+    gettext \
     gnupg \
     openssh-server \
     ufw \
@@ -34,12 +35,13 @@ RUN chmod +x /usr/local/bin/ufw.sh /usr/local/bin/dockerd.sh /usr/local/bin/star
 ADD zinit /etc/zinit/
 
 # Install Docker, Buildx, and Docker Compose
-RUN mkdir -p /etc/apt/keyrings && \
-    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg && \
-    echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu $(. /etc/os-release && echo \"$VERSION_CODENAME\") stable" | \
-    tee /etc/apt/sources.list.d/docker.list > /dev/null && \
+RUN apt-get update && \
+    apt-get install -y apt-transport-https ca-certificates curl software-properties-common && \
     apt-get update && \
-    apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+    apt-get install -y docker.io && \
+    curl -L "https://github.com/docker/compose/releases/download/$(curl -s https://api.github.com/repos/docker/compose/releases/latest | grep -Po '"tag_name": "\K.*?(?=")')/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose && \
+    chmod +x /usr/local/bin/docker-compose && \
+    ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
 
 
 # Clean up any remaining temporary files
@@ -47,7 +49,7 @@ RUN apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Expose ports for HTTP and SSH access
-EXPOSE 3000 222
+EXPOSE 5000 222
 
 # Command to run Zinit in the container
 CMD ["/sbin/zinit", "init", "--container"]
