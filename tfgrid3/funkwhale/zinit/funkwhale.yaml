@@ -1,3 +1,4 @@
 exec: /bin/bash /usr/local/bin/start-fk.sh
 after:
-    - nginx
+      - dockerd
+oneshot: true

@@ -1,4 +1,4 @@
-exec: bash -c "nginx"
+exec: nginx -g "daemon off;"
 after:
     - dockerd 
-oneshot: true
+restart: true
