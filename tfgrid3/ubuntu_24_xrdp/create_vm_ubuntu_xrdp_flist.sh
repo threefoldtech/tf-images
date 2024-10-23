@@ -126,7 +126,7 @@ rm ubuntu-noble/root/setup_inside_chroot.sh
 rm -rf ubuntu-noble/dev/*
 
 log_message "Creating tar archive..."
-tar -czvf ubuntu-24.04_vm_xrdp.tar.gz -C ubuntu-noble .
+tar -czf ubuntu-24.04_vm_xrdp.tar.gz -C ubuntu-noble .
 log_message "Tar archive created."
 
 log_message "Uploading to Threefold Hub..."
