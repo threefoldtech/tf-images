@@ -101,14 +101,15 @@ For persistent issues, please open an issue in this GitHub repository.
 
 To remove the created files after running the script, you can use either of the following methods:
 
-Manual method:
+- Manual method:
 ```
 sudo rm -rf ubuntu-noble
-sudo rm ubuntu-24.04_vm_xrdp.tar.gz
 sudo rm -rf logs
+sudo rm -rf wget-log
+sudo rm ubuntu-24.04_vm_xrdp.tar.gz
 ```
 
-Using Makefile:
+- Using Makefile:
 ```
 make delete
 ```
