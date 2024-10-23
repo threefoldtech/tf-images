@@ -114,7 +114,7 @@ sudo rm ubuntu-24.04_vm_xrdp.tar.gz
 make delete
 ```
 
-Both methods will remove the `ubuntu-noble` directory, the `ubuntu-24.04_vm_xrdp.tar.gz` file, and the `logs` directory.
+Both methods will remove the `ubuntu-noble` directory, the `ubuntu-24.04_vm_xrdp.tar.gz` file, and the `logs`.
 
 ## Server Side: Dashboard Deployment
 
