@@ -7,4 +7,5 @@ build:
 delete:
 	sudo rm -rf ubuntu-noble
 	sudo rm -rf logs
+	sudo rm -rf wget-log
 	sudo rm ubuntu-24.04_vm_xrdp.tar.gz
