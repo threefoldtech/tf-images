@@ -162,4 +162,4 @@ You now have a remote access to the desktop environment of your VM.
 
 ## License
 
-This work is under the [Apache 2.0 license](./LICENSE).
+This work is under the Apache 2.0 license.
