@@ -15,7 +15,6 @@
 - [Client Side: Install Remote Desktop Connection for Windows, MAC or Linux](#client-side-install-remote-desktop-connection-for-windows-mac-or-linux)
   - [Download the App](#download-the-app)
   - [Connect Remotely](#connect-remotely)
-- [Conclusion](#conclusion)
 - [License](#license)
 
 ---
@@ -28,7 +27,7 @@ This directory contains a script to create a VM flist with Ubuntu and XRDP for t
 
 - A Linux system with root access
 - Sufficient disk space (at least 10GB free)
-- A ThreeFold ZOS Hub account with an API key
+- A [ThreeFold ZOS Hub](https://manual.grid.tf/documentation/developers/flist/flist_hub/zos_hub.html) account with an API key
 - `make` utility installed on your system (optional, for Makefile method)
 
 ## Usage
@@ -46,7 +45,7 @@ This directory contains a script to create a VM flist with Ubuntu and XRDP for t
    chmod +x create_vm_ubuntu_xrdp_flist.sh
    ```
 
-3. Run the script with sudo privileges, providing your ThreeFold ZOS Hub API key as an argument:
+3. Run the script with sudo privileges, providing your [ThreeFold ZOS Hub API key](https://manual.grid.tf/documentation/developers/flist/flist_hub/api_token.html) as an argument:
    ```
    sudo ./create_vm_ubuntu_xrdp_flist.sh YOUR_API_KEY_HERE
    ```
@@ -120,16 +119,16 @@ Both methods will remove the `ubuntu-noble` directory, the `ubuntu-24.04_vm_xrdp
 
 Once the Flist is set, deploy it on the Dashboard via the Micro VM page.
 
-- Go to Micro VM page
+- Go to the Micro VM page
 - Under `VM Image`, select ̀`Other` and insert the Flist URL
-- Under `Entry Point`, make sure nothing is written
+- Under `Entry Point`, make sure that nothing is written
 - Open the `Environment Variables` windows and set the environment variables:
   - Name: LOCALIP
   - Value: The local PC IP you're using
     - You can use `curl ifconfig.me` to see your public IP address
   - Name: PASSWORD
   - Value: The password you want for your xrdp user
-- Choose a node and click `Deploy`
+- Choose a node with IPv4 network and click `Deploy`
 
 ## Client Side: Install Remote Desktop Connection for Windows, MAC or Linux
 
@@ -155,10 +154,6 @@ Simply download the app, open it and write the IPv4 address of the VM. You then 
     * the IPv4 Address of the VM
     * the VM root-access username and password
   * You now have remote desktop connection to your VM
-
-## Conclusion
-
-You now have a remote access to the desktop environment of your VM.
 
 ## License
 
