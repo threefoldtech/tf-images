@@ -1,115 +1,83 @@
-<h1> OpenWebUI Deployment with Ollama Flist</h1>
+<h1> Open WebUI Ubuntu 24.04 Full VM Flist</h1>
 
-<h2> Table of Contents </h2>
+<h2>Table of Contents</h2>
 
-- [Introduction](#introduction)
-- [Directory Structure](#directory-structure)
-- [Create the Docker Image](#create-the-docker-image)
-- [Convert the Docker Image to Zero-OS FList](#convert-the-docker-image-to-zero-os-flist)
-- [TFGrid Deployment](#tfgrid-deployment)
-  - [Playground Steps](#playground-steps)
-- [Conclusion](#conclusion)
+- [Automated Process](#automated-process)
+- [Manual Process](#manual-process)
+- [Testing](#testing)
 
-***
+---
 
-## Introduction
+## Automated Process
 
-This project provides a self-contained deployment of **OpenWebUI** on the ThreeFold Grid, using a micro VM. The deployment is managed via **zinit** for automatic service management and includes:
+**Script Name**: `ubuntu24-fullvm-oi-flist-builder.sh`
 
-- Docker daemon for container management
-- Secure SSH server configuration
-- **OpenWebUI** with Ollama integration
-- Automatic container updates via Watchtower
-- Self-healing services via **zinit**
+This script automates the setup, configuration, archiving, and uploading of an Ubuntu system ready for use as an FLIST with Open WebUI, Ollama and Watchtower services.
 
-The deployment automatically provisions:
-- Secure SSH access
-- OpenWebUI on port `8080`
-- Persistent storage for Docker and WebUI data
-
-***
-
-## Directory Structure
-
+```bash
+chmod +x ubuntu24-fullvm-oi-flist-builder.sh
+./ubuntu24-fullvm-flist-oi-builder.sh ${your_api_key_here}
 ```
-.
-├── Dockerfile
-├── README.md
-├── scripts
-│   ├── start_containers.sh
-│   └── sshd_init.sh
-└── zinit
-    ├── dockerd.yaml
-    ├── start_containers.yaml
-    ├── sshd.yaml
-    └── ssh-init.yaml
+---
+## Manual Process
+
+- Install arch-install-scripts package to use arch-chroot
+```
+sudo apt install arch-install-scripts -y
 ```
 
-- **`scripts/`**: Contains initialization and service scripts
-- **`zinit/`**: Contains **zinit** service configurations for managing services
-- **`Dockerfile`**: Defines the Docker image with all dependencies and configurations
+- Setup and Bootstrap
+```
+mkdir ubuntu-noble
+sudo debootstrap noble ubuntu-noble http://archive.ubuntu.com/ubuntu
+```
+- Enter the new environment using arch-chroot.
+```
+arch-chroot ubuntu-noble/
+```
 
-***
+- Configure the system PATH and networking settings, then update the package repository and install necessary packages.
+```
+export PATH=/usr/local/sbin/:/usr/local/bin/:/usr/sbin/:/usr/bin/:/sbin:/bin
+rm /etc/resolv.conf
+echo 'nameserver 1.1.1.1' > /etc/resolv.conf
+apt-get update
+apt-get install cloud-init openssh-server curl initramfs-tools -y
+```
 
-## Create the Docker Image
+- Cloud-init and Kernel Modules
+- Prepare the system for cloud environments using cloud-init and install additional kernel modules.
+```
+cloud-init clean
+apt-get install linux-modules-extra-6.8.0-31-generic -y
+echo 'fs-virtiofs' >> /etc/initramfs-tools/modules
+update-initramfs -c -k all
+apt-get clean
+```
 
-To create the Docker image:
+- Clean up
+```
+rm -rf ubuntu-noble/dev/*
+```
 
-1. Clone this repository:
-   ```bash
-   git clone https://github.com/threefoldtech/tf-images
-   cd ./tf-images/tfgrid3/openwebui
-   ```
+- Kernel Extraction
+```
+sudo ./extract-vmlinux ubuntu-noble/boot/vmlinuz | sudo tee ubuntu-noble/boot/vmlinuz-6.8.0-31-generic.elf > /dev/null
+sudo mv ubuntu-noble/boot/vmlinuz-6.8.0-31-generic.elf ubuntu-noble/boot/vmlinuz-6.8.0-31-generic
+```
 
-2. Build the Docker image:
-   ```bash
-   docker build -t <your-dockerhub-username>/openwebui-tfgrid .
-   ```
+- Create a compressed archive of the configured system for uploading to hub.
+```
+tar -czf ubuntu-noble-oi.tar.gz -C ubuntu-noble-oi .
+```
 
-3. Push to Docker Hub:
-   ```bash
-   docker push <your-dockerhub-username>/openwebui-tfgrid
-   ```
+- Uploading flist
+- From the hub you can generate api key to use
+```
+clsecret="$API_KEY"
+curl -X Post -H "Authorization: Bearer ${clsecret}" -F "file=@ubuntu-noble-oi.tar.gz"  https://hub.grid.tf/api/flist/me/upload
+```
+---
 
-***
-
-## Convert the Docker Image to Zero-OS FList
-
-1. Use the [TF Hub Docker Converter](https://hub.grid.tf/docker-convert)
-2. Enter your Docker image name:
-   ```text
-   <your-dockerhub-username>/openwebui-tfgrid:latest
-   ```
-3. Convert and get your FList URL (example):
-   ```text
-   https://hub.grid.tf/<your-3bot>/openwebui-tfgrid-latest.flist
-   ```
-
-***
-
-## TFGrid Deployment
-
-### Playground Steps
-
-1. Go to [ThreeFold Dashboard](https://dashboard.grid.tf)
-2. Create a Micro VM:
-   - **VM Image**: Paste your FList URL
-   - **Entry Point**: `/sbin/zinit init` (default)
-   - **Resources**: Minimum 2 vCPU, 4GB RAM, 10GB disk
-   - **Mount**: Add a mount point at `/mnt/data`
-3. Deploy
-4. Set a gateway domain with port 8080 to access OpenWebUI
-
-***
-
-## Conclusion
-
-This FList provides a self-contained deployment of **OpenWebUI** with Ollama on the ThreeFold Grid with:
-- Automatic service management via **zinit**
-- Docker container management
-- Automatic container updates via Watchtower
-- SSH access for maintenance
-- Persistent storage for data
-- Easy deployment via Docker and TF Grid
-
-Deploy and enjoy a fully functional OpenWebUI setup on the decentralized ThreeFold Grid!
+## Testing 
+- Deploy using the Dashboard or Terraform
