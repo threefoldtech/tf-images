@@ -80,4 +80,6 @@ curl -X Post -H "Authorization: Bearer ${clsecret}" -F "file=@ubuntu-noble-oi.ta
 ---
 
 ## Testing 
-- Deploy using the Dashboard or Terraform
+- Deploy using the Dashboard
+- Add a gateway domain with port 8080
+- Connect to the gateway domain
