@@ -2,3 +2,4 @@ exec: /scripts/start_containers.sh
 oneshot: true
 after:
   - dockerd
+  - set_gpu

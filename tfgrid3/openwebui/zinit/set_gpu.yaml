@@ -1,0 +1,4 @@
+exec: /scripts/set_gpu.sh build
+oneshot: true
+after:
+  - dockerd
