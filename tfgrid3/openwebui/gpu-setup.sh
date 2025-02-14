@@ -159,7 +159,7 @@ main() {
             ;;
     esac
 
-    systemctl disable set_gpu.service
+    systemctl disable gpu-setup.service
 
     log "GPU setup completed successfully!"
 }
