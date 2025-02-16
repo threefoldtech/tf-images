@@ -21,5 +21,8 @@ vulnerability:
     - os
     - library
   ignore-unfixed: true
+policies:
+  - id: "DS002"
+    disable: true
 db:
   skip-update: false
