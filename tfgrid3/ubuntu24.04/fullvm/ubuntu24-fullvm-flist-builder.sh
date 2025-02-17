@@ -26,11 +26,11 @@ debootstrap noble ubuntu-noble http://archive.ubuntu.com/ubuntu
 cat <<EOF > ubuntu-noble/root/setup_inside_chroot.sh
 #!/bin/bash
 export PATH=/usr/local/sbin/:/usr/local/bin/:/usr/sbin/:/usr/bin/:/sbin:/bin
-rm /etc/resolv.conf
-echo 'nameserver 1.1.1.1' > /etc/resolv.conf
 echo "ubuntu-noble" > /etc/hostname
 apt-get update
-apt-get install cloud-init openssh-server curl initramfs-tools tmux -y
+apt-get install cloud-init openssh-server curl initramfs-tools tmux systemd-resolved -y
+ln -sf /run/systemd/resolve/stub-resolv.conf /etc/resolv.conf
+systemctl enable systemd-resolved
 apt-get install linux-image-6.8.0-31-generic -y
 echo 'fs-virtiofs' >> /etc/initramfs-tools/modules
 update-initramfs -c -k all
