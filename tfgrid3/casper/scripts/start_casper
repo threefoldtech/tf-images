@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 set -ex
-CASPER_VERSION=1_0_0
+CASPER_VERSION=1_5_8
 CASPER_NETWORK=casper
 
 # Frontend
@@ -21,8 +21,7 @@ sudo -u casper casper-client keygen .
 
 
 ### Set up configuration
-sudo -u casper /etc/casper/pull_casper_node_version.sh $CASPER_NETWORK.conf $CASPER_VERSION
-sudo -u casper /etc/casper/config_from_example.sh $CASPER_VERSION
+sudo -u casper /etc/casper/node_util.py stage_protocols $CASPER_NETWORK.conf
 
 ### Get known validator IP
 KNOWN_ADDRESSES=$(sudo -u casper cat /etc/casper/$CASPER_VERSION/config.toml | grep known_addresses)
@@ -43,21 +42,11 @@ done
 if [ -z ${KNOWN_VALIDATOR_IP} ]; then exit 1; fi
 
 # Get trusted_hash into config.toml
-TRUSTED_HASH=$(casper-client get-block --node-address http://$KNOWN_VALIDATOR_IP:7777 -b 20 | jq -r .result.block.hash | tr -d '\n')
-if [ "$TRUSTED_HASH" != "null" ]; then sudo -u casper sed -i "/trusted_hash =/c\trusted_hash = '$TRUSTED_HASH'" /etc/casper/$CASPER_VERSION/config.toml; fi
+TRUSTED_HASH=$(casper-client get-block --node-address http://$KNOWN_VALIDATOR_IP:7777 -b 4494833 | jq -r .result.block.hash | tr -d '\n')
+if [ "$TRUSTED_HASH" != "null" ]; then sudo -u casper sed -i "/#trusted_hash =/c\trusted_hash = '$TRUSTED_HASH'" /etc/casper/$CASPER_VERSION/config.toml; fi
 
 
-### Stage the upgrades
-curl -sSf genesis.casperlabs.io/casper/1_1_0/stage_1_1_0_upgrade.sh | sudo bash
-curl -sSf genesis.casperlabs.io/casper/1_1_2/stage_upgrade.sh | sudo bash -
-curl -sSf genesis.casperlabs.io/casper/1_2_0/stage_upgrade.sh | sudo bash -
-curl -sSf genesis.casperlabs.io/casper/1_2_1/stage_upgrade.sh | sudo bash -
-cd ~; curl -sSf genesis.casperlabs.io/casper/1_3_2/stage_upgrade.sh | sudo bash -
-cd ~; curl -sSf genesis.casperlabs.io/casper/1_3_4/stage_upgrade.sh | sudo bash -
-cd ~; curl -sSf genesis.casperlabs.io/casper/1_4_1/stage_upgrade.sh | sudo bash -
-cd ~; curl -sSf genesis.casperlabs.io/casper/1_4_3/stage_upgrade.sh | sudo bash -
-cd ~; curl -sSf genesis.casperlabs.io/casper/1_4_4/stage_upgrade.sh | sudo bash -
 
 ### Start the node
-sudo logrotate -f /etc/logrotate.d/casper-node
-exec casper-node-launcher > /var/www/html/node.log
+sudo /etc/casper/node_util.py rotate_logs
+exec casper-node-launcher -f 1.5.8

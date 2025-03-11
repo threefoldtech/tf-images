@@ -1,0 +1,5 @@
+exec: /bin/sh -eux -c "
+    chmod +x /etc/zinit/ufw.sh;
+    /etc/zinit/ufw.sh;"
+oneshot: true
+
