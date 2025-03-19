@@ -20,7 +20,7 @@ fi
 # Install prerequisites and dependencies
 install_dependencies() {
     log "Installing prerequisites and dependencies..."
-    
+
     # Update package lists
     apt update || error "Failed to update package lists"
 
@@ -67,12 +67,20 @@ detect_gpu_type() {
 # Setup NVIDIA
 setup_nvidia() {
     log "Setting up NVIDIA GPU environment..."
-    
+
     # Install NVIDIA drivers if not present
     if ! command -v nvidia-smi &>/dev/null; then
-        log "Installing NVIDIA drivers..."
+        log "Installing NVIDIA drivers using ubuntu-drivers autoinstall..."
         apt install -y ubuntu-drivers-common
         ubuntu-drivers autoinstall
+
+        # Check if nvidia-smi is available after autoinstall
+        if ! command -v nvidia-smi &>/dev/null; then
+            log "Autoinstall didn't provide nvidia-smi, installing specific driver 535..."
+            add-apt-repository -y ppa:graphics-drivers/ppa
+            apt update
+            apt install -y nvidia-driver-535 nvidia-utils-535
+        fi
     fi
 
     # Setup NVIDIA Container Toolkit
@@ -86,9 +94,32 @@ setup_nvidia() {
     apt install -y nvidia-container-toolkit
     nvidia-ctk runtime configure --runtime=docker
 
+    # Configure Docker for NVIDIA runtime
+    log "Configuring Docker for NVIDIA runtime..."
+    mkdir -p /etc/docker
+    cat > /etc/docker/daemon.json <<EOF
+{
+    "default-runtime": "nvidia",
+    "runtimes": {
+        "nvidia": {
+            "path": "nvidia-container-runtime",
+            "runtimeArgs": []
+        }
+    }
+}
+EOF
+
     # Restart Docker
     systemctl restart docker
     sleep 5
+
+    # Final check for nvidia-smi
+    if ! command -v nvidia-smi &>/dev/null; then
+        warn "nvidia-smi still not available after driver installation!"
+        warn "This may require a system reboot to fully activate drivers"
+    else
+        log "NVIDIA drivers successfully installed and nvidia-smi is available"
+    fi
 
     # Install CUDA if not present
     if ! command -v nvcc &>/dev/null; then
@@ -100,7 +131,7 @@ setup_nvidia() {
 # Setup AMD
 setup_amd() {
     log "Setting up AMD GPU environment..."
-    
+
     # Install AMD GPU drivers and tools
     apt install -y \
         linux-headers-generic \
@@ -141,7 +172,7 @@ setup_amd() {
 # Main function
 main() {
     log "Starting GPU setup..."
-    
+
     # Install dependencies first
     install_dependencies
 
