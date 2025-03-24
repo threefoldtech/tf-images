@@ -16,7 +16,7 @@ This script automates the setup, configuration, archiving, and uploading of an U
 
 ```bash
 chmod +x ubuntu24-fullvm-oi-flist-builder.sh
-./ubuntu24-fullvm-flist-oi-builder.sh ${your_api_key_here}
+./ubuntu24-fullvm-oi-flist-builder.sh ${your_api_key_here}
 ```
 ---
 ## Manual Process

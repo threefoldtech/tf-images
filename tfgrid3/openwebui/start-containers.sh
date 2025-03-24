@@ -122,7 +122,7 @@ start-containers() {
     # Start open-webui container
     log "Starting open-webui container..."
     if ! docker run -d \
-        -p 8080:8080 \
+        -p 80:8080 \
         $GPU_ARGS \
         -v ollama:/root/.ollama \
         -v open-webui:/app/backend/data \
