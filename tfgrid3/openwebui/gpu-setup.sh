@@ -186,7 +186,7 @@ main() {
             setup_amd
             ;;
         *)
-            error "No supported GPU detected (NVIDIA or AMD required)"
+            log "No supported GPU detected (NVIDIA or AMD required). CPU-Only Mode."
             ;;
     esac
 
