@@ -1,4 +1,15 @@
-FROM ubuntu:22.04
+FROM ubuntu:24.04 AS build
+
+RUN apt update && \
+  apt -y --no-install-recommends install wget golang ca-certificates #&& update-ca-certificates
+
+RUN wget https://github.com/caddyserver/xcaddy/releases/download/v0.4.4/xcaddy_0.4.4_linux_amd64.tar.gz
+RUN tar xf xcaddy_0.4.4_linux_amd64.tar.gz
+RUN ./xcaddy build --with=github.com/caddyserver/replace-response
+
+FROM ubuntu:24.04
+
+COPY --from=build /caddy /usr/local/bin
 
 RUN apt update && \
   apt -y --no-install-recommends install wget ca-certificates openssh-server ufw inotify-tools iproute2 bind9-dnsutils && \
@@ -22,10 +33,6 @@ RUN apt update && \
 # Install Zinit
 RUN wget -O /sbin/zinit https://github.com/threefoldtech/zinit/releases/download/v0.2.14/zinit && \
   chmod +x /sbin/zinit
-
-# Install Caddy
-RUN wget -O /sbin/caddy 'https://caddyserver.com/api/download?os=linux&arch=amd64&p=github.com%2Fcaddyserver%2Freplace-response&idempotency=43631173212363' && \
-  chmod +x /sbin/caddy
 
 COPY ./Caddyfile /etc/caddy/
 COPY ./scripts/ /scripts/
