@@ -3,11 +3,9 @@
 # Wait for the nextcloud container to become healthy. Note that we can set the
 # richtext config parameters even before the app is installed
 
-nc_ready () {
-  until [[ "`docker inspect -f {{.State.Health.Status}} nextcloud-aio-nextcloud 2> /dev/null`" == "healthy" ]]; do
-      sleep 1;
-  done;
-}
+until [[ "`docker inspect -f {{.State.Health.Status}} nextcloud-aio-nextcloud 2> /dev/null`" == "healthy" ]]; do
+    sleep 1;
+done;
 
 # When a gateway is used, AIO sets the WOPI allow list to only include the
 # gateway IP. Since requests don't originate from the gateway IP, they are 
@@ -15,23 +13,34 @@ nc_ready () {
 # upstream of the node
 # See: github.com/nextcloud/security-advisories/security/advisories/GHSA-24x8-h6m2-9jf2
 
+# First we need to make sure the gateway is a trusted proxy. Gateways appear to
+# have an IP from the CG-NAT range when added to Wireguard networks and used in
+# this way
+
+nc_ready
+
+trusted_proxies=$(docker exec --user www-data nextcloud-aio-nextcloud php /var/www/html/occ config:system:get trusted_proxies)
+if ! echo $trusted_proxies | grep -q 100.64.0.0/10; then
+  docker exec nextcloud-aio-nextcloud php /var/www/html/occ config:system:set trusted_proxies $(echo $trusted_proxies | wc -w) --value=100.64.0.0/10
+fi
+
+
 if $IPV4; then
   interface=$(ip route show default | cut -d " " -f 5)
   ipv4_address=$(ip a show $interface | grep -Po 'inet \K[\d.]+')
 fi
 
 if $GATEWAY; then
-  nc_ready
   wopi_list=$(docker exec --user www-data nextcloud-aio-nextcloud php occ config:app:get richdocuments wopi_allowlist)
 
   if $IPV4; then
     ip=$ipv4_address
   else
-    ip=$(curl -fs https://ipinfo.io/ip)
+    ip=$(wget -q -O - https://ipinfo.io/ip)
   fi
 
   if [[ $ip ]] && ! echo $wopi_list | grep -q $ip; then
-    docker exec --user www-data nextcloud-aio-nextcloud php occ config:app:set richdocuments wopi_allowlist --value=$ip
+    docker exec --user www-data nextcloud-aio-nextcloud php occ config:app:set richdocuments wopi_allowlist --value=$wopi_list,$ip
   fi
 fi
 
@@ -48,7 +57,6 @@ if $GATEWAY && $IPV4; then
   if [[ ! -d ${apps_dir}spreed ]]; then
     inotifywait -qq -e create --include spreed $apps_dir
   fi
-  nc_ready
   
   turn_list=$(docker exec --user www-data nextcloud-aio-nextcloud php occ talk:turn:list)
   turn_secret=$(echo "$turn_list" | grep secret | cut -d " " -f 4)
