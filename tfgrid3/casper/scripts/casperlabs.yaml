@@ -1,2 +1,3 @@
 exec: bash -c "/start_casper"
-oneshot: true
+after: 
+  - ufw
