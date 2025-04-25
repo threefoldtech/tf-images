@@ -19,6 +19,8 @@ if ! $IPV4; then
 
   export REPLACEMENTS='			`name="talk"` `name="talk" disabled`
 			`needs ports 3478/TCP and 3478/UDP open/forwarded in your firewall/router` `running the Talk container requires a public IP and this VM does not have one. It is still possible to use Talk in a limited capacity. Please consult the documentation for details`'
+else
+  export BODY="<body>"
 fi
 
 caddy run --config /etc/caddy/Caddyfile
