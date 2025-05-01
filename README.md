@@ -45,6 +45,42 @@
 - Dockerfile info: [Ubuntu 24.04](.//tfgrid3/ubuntu24.04/fullvm/README.md)
 - flist : https://hub.grid.tf/tf-official-vms/ubuntu-24.04-full.flist
 
+## Entrypoint For TF-images : 
+ ### Operating Systems : 
+ - Alpine: ```/entrypoint.sh```
+ - Arc_mycelium: ``` "/sbin/zinit", "init"```
+ - Centos-9: ```/entrypoint.sh```
+ - Debian: ```"zinit", "init"```
+ - Ubuntu20.04: ```/init.sh```
+ - Ubuntu22.04 micro-vm: ```"zinit", "init"```
+ - Ubuntu23.10 micro-vm: ```"/sbin/zinit", "init"```
+ - Ubuntu24.04 micro-vm: ```"zinit", "init"```
+ - Umbrel: ```"/sbin/zinit", "init"```
+ 
+ 
+ ### Solutions : 
+ - Algorand: ```"/sbin/zinit", "init"```
+ - BTC Full node: ```"/sbin/zinit", "init"```
+ - Casper: ```"/sbin/zinit", "init"```
+ - Forum-3:  ```"/sbin/zinit", "init"```
+ - Funkwhale: ```"/sbin/zinit", "init"```
+ - Gitea_mycelium: ```"/sbin/zinit", "init"```
+ - Holochain: ```"/sbin/zinit", "init"```
+ - Jenkins: ```"/sbin/zinit", "init"```
+ - Jitsi: ```"/sbin/zinit", "init"```
+ - K3s: ```"/sbin/zinit", "init"```
+ - Mattermost: ```"/sbin/zinit", "init"```
+ - Nextcloud: ```"/sbin/zinit", "init"```
+ - Nostr: ```"/sbin/zinit", "init"```
+ - Owncloud: ```"/sbin/zinit", "init"```
+ - Peertube: ```"/sbin/zinit", "init"```
+ - Presearch: ```"/sbin/zinit", "init"```
+ - Static website: ```"/sbin/zinit", "init"```
+ - Subsquid: ```"/sbin/zinit", "init"```
+ - Taiga : ```"/sbin/zinit", "init"```
+ - TFrobot: ```"/sbin/zinit", "init"```
+ - Wordpress: ```"/sbin/zinit", "init"```
+
 ## Contribution : 
 
 - create a new branch for your work from development branch .
