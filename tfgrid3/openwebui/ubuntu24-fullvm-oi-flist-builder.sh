@@ -15,6 +15,12 @@ NC='\033[0m'
 WORK_DIR="ubuntu-noble"
 ARCHIVE_NAME="ubuntu-24.04_fullvm_oi.tar.gz"
 LOG_FILE="/var/log/flist-builder.log"
+UBUNTU_RELEASE='noble'
+CADDY_VERSION='2.10.0'
+HOSTNAME='ubuntu-noble'
+KERNEL_VERSION='6.8.0-31-generic'
+MOUNT_DEVICE='/dev/vda'
+SCRIPTS_DIR="$(dirname "$(readlink -f "$0")")/chroot-scripts"
 
 # Helper functions
 log() {
@@ -38,10 +44,10 @@ error_handler() {
     local bash_lineno=$3
     local last_command=$4
     local func_stack=$5
-    
+
     error "Exit code $exit_code occurred on line $line_no while executing: $last_command"
     error "Function stack: $func_stack"
-    
+
     cleanup
 }
 
@@ -55,19 +61,19 @@ cleanup() {
 
 check_requirements() {
     log "Checking requirements..."
-    
+
     # Check if running as root
     if [ "$(id -u)" -ne 0 ]; then
         error "This script must be run as root"
         exit 1
     fi
-    
+
     # Check for API key
     if [ -z "$1" ]; then
         error "Usage: $0 <API_KEY>"
         exit 2
     fi
-    
+
     # Check for required files
     local required_files=("gpu-setup.sh" "start-containers.sh")
     for file in "${required_files[@]}"; do
@@ -77,37 +83,73 @@ check_requirements() {
         fi
     done
     
-    # Check for required tools
-    local required_tools=("curl" "tar" "arch-install-scripts" "debootstrap")
-    for tool in "${required_tools[@]}"; do
-        if ! command -v $tool &>/dev/null; then
-            log "Installing $tool..."
-            apt-get update && apt-get install -y $tool
-        fi
-    done
+    # Create scripts directory if it doesn't exist
+    mkdir -p "$SCRIPTS_DIR"
+}
+
+install_dependencies() {
+    log "Installing dependencies..."
+    apt-get update
+    apt-get install -y curl tar arch-install-scripts debootstrap cloud-init openssh-server initramfs-tools wget pciutils build-essential software-properties-common gnupg
 }
 
 setup_chroot() {
     log "Setting up chroot environment..."
-    
+
     # Create work directory
     mkdir -p "$WORK_DIR"
-    
+
     # Run debootstrap
-    log "Running debootstrap for Ubuntu Noble..."
-    if ! debootstrap noble "$WORK_DIR" http://archive.ubuntu.com/ubuntu; then
+    log "Running debootstrap for Ubuntu $UBUNTU_RELEASE..."
+    if ! debootstrap $UBUNTU_RELEASE "$WORK_DIR" http://archive.ubuntu.com/ubuntu; then
         error "Debootstrap failed!"
         exit 1
     fi
+
+    # Create setup-caddy.sh script (combined script)
+    log "Creating setup-caddy.sh script..."
+    cat > "$SCRIPTS_DIR/setup-caddy.sh" <<EOF
+#!/bin/bash
+set -e
+
+# Create necessary directory
+mkdir -p /etc/caddy
+
+# Mount device and source configuration
+mount ${MOUNT_DEVICE} /mnt
+source /mnt/zosrc
+
+# Create Caddyfile based on the domain value
+if [ -n "\$OPENWEBUI_DOMAIN" ]; then
+  echo "\$OPENWEBUI_DOMAIN {" > /etc/caddy/Caddyfile
+else
+  echo ":80 {" > /etc/caddy/Caddyfile
+fi
+
+# Add the reverse proxy configuration
+cat >> /etc/caddy/Caddyfile <<CADDYEOF
+  reverse_proxy localhost:8080
+}
+CADDYEOF
+
+# Unmount when done
+umount /mnt
+
+# Log for debugging
+echo "Setup completed. Domain: \$OPENWEBUI_DOMAIN"
+EOF
+    chmod +x "$SCRIPTS_DIR/setup-caddy.sh"
     
     # Copy required scripts
     log "Copying required scripts to chroot environment..."
+    mkdir -p "$WORK_DIR/root/" "$WORK_DIR/usr/local/bin/"
     cp gpu-setup.sh "$WORK_DIR/root/"
     cp start-containers.sh "$WORK_DIR/root/"
-    
+    cp "$SCRIPTS_DIR/setup-caddy.sh" "$WORK_DIR/usr/local/bin/"
+
     # Create setup script
     log "Creating chroot setup script..."
-    cat > "$WORK_DIR/root/setup_inside_chroot.sh" <<'EOF'
+    cat > "$WORK_DIR/root/setup_inside_chroot.sh" <<CHROOT_EOF
 #!/bin/bash
 set -e
 
@@ -115,15 +157,40 @@ set -e
 export PATH=/usr/local/sbin/:/usr/local/bin/:/usr/sbin/:/usr/bin/:/sbin:/bin
 rm -f /etc/resolv.conf
 echo 'nameserver 1.1.1.1' > /etc/resolv.conf
-echo "ubuntu-noble" > /etc/hostname
+echo $HOSTNAME > /etc/hostname
 
 # Update and install packages
 apt-get update
 apt-get install -y cloud-init openssh-server curl initramfs-tools wget pciutils build-essential software-properties-common gnupg
 
+# Install Caddy
+wget https://github.com/caddyserver/caddy/releases/download/v${CADDY_VERSION}/caddy_${CADDY_VERSION}_linux_amd64.tar.gz
+tar xvf caddy_${CADDY_VERSION}_linux_amd64.tar.gz caddy
+mv caddy /usr/bin/caddy
+
 # Set script permissions
 chmod +x /root/gpu-setup.sh
 chmod +x /root/start-containers.sh
+
+# Ensure script is executable
+chmod +x /usr/local/bin/setup-caddy.sh
+
+# Systemd unit to setup Caddy configuration before starting Caddy
+cat > /etc/systemd/system/setup-caddy.service << 'SERVICE'
+[Unit]
+Description=Setup Caddy configuration (domain and Caddyfile)
+After=start-containers.service
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/setup-caddy.sh
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
+SERVICE
+systemctl enable setup-caddy.service
 
 # Create GPU setup service
 cat > /etc/systemd/system/gpu-setup.service <<'SERVICEEOF'
@@ -153,20 +220,42 @@ ExecStart=/root/start-containers.sh
 WantedBy=multi-user.target
 SERVICEEOF
 
-# Enable services
+# Create Caddy reverse proxy service
+cat > /etc/systemd/system/caddy-reverse.service << 'SERVICEEOF'
+[Unit]
+Description=Caddy Reverse Proxy
+After=network.target start-containers.service setup-caddy.service
+Requires=setup-caddy.service
+Wants=network-online.target
+
+[Service]
+ExecStart=/usr/bin/caddy run --config /etc/caddy/Caddyfile
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
+SERVICEEOF
+
+# Reload and enable all services
 systemctl daemon-reload
-systemctl enable gpu-setup.service
-systemctl enable start-containers.service
+systemctl enable setup-caddy gpu-setup start-containers caddy-reverse
+
+# Create initial Caddyfile to ensure directory exists
+mkdir -p /etc/caddy
+echo ":80 {
+  reverse_proxy localhost:8080
+}" > /etc/caddy/Caddyfile
 
 # Configure system
 cloud-init clean
-apt-get install -y linux-image-6.8.0-31-generic
+apt-get install -y linux-image-$KERNEL_VERSION
 echo 'fs-virtiofs' >> /etc/initramfs-tools/modules
 update-initramfs -c -k all
 update-grub
 apt-get clean
-EOF
-    
+CHROOT_EOF
+
     chmod +x "$WORK_DIR/root/setup_inside_chroot.sh"
 }
 
@@ -176,7 +265,7 @@ run_chroot_setup() {
         error "Chroot setup failed!"
         exit 1
     fi
-    
+
     # Cleanup chroot
     log "Cleaning up chroot environment..."
     rm "$WORK_DIR/root/setup_inside_chroot.sh"
@@ -185,7 +274,7 @@ run_chroot_setup() {
 
 extract_kernel() {
     log "Setting up kernel extraction..."
-    
+
     # Install extract-vmlinux if needed
     if ! command -v extract-vmlinux &>/dev/null; then
         log "Installing extract-vmlinux..."
@@ -193,16 +282,16 @@ extract_kernel() {
             https://raw.githubusercontent.com/torvalds/linux/master/scripts/extract-vmlinux
         chmod +x /usr/local/bin/extract-vmlinux
     fi
-    
+
     log "Extracting kernel..."
     if ! extract-vmlinux "$WORK_DIR/boot/vmlinuz" | \
-        tee "$WORK_DIR/boot/vmlinuz-6.8.0-31-generic.elf" > /dev/null; then
+        tee "$WORK_DIR/boot/vmlinuz-$KERNEL_VERSION.elf" > /dev/null; then
         error "Kernel extraction failed!"
         exit 1
     fi
-    
-    mv "$WORK_DIR/boot/vmlinuz-6.8.0-31-generic.elf" \
-        "$WORK_DIR/boot/vmlinuz-6.8.0-31-generic"
+
+    mv "$WORK_DIR/boot/vmlinuz-$KERNEL_VERSION.elf" \
+        "$WORK_DIR/boot/vmlinuz-$KERNEL_VERSION"
 }
 
 create_archive() {
@@ -216,43 +305,45 @@ create_archive() {
 upload_flist() {
     local API_KEY="$1"
     log "Uploading to hub.grid.tf..."
-    
+
     local response
     response=$(curl -X POST -H "Authorization: Bearer $API_KEY" \
         -F "file=@$ARCHIVE_NAME" \
         https://hub.grid.tf/api/flist/me/upload)
-    
+
     if [ $? -ne 0 ]; then
         error "Upload failed!"
         error "Response: $response"
         exit 1
     fi
-    
+
     log "Upload completed successfully!"
     log "Response: $response"
 }
 
 main() {
     local API_KEY="$1"
-    
+
     # Initialize log file
     mkdir -p "$(dirname "$LOG_FILE")"
     touch "$LOG_FILE"
-    
+
     log "Starting flist builder for Ubuntu 24.04..."
-    
+
     check_requirements "$API_KEY"
+    install_dependencies
     setup_chroot
     run_chroot_setup
     extract_kernel
     create_archive
     upload_flist "$API_KEY"
-    
+
     log "Flist creation completed successfully!"
-    
+
     # Cleanup
     rm -rf "$WORK_DIR"
     rm -f "$ARCHIVE_NAME"
+    rm -rf "$SCRIPTS_DIR"
 }
 
 # Execute main function
