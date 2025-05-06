@@ -50,17 +50,18 @@
  - Alpine: https://hub.grid.tf/tf-official-apps/alpine3.flist :```/entrypoint.sh``` 
  - Arc_mycelium: https://hub.grid.tf/tf-official-apps/arch_mycelium.flist : ``` "/sbin/zinit", "init"```
  - Centos-9: https://hub.grid.tf/tf-official-apps/centos-stream9.flist : ```/entrypoint.sh```
- - Debian: https://hub.grid.tf/tf-official-apps/debian12.flist : ```"zinit", "init"```
- - Ubuntu20.04: https://hub.grid.tf/tf-official-vms/ubuntu-20.04-lts.flist : ```/init.sh```
- - Ubuntu22.04 micro-vm: https://hub.grid.tf/tf-official-vms/ubuntu-22.04.flist : ```"zinit", "init"```
+ - Debian: https://hub.grid.tf/tf-official-apps/debian12.flist : ```"/sbin/zinit", "init"```
+ - Ubuntu20.04: https://hub.grid.tf/tf-official-vms/ubuntu-20.04-lts.flist : ```/sbin/init.sh```
+ - Ubuntu22.04 micro-vm: https://hub.grid.tf/tf-official-vms/ubuntu-22.04.flist : ```"/sbin/zinit", "init"```
  - Ubuntu23.10 micro-vm: https://hub.grid.tf/tf-official-vms/ubuntu-23.10-mycelium.flist : ```"/sbin/zinit", "init"```
- - Ubuntu24.04 micro-vm: https://hub.grid.tf/tf-official-vms/ubuntu-24.04-latest.flist : ```"zinit", "init"```
+ - Ubuntu24.04 micro-vm: https://hub.grid.tf/tf-official-vms/ubuntu-24.04-latest.flist : ```"/sbin/zinit", "init"```
  - Umbrel: https://hub.grid.tf/tf-official-apps/umbrel-latest.flist : ```"/sbin/zinit", "init"```
-
+ - Nixos micro-vm : https://hub.grid.tf/tf-official-vms/nixos-22.11.flist : ```"/entrypoint.sh"```
  
  ### Solutions : 
  - Algorand: https://hub.grid.tf/tf-official-apps/algorand-latest.flist : ```"/sbin/zinit", "init"```
  - Casper: https://hub.grid.tf/tf-official-apps/casperlabs-latest.flist : ```"/sbin/zinit", "init"```
+ - Caprover: https://hub.grid.tf/tf-official-apps/tf-caprover-latest.flist : ```"/sbin/zinit", "init"```
  - Forum-3: https://hub.grid.tf/tf-official-apps/forum.flist : ```"/sbin/zinit", "init"```
  - Funkwhale: https://hub.grid.tf/tf-official-apps/funkwhale-1.4.0.flist :  ```"/sbin/zinit", "init"```
  - Gitea_mycelium: https://hub.grid.tf/tf-official-apps/gitea-mycelium.flist :  ```"/sbin/zinit", "init"```
@@ -69,11 +70,12 @@
  - K3s: https://hub.grid.tf/tf-official-apps/threefolddev-k3s-v1.31.0.flist : ```"/sbin/zinit", "init"```
  - Mattermost: https://hub.grid.tf/tf-official-apps/mattermost-latest.flist : ```"/sbin/zinit", "init"```
  - Nextcloud: https://hub.grid.tf/tf-official-apps/nextcloud.flist : ```"/sbin/zinit", "init"```
+ - Nodepilot: https://hub.grid.tf/tf-official-vms/node-pilot-zdbfs.flist : ```"/"```
  - Nostr: https://hub.grid.tf/tf-official-apps/nostr_relay-mycelium.flist : ```"/sbin/zinit", "init"```
  - Owncloud: https://hub.grid.tf/tf-official-apps/owncloud-10.9.1.flist : ```"/sbin/zinit", "init"```
  - Peertube: https://hub.grid.tf/tf-official-apps/peertube-latest.flist : ```"/sbin/zinit", "init"```
  - Presearch: https://hub.grid.tf/tf-official-apps/presearch.flist : ```"/sbin/zinit", "init"```
- - Static website: https://hub.grid.tf/tf-official-apps/presearch.flist : ```"/sbin/zinit", "init"```
+ - Static website: https://hub.grid.tf/tf-official-apps/staticwebsite-latest.flist : ```"/sbin/zinit", "init"```
  - Subsquid: https://hub.grid.tf/tf-official-apps/subsquid.flist : ```"/sbin/zinit", "init"```
  - Taiga : https://hub.grid.tf/tf-official-apps/grid3_taiga_docker-latest.flist : ```"/sbin/zinit", "init"```
  - TFrobot: https://hub.grid.tf/tf-official-apps/tfrobot.flist : ```"/sbin/zinit", "init"```
