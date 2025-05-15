@@ -5,6 +5,7 @@ set -ex
 FUNKWHALE_VERSION=${FUNKWHALE_VERSION:-1.4.0}
 
 # Change to Funkwhale directory
+mkdir -p /srv/funkwhale/
 cd /srv/funkwhale/
 
 # Download the Docker Compose and environment files for the specified version
@@ -20,7 +21,9 @@ sed -i "s#^DJANGO_SECRET_KEY=.*#DJANGO_SECRET_KEY=$DJANGO_SECRET#" .env
 
 # Add environment variables to the .env file
 sed -i "s#^FUNKWHALE_VERSION=.*#FUNKWHALE_VERSION=$FUNKWHALE_VERSION#" .env
-sed -i "s#^FUNKWHALE_HOSTNAME=.*#FUNKWHALE_HOSTNAME=$Domain#" .env
+sed -i "s#^FUNKWHALE_HOSTNAME=.*#FUNKWHALE_HOSTNAME=$domain#" .env
+sed -i "s#^FUNKWHALE_HOSTNAME=.*#FUNKWHALE_HOSTNAME=$FUNKWHALE_HOSTNAME#" .env
+sed -i "s#^FUNKWHALE_API_IP=.*#FUNKWHALE_API_IP=0.0.0.0#" .env
 
 # Pull the latest Docker images for Funkwhale
 docker-compose pull
@@ -28,15 +31,25 @@ docker-compose pull
 # Start PSQL service
 docker-compose up -d postgres
 
+# Waiting for postgres to be ready
+echo "[INFO] Waiting for PostgreSQL to be ready..."
+until docker-compose exec -T postgres pg_isready -U funkwhale > /dev/null 2>&1; do
+  echo "[INFO] PostgreSQL not ready yet. Retrying in 5s..."
+  sleep 5
+done
+
+echo "[SUCCESS] PostgreSQL is ready. Continuing..."
+
 # Run database migrations
 docker-compose run --rm api funkwhale-manage migrate
 
 # Create a superuser using the provided credentials
-docker-compose run --rm -T api funkwhale-manage fw users create --superuser <<EOF
-$FUNKWHALE_SUPERUSER_NAME
-$FUNKWHALE_SUPERUSER_PASSWORD
-$FUNKWHALE_SUPERUSER_EMAIL
-EOF
+USER_INPUT=$(printf "%s\n%s\n%s" \
+  "$FUNKWHALE_SUPERUSER_NAME" \
+  "$FUNKWHALE_SUPERUSER_PASSWORD" \
+  "$FUNKWHALE_SUPERUSER_EMAIL")
+
+echo "$USER_INPUT" | docker-compose run --rm -T api funkwhale-manage fw users create --superuser
 
 # Start Funkwhale services
 docker-compose up -d
@@ -44,6 +57,7 @@ docker-compose up -d
 # Check if $Domain is set before proceeding with SSL generation
 if [ -z "$Domain" ]; then
     echo "No Domain provided. Skipping SSL setup and exiting."
+    zinit stop nginx
     exit 0
 fi
 
