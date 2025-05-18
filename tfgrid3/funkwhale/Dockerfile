@@ -44,7 +44,7 @@ RUN apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Expose ports for HTTP access
-EXPOSE 5000
+EXPOSE 80
 
 # Command to run Zinit in the container
 CMD ["/sbin/zinit", "init", "--container"]
