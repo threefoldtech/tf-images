@@ -35,7 +35,7 @@ x-environment:
   ENABLE_THREEFOLD: "True"
   THREEFOLD_API_APP_SECRET : "2W/qhWFeMF6XawIPuEnJ3dWge49bYZNhSsELF64daus="
   THREEFOLD_URL : "https://login.threefold.me"
-  THREEFOLD_OPENKYC_URL: "https://openkyc.live/verification/verify-sei"
+  THREEFOLD_OPENKYC_URL: "https://openkyc.threefold.me/verification/verify-sei"
 
 x-volumes:
   &default-back-volumes
