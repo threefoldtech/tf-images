@@ -94,7 +94,7 @@ export OPEN_KYC_URL=$OPEN_KYC_URL
 export DISCOURSE_VERSION="staging"
 export RAILS_ENV="production"
 export THREEBOT_URL="https://login.threefold.me"
-export OPEN_KYC_URL="https://openkyc.live/verification/verify-sei"
+export OPEN_KYC_URL="https://openkyc.threefold.me/verification/verify-sei"
 
 mkdir -p /var/nginx/cache
 
