@@ -9,7 +9,7 @@
 DISCOURSE_VERSION="staging" # branch of tf-forum fork
 RAILS_ENV="production" # rails server env, 'production' is stable
 THREEBOT_URL="https://login.threefold.me" # for tf-connect auth
-OPEN_KYC_URL="https://openkyc.live/verification/verify-sei" # for tf-connect auth
+OPEN_KYC_URL="https://openkyc.threefold.me/verification/verify-sei" # for tf-connect auth
 ```
 - Expected
 ```bash 
