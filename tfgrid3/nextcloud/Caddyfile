@@ -14,16 +14,14 @@
 			action=" action="/aio
 			url(' url('/aio
 			`value="" placeholder="nextcloud.yourdomain.com"` `value="{$DOMAIN}"`
-			`"Submit domain"` `"Submit domain" id="domain-submit"` 
-			{$REPLACEMENTS}
-			<body> {$BODY}
+			`"Submit domain"` `"Submit domain" id="domain-submit"`
 		}
 
 		reverse_proxy localhost:8000 {
 			header_down Location "^/(.*)$" "/aio/$1"
 			header_down Refresh "^/(.*)$" "/aio/$1"
 		}
-			
+
 	}
 
 	redir /api/auth/getlogin /aio{uri}
