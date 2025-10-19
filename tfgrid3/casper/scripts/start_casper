@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 set -ex
-CASPER_VERSION=1_5_8
+CASPER_VERSION=2_0_4
 CASPER_NETWORK=casper
 
 # Frontend
@@ -15,10 +15,11 @@ fi
 /etc/init.d/cron start
 chmod 777 /tmp/*
 
-### Generate node keys
-rm /etc/casper/validator_keys/*
+### Generate node keys (only if they don't exist)
 cd /etc/casper/validator_keys
-sudo -u casper casper-client keygen .
+if [ ! -f secret_key.pem ]; then
+    sudo -u casper casper-client keygen .
+fi
 
 
 ### Set up configuration
@@ -42,12 +43,14 @@ done
 # Check knownvalidator ip was found and set
 if [ -z ${KNOWN_VALIDATOR_IP} ]; then exit 1; fi
 
-# Get trusted_hash into config.toml
-TRUSTED_HASH=$(casper-client get-block --node-address http://$KNOWN_VALIDATOR_IP:7777 | jq -r .result.block.hash | tr -d '\n')
-if [ "$TRUSTED_HASH" != "null" ]; then sudo -u casper sed -i "7c\trusted_hash = '$TRUSTED_HASH'" /etc/casper/$CASPER_VERSION/config.toml; fi
+# Get trusted_hash into config.toml (only if valid)
+TRUSTED_HASH=$(casper-client get-block --node-address http://$KNOWN_VALIDATOR_IP:7777 -b 4494833 | jq -r .result.block.hash | tr -d '\n')
+if [ -n "$TRUSTED_HASH" ] && [ "$TRUSTED_HASH" != "null" ]; then 
+    sudo -u casper sed -i "/trusted_hash =/c\trusted_hash = '$TRUSTED_HASH'" /etc/casper/$CASPER_VERSION/config.toml
+fi
 
 
 
 ### Start the node
 sudo /etc/casper/node_util.py rotate_logs
-exec casper-node-launcher -f 1.5.8
+exec casper-node-launcher -f 2.0.4

@@ -1,16 +1,17 @@
 # Casper
 
-* Protocol version "1.1.0" 
-* Image for flist = ```docker pull arrajput/casper-flist:1.0```
-* flist = ```https://hub.grid.tf/arehman/arrajput-casper-flist-1.0.flist```
+* Protocol version "2.0.4" 
+* Base Image: Ubuntu 22.04 LTS
+* Image for flist = ```docker build -t casper:2.0.4 .```
+* flist = ```https://hub.grid.tf/tf-official-apps/casperlabs-latest.flist```
 
 This image will start a Casper full node 
 
 ### Hardware requirements
 
   * 4 Cores
-  * 16 GB Ram
-  * 1 TB disk
+  * 32 GB Ram
+  * 500 TB disk
 
 ### How to build from the Dockerfile ?
 
