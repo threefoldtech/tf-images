@@ -1,4 +1,4 @@
-FROM ubuntu:20.04
+FROM ubuntu:22.04
 
 LABEL maintainer="abdul@incubaid.com"
 WORKDIR /opt
@@ -48,6 +48,9 @@ RUN set -ex; \
 RUN wget -O /sbin/zinit https://github.com/threefoldtech/zinit/releases/download/v0.2.14/zinit \
     && chmod +x /sbin/zinit \
     && mkdir -p /etc/zinit
+
+# Fix SSH - create sshd directory
+RUN mkdir -p /run/sshd && chmod 0755 /run/sshd
 
 COPY scripts /etc/zinit
 
