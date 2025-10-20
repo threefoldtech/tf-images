@@ -49,8 +49,6 @@ if [ -n "$TRUSTED_HASH" ] && [ "$TRUSTED_HASH" != "null" ]; then
     sudo -u casper sed -i "/trusted_hash =/c\trusted_hash = '$TRUSTED_HASH'" /etc/casper/$CASPER_VERSION/config.toml
 fi
 
-
-
 ### Start the node
 sudo /etc/casper/node_util.py rotate_logs
-exec casper-node-launcher -f 2.0.4
+exec casper-node-launcher > /var/www/html/node.log 2>&1
