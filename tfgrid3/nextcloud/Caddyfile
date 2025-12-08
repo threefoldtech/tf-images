@@ -8,23 +8,14 @@
 
 {$DOMAIN}:{$PORT} {
 	handle_path /aio* {
-		replace {
-			href="/ href="/aio/
-			src="/ src="/aio/
-			action=" action="/aio
-			url(' url('/aio
-			`value="" placeholder="nextcloud.yourdomain.com"` `value="{$DOMAIN}"`
-			`"Submit domain"` `"Submit domain" id="domain-submit"`
-		}
-
-		reverse_proxy localhost:8000 {
-			header_down Location "^/(.*)$" "/aio/$1"
-			header_down Refresh "^/(.*)$" "/aio/$1"
+		reverse_proxy localhost:8080 {
+    		transport http {
+    			tls
+    			tls_insecure_skip_verify # For self-signed cert
+    		}
 		}
 
 	}
-
-	redir /api/auth/getlogin /aio{uri}
 
 	reverse_proxy localhost:11000
 
@@ -42,7 +33,7 @@
 
 		@502 expression {err.status_code} == 502
 		handle @502 {
-			redir /* /aio
+			redir /* /aio/setup
 		}
 	}
 }
