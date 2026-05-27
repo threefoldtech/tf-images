@@ -113,4 +113,3 @@ Please follow the issue templates in this repository when creating a new issue.
 ## License
 
 This project is licensed under the Apache License 2.0 — see the [LICENSE](LICENSE) file for details.
-Copyright (c) TFTech NV.
