@@ -1,6 +1,6 @@
-## TF Images : 
+# TF Images
 
-- we have here all threefoldtech docker images for operating system distros, apps and solutions which are available for deployment on https://dashboard.grid.tf , this repository is managed and maintained by Threefoldtech operation team .
+This repository contains all ThreeFold Docker images for operating system distributions, applications, and solutions available for deployment on the [ThreeFold Grid Dashboard](https://dashboard.grid.tf). It is managed and maintained by the ThreeFold operations team.
 
 ## Examples for Apps :
 
@@ -90,3 +90,8 @@
 ## new issues :
 
 - please follow the issue templates in this repo when creating a new issue .
+
+## License
+
+This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENSE) file for details.
+Copyright (c) TFTech NV.
