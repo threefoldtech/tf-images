@@ -1,4 +1,4 @@
-# TF Images
+# ZOS Images
 
 A curated collection of container images and flists packaged for deployment on decentralized infrastructure. It provides pre-configured workloads including operating system distributions, databases, web servers, orchestrators, and blockchain nodes optimized for the grid environment.
 
