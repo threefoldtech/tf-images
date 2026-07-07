@@ -33,7 +33,7 @@ VOLUME /data /config
 EXPOSE 9000 1935
 
 RUN apt -y install wget vim net-tools && \
-    wget -O /sbin/zinit https://github.com/threefoldtech/zinit/releases/download/v0.2.5/zinit && \
+    wget -O /sbin/zinit https://github.com/threefoldtech/zos_zinit/releases/download/v0.2.5/zinit && \
     chmod +x /sbin/zinit
 
 RUN mkdir -p /etc/zinit

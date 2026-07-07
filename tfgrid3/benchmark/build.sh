@@ -27,7 +27,7 @@ mv cpubench rootfs/sbin/
 cp benchmark rootfs/etc/periodic/15min/
 
 # setup zinit
-wget https://github.com/threefoldtech/zinit/releases/download/v0.2.14/zinit
+wget https://github.com/threefoldtech/zos_zinit/releases/download/v0.2.14/zinit
 chmod +x zinit
 mv zinit rootfs/sbin/zinit
 

@@ -7,7 +7,7 @@ RUN echo "deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] https://pkg.je
 
 RUN apt update && apt -y install jenkins default-jre
 
-RUN wget -O /sbin/zinit https://github.com/threefoldtech/zinit/releases/download/v0.2.5/zinit && chmod +x /sbin/zinit
+RUN wget -O /sbin/zinit https://github.com/threefoldtech/zos_zinit/releases/download/v0.2.5/zinit && chmod +x /sbin/zinit
 
 COPY rootfs /
 

@@ -12,7 +12,7 @@ RUN apt-get update && \
 RUN curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose && \
     chmod +x /usr/local/bin/docker-compose
 
-RUN wget https://github.com/threefoldtech/zinit/releases/download/v0.2.5/zinit -O /sbin/zinit \
+RUN wget https://github.com/threefoldtech/zos_zinit/releases/download/v0.2.5/zinit -O /sbin/zinit \
     && chmod +x /sbin/zinit
     
 COPY ./scripts/ /scripts/
