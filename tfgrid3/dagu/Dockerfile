@@ -10,7 +10,7 @@ ENV PATH="/root/hero/bin:${PATH}"
 RUN curl -fsSL https://code-server.dev/install.sh | sh
 
 # Copy entrypoint script
-RUN  curl -sSL "https://github.com/threefoldtech/zinit/releases/download/v0.2.14/zinit" -o /sbin/zinit &&\
+RUN  curl -sSL "https://github.com/threefoldtech/zos_zinit/releases/download/v0.2.14/zinit" -o /sbin/zinit &&\
     chmod +x /sbin/zinit
 RUN echo PATH=${PATH} >> /root/.bashrc
 

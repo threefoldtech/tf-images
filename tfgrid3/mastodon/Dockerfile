@@ -14,7 +14,7 @@ RUN apt-get update && apt-get install -y \
     wget -qO- https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg && \
     echo "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list >/dev/null && \
     # Zinit
-    wget -O /sbin/zinit https://github.com/threefoldtech/zinit/releases/download/v0.2.10/zinit && \
+    wget -O /sbin/zinit https://github.com/threefoldtech/zos_zinit/releases/download/v0.2.10/zinit && \
     chmod +x /sbin/zinit && \
     # Webmin
     wget -q http://www.webmin.com/jcameron-key.asc -O- | apt-key add - && \

@@ -12,7 +12,7 @@ RUN  apt install -y debian-keyring debian-archive-keyring apt-transport-https cu
     apt install caddy 
 RUN    apt install -y git
 
-RUN wget -O /sbin/zinit https://github.com/threefoldtech/zinit/releases/download/v0.2.5/zinit && \
+RUN wget -O /sbin/zinit https://github.com/threefoldtech/zos_zinit/releases/download/v0.2.5/zinit && \
     chmod +x /sbin/zinit
 
 RUN mkdir -p /etc/zinit

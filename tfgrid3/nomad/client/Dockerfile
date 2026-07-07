@@ -23,7 +23,7 @@ RUN apt update
 
 RUN apt install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y
 
-RUN wget -O /sbin/zinit https://github.com/threefoldtech/zinit/releases/download/v0.2.12/zinit && \
+RUN wget -O /sbin/zinit https://github.com/threefoldtech/zos_zinit/releases/download/v0.2.12/zinit && \
     chmod +x /sbin/zinit
 
 RUN mkdir -p /etc/zinit

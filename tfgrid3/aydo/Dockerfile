@@ -15,7 +15,7 @@ COPY --from=aydo-builder /aydo/openapi /usr/share/sftpgo/openapi
 
 RUN apt update && apt install -y openssh-server dnsutils
 
-RUN wget -O /sbin/zinit https://github.com/threefoldtech/zinit/releases/download/v0.2.11/zinit && \
+RUN wget -O /sbin/zinit https://github.com/threefoldtech/zos_zinit/releases/download/v0.2.11/zinit && \
     chmod +x /sbin/zinit
 
 ENTRYPOINT ["zinit", "init"]

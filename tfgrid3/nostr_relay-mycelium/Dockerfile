@@ -6,7 +6,7 @@ RUN apt update && \
     apt install -y wget curl git build-essential gcc make librust-openssl-dev protobuf-compiler libprotobuf-dev openssh-server ufw
 
 # Download and install latest zinit
-RUN curl -s https://api.github.com/repos/threefoldtech/zinit/releases/latest | \
+RUN curl -s https://api.github.com/repos/threefoldtech/zos_zinit/releases/latest | \
     grep "browser_download_url" | \
     cut -d '"' -f 4 | \
     wget -qi - -O /sbin/zinit
