@@ -9,7 +9,7 @@ RUN sed -i 's|http://archive.ubuntu.com/ubuntu|http://old-releases.ubuntu.com/ub
     apt install -y wget curl git openssh-server ufw
 
 # Download and install latest zinit
-RUN curl -s https://api.github.com/repos/threefoldtech/zos_zinit/releases/latest | \
+RUN curl -s https://api.github.com/repos/threefoldtech/zinit/releases/latest | \
     grep "browser_download_url" | \
     cut -d '"' -f 4 | \
     wget -qi - -O /sbin/zinit

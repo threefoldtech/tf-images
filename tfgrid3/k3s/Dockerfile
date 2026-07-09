@@ -5,7 +5,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && apt-get -qy update && \
     chmod +x /sbin/k3s && \
     wget --progress=bar:force:noscroll -O /sbin/kubectl https://dl.k8s.io/release/v1.33.1/bin/linux/amd64/kubectl && \
     chmod +x /sbin/kubectl && \
-    wget --progress=bar:force:noscroll -O /sbin/zinit https://github.com/threefoldtech/zos_zinit/releases/download/v0.2.14/zinit && \
+    wget --progress=bar:force:noscroll -O /sbin/zinit https://github.com/threefoldtech/zinit/releases/download/v0.2.14/zinit && \
     chmod +x /sbin/zinit && \
     apt-get -qy remove wget && apt-get -qy autoremove && \
     rm -rf /var/lib/apt/lists/* && rm -rf /build/* && unset DEBIAN_FRONTEND

@@ -5,7 +5,7 @@ RUN apt update && \
   apt -y install wget openssh-server sudo sqlite3
 
 # Install zinit
-RUN wget -O /sbin/zinit https://github.com/threefoldtech/zos_zinit/releases/download/v0.2.5/zinit && \
+RUN wget -O /sbin/zinit https://github.com/threefoldtech/zinit/releases/download/v0.2.5/zinit && \
   chmod +x /sbin/zinit
 
 # Copy zinit configuration and startup script
