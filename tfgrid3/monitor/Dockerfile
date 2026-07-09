@@ -16,7 +16,7 @@ RUN apt -y install adduser libfontconfig1 musl && \
     wget https://dl.grafana.com/enterprise/release/grafana-enterprise_11.1.3_amd64.deb && \
     dpkg -i grafana-enterprise_11.1.3_amd64.deb
     
-RUN wget -O /sbin/zinit https://github.com/threefoldtech/zos_zinit/releases/download/v0.2.5/zinit && \
+RUN wget -O /sbin/zinit https://github.com/threefoldtech/zinit/releases/download/v0.2.5/zinit && \
     chmod +x /sbin/zinit
 
 COPY rootfs .

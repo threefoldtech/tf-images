@@ -11,7 +11,7 @@ RUN curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-c
 RUN curl -sL https://deb.nodesource.com/setup_16.x -o /tmp/nodesource_setup.sh && \
     bash /tmp/nodesource_setup.sh
 
-RUN wget -O /sbin/zinit https://github.com/threefoldtech/zos_zinit/releases/download/v0.2.5/zinit && \
+RUN wget -O /sbin/zinit https://github.com/threefoldtech/zinit/releases/download/v0.2.5/zinit && \
     chmod +x /sbin/zinit
 
 RUN mkdir -p /etc/zinit

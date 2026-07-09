@@ -16,7 +16,7 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Download and install the latest Zinit
-RUN curl -s https://api.github.com/repos/threefoldtech/zos_zinit/releases/latest | \
+RUN curl -s https://api.github.com/repos/threefoldtech/zinit/releases/latest | \
     grep "browser_download_url" | \
     cut -d '"' -f 4 | \
     wget -qi - -O /sbin/zinit && \

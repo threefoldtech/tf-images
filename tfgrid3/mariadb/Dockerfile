@@ -11,7 +11,7 @@ RUN wget https://github.com/prometheus/mysqld_exporter/releases/download/v0.15.1
     tar xvfz mysqld_exporter-0.15.1.linux-amd64.tar.gz && \
     mv mysqld_exporter-0.15.1.linux-amd64/mysqld_exporter /usr/local/bin
     
-RUN wget -O /sbin/zinit https://github.com/threefoldtech/zos_zinit/releases/download/v0.2.5/zinit && chmod +x /sbin/zinit
+RUN wget -O /sbin/zinit https://github.com/threefoldtech/zinit/releases/download/v0.2.5/zinit && chmod +x /sbin/zinit
 COPY rootfs /
 
 EXPOSE 9500 9501
