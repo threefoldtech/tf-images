@@ -1,4 +1,4 @@
-FROM ubuntu:18.04
+FROM ubuntu:20.04
 
 LABEL maintainer="abdul@incubaid.com"
 WORKDIR /opt
@@ -41,10 +41,11 @@ RUN set -ex; \
         software-properties-common \
         git \
         jq \
+	ufw \
         ;
 
 # Install zinit
-RUN wget -O /sbin/zinit https://github.com/threefoldtech/zinit/releases/download/v0.2.5/zinit \
+RUN wget -O /sbin/zinit https://github.com/threefoldtech/zinit/releases/download/v0.2.14/zinit \
     && chmod +x /sbin/zinit \
     && mkdir -p /etc/zinit
 
@@ -62,7 +63,7 @@ COPY config/init /tmp/
 COPY scripts/start_casper /
 COPY scripts/check* /usr/bin/
 COPY config/casper /var/www/html/
-
+ 
 # Set Casperlabs Startup Script
 ENTRYPOINT ["/sbin/zinit", "init"]
 VOLUME /var/lib/casper
